@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP BankID by Webbstart
 Description: This plugin allows you to integrate BankID with your WordPress site.
-Version: private-alpha1
+Version: Indev
 Author: Webbstart
 Author URI: https://webbstart.nu/
 */
@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define constants
-define( 'WP_BANKID_VERSION', 'private-alpha1' );
+define( 'WP_BANKID_VERSION', 'Indev' );
 define( 'WP_BANKID_PLUGIN_FILE', __FILE__ );
 define( 'WP_BANKID_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_BANKID_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
