@@ -5,7 +5,10 @@ new Login;
 
 class Login {
     public function __construct() {
-        add_action('login_form', array($this, 'login_button'), 40);
+        // If configured, show login button
+        if (get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint')) {
+            add_action('login_form', array($this, 'login_button'), 40);
+        }
     }
     public function login_button() {
         echo '<p><a href="#" id="bankid-login-button" class="button" style="width: 100%; text-align: center;">'.esc_html__('Login with BankID', 'wp-bankid').'</a></p><br>';
