@@ -42,11 +42,11 @@ class Activation {
         }
         // Check if PHP version is 7.4 or higher.
         if (version_compare(PHP_VERSION, '7.4.0') < 0) {
-            wp_die('PHP version 7.4 or higher is required for this plugin to work.');
+            wp_die(esc_html__('PHP version 7.4 or higher is required for this plugin to work.'));
         }
         // Check if curl is installed.
         if (!function_exists('curl_version')) {
-            wp_die('cURL is required for this plugin to work.');
+            wp_die(esc_html__('cURL is required for this plugin to work.'));
         }
     }
 }
