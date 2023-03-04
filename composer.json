@@ -1,0 +1,6 @@
+{
+    "require": {
+        "dimafe6/bank-id": "^2.1",
+        "chillerlan/php-qrcode": "^4.3"
+    }
+}

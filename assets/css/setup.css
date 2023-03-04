@@ -1,0 +1,191 @@
+#adminmenumain, #wpadminbar, #wpfooter {
+    display: none;
+}
+
+#wpcontent {
+    margin-left: 0;
+}
+
+.wizard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 500px;
+    padding: 20px;
+}
+
+.wizard .footer-info {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #999;
+}
+
+.wizard .steps {
+    margin-bottom: 20px;
+}
+
+.wizard .steps ol {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.wizard .steps ol li {
+    width: 25%;
+    text-align: center;
+    position: relative;
+}
+
+.wizard .steps ol li:before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ccc;
+    margin: 0 auto 5px;
+}
+
+.wizard .steps ol li:after {
+    content: '';
+    display: block;
+    width: 150%;
+    height: 2px;
+    background: #ccc;
+    position: absolute;
+    top: 9px;
+    left: -100%;
+    z-index: -1;
+}
+
+.wizard .steps ol li:first-child:after {
+    content: none;
+}
+
+.wizard .steps ol li.active:before,
+.wizard .steps ol li.active:after {
+    background: #1e8cbe;
+}
+
+.wizard .steps ol li.done:before,
+.wizard .steps ol li.done:after {
+    background: #1e8cbe;
+}
+
+.wizard .steps ol li.done:before {
+    content: '\f147';
+    font: 400 18px/1 dashicons;
+    display: block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none!important;
+    color: #fff;
+}
+
+.wizard .steps ol li.active:after {
+    background: #1e8cbe;
+}
+
+.wizard .steps ol li.animate-done:before {
+    animation: wizard-animate-done 0.5s ease-in;
+}
+
+.wizard .steps ol li.animate-active:before,
+.wizard .steps ol li.animate-active:after {
+    animation: wizard-animate-active 0.5s ease-in;
+}
+
+@keyframes wizard-animate-done {
+    0% {
+        font: 400 1px/1 dashicons;
+    }
+    100% {
+        font: 400 18px/1 dashicons;
+    }
+}
+
+@keyframes wizard-animate-active {
+    0% {
+        background: #ccc;
+    }
+    100% {
+        background: #1e8cbe;
+    }
+}
+
+/* Wizard content */
+#wizard-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.13);
+}
+
+#wizard-content ul {
+    list-style: none;
+    padding: 0;
+    margin-left: 30px;
+}
+
+#wizard-content ul li::before {
+    content: " - ";
+    font-weight: bold;
+}
+
+#wizard-content .form-group {
+    margin-bottom: 10px;
+}
+
+#wizard-content .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#wizard-content .form-group input[type="text"],
+#wizard-content .form-group input[type="password"],
+#wizard-content .form-group input[type="url"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Wizard modal */
+#wizard-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#wizard-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+#wizard-modal-content p {
+    text-align: center;
+}
+
+#wizard-modal-footer {
+    text-align: end;
+}
+
+/* MOBILE */
+@media screen and (max-width: 600px) {
+    .wizard {
+        width: 90%;
+        padding: 20px 10px;
+    }
+}
