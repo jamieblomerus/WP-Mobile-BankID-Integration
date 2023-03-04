@@ -10,10 +10,12 @@ class Setup {
     }
 
     public function wizard() {
+        /*
         // If already setup, don't show the setup page unless the user is already on the setup page.
         if (get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint') && (!isset($_GET['page']) || $_GET['page'] !== 'wp-bankid-setup')) {
             return;
         }
+        */
 
         // Register the wizard page.
         add_dashboard_page(
