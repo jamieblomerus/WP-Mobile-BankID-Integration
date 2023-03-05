@@ -43,17 +43,6 @@ class API {
         $time = time();
         $time_since_auth = $time - $db_row['time_created'];
 
-        if ($time_since_auth > 120) {
-            $instance->deleteAuthResponseFromDB($orderRef);
-            $instance->getBankIDService()->cancelOrder($orderRef);
-            return [
-                "qr" => null,
-                "orderRef" => $orderRef,
-                "time_since_auth" => $time_since_auth,
-                "status" => "expired",
-            ];
-        }
-
         $status = $instance->getBankIDService()->collectResponse($auth_response->orderRef);
 
         if ($status->status == "failed" ) {
