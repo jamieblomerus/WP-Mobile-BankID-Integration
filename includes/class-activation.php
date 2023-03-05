@@ -38,7 +38,7 @@ class Activation {
     private function checkrequirements() {
         // Check if running on Windows.
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            wp_die(esc_html__('Due to bugs and limitations in our dependencies, this plugin does not work on Windows. Please try again on a Linux server.'));
+            wp_die(esc_html__('Due to bugs and limitations in the plugins dependencies, this plugin does not work on Windows. Please try again on a Linux server.'));
         }
         // Check if PHP version is 7.4 or higher.
         if (version_compare(PHP_VERSION, '7.4.0') < 0) {
