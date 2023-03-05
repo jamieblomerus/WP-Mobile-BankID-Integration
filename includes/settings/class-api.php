@@ -17,6 +17,10 @@ class API {
             'methods' => 'GET',
             'callback' => [$this, 'auto_configure_test_env'],
         ));
+        register_rest_route('wp-bankid/v1/settings', '/setup_settings', array(
+            'methods' => 'POST',
+            'callback' => [$this, 'setup_settings'],
+        ));
     }
 
     public function configuration() {
@@ -79,6 +83,26 @@ class API {
         update_option('wp_bankid_endpoint', 'https://appapi2.test.bankid.com/rp/v5.1/');
         update_option('wp_bankid_password', 'qwerty123');
 
+        return true;
+    }
+
+    public function setup_settings() {
+        // Check if user is administator.
+        if (!current_user_can('manage_options')) {
+            return new \WP_Error('rest_forbidden', esc_html__('You do not have permission to access this resource.', 'wp-bankid'), array('status' => 401));
+        }
+
+        // Make sure that the submitted values are valid
+        if (!in_array($_POST["wplogin"], array('as_alternative', 'hide'))) {
+            return new \WP_Error('invalid_wplogin', esc_html__('Invalid value for wplogin.', 'wp-bankid'), array('status' => 401));
+        }
+        if (!in_array($_POST["registration"], array('yes', 'no'))) {
+            return new \WP_Error('invalid_wplogin', esc_html__('Invalid value for registration.', 'wp-bankid'), array('status' => 401));
+        }
+
+        // Update the WP options.
+        update_option('wp_bankid_wplogin', $_POST["wplogin"]);
+        update_option('wp_bankid_registration', $_POST["registration"]);
         return true;
     }
 }

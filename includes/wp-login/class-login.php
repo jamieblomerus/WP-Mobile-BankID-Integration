@@ -5,8 +5,7 @@ new Login;
 
 class Login {
     public function __construct() {
-        // If configured, show login button
-        if (get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint')) {
+        if (get_option('wp_bankid_wplogin') == "as_alternative" && (get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint'))) {
             add_action('login_form', array($this, 'login_button'), 40);
         }
     }

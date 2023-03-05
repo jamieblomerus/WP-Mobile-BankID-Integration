@@ -26,7 +26,10 @@ $step = intval($step);
             <li <?php if ($step > 2) {?>class="done"<?} elseif ($step == 2) {?>class="active"<?} ?>>
                 <span class="title">Configuration</span>
             </li>
-            <li <?php if ($step == 3) {?>class="active"<?} ?>>
+            <li <?php if ($step > 3) {?>class="done"<?} elseif ($step == 3) {?>class="active"<?} ?>>
+                <span class="title">Settings</span>
+            </li>
+            <li <?php if ($step == 4) {?>class="active"<?} ?>>
                 <span class="title">Finish</span>
             </li>
         </ol>
@@ -42,6 +45,9 @@ $step = intval($step);
                 include_once 'setup_configuration.php';
                 break;
             case 3:
+                include_once 'setup_settings.php';
+                break;
+            case 4:
                 include_once 'setup_finish.php';
                 break;
             default:

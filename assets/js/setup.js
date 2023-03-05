@@ -6,7 +6,7 @@ document.getElementById('screen-meta').remove();
 
 function nextStep() {
     step = document.getElementById('wizard-content').attributes.step.value;
-    if (step < 3) {
+    if (step < 4) {
         /* Disable functionality on current step */
         for(i in document.getElementById('wizard-content').getElementsByTagName('button')) {
             document.getElementById('wizard-content').getElementsByTagName('button')[i].disabled = true;
@@ -89,6 +89,29 @@ function configureSubmit() {
     formdata.append('endpoint', document.getElementById('wp-bankid-endpoint').value);
     formdata.append('certificate', document.getElementById('wp-bankid-certificate').value);
     formdata.append('password', document.getElementById('wp-bankid-password').value);
+
+    // Send request with data
+    xhr.send(formdata);
+}
+
+function settingsSubmit() {
+    // Call REST API
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', wp_bankid_rest_api + '/setup_settings', true);
+    xhr.setRequestHeader('X-WP-Nonce', wp_bankid_rest_api_nonce);
+
+    xhr.onload = function() {
+        if (this.status == 200) {
+            nextStep();
+        } else {
+            response = JSON.parse(this.responseText);
+            alert(wp_bankid_setup_localization.configuration_failed + response['message']);
+        }
+    }
+
+    formdata = new FormData();
+    formdata.append('wplogin', document.getElementById('wp-bankid-wplogin').value);
+    formdata.append('registration', document.getElementById('wp-bankid-registration').value);
 
     // Send request with data
     xhr.send(formdata);

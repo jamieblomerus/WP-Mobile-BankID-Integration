@@ -92,7 +92,7 @@ class API {
 
         $user = get_user_by('id', $user_id);
         if (!$user) {
-            if (!get_option('users_can_register')) {
+            if (get_option('wp_bankid_registration') == "no") {
                 return false;
             }
 
