@@ -92,7 +92,8 @@ class API {
             "qr" => $qrCode,
             "orderRef" => $orderRef,
             "time_since_auth" => $time_since_auth,
-            "status" => $status,
+            "status" => $status->status,
+            "hintCode" => $status->hintCode ?? "",
         ];
     }
 

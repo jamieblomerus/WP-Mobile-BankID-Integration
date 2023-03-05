@@ -77,6 +77,25 @@ function status() {
                     clearInterval(bankidRefreshId);
                     break;
             }
+            if (data.hintCode !== null) {
+                switch (data.hintCode) {
+                    case 'userCancel':
+                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_userCancel;
+                        break;
+                    case 'userSign':
+                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_userSign;
+                        break;
+                    case 'startFailed':
+                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_startFailed;
+                        break;
+                    case 'certificateErr':
+                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_certificateErr;
+                        break;
+                    default:
+                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.qr_instructions;
+                        break;
+                }
+            }
         },
         error: function(data) {
             if (orderRef === null) {
