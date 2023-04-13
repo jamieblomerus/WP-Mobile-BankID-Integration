@@ -1,4 +1,4 @@
-#adminmenumain, #wpadminbar, #wpfooter {
+#adminmenumain, #wpadminbar, #wpfooter, .update-nag {
     display: none;
 }
 
