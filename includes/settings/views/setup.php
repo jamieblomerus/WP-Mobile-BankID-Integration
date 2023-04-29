@@ -7,13 +7,13 @@ $step = intval($step);
 <div id="wizard-modal">
     <div id="wizard-modal-content">
         <div id="wizard-modal-content-inner">
-            <h2><?php _e('Are you sure?', 'wp-bankid'); ?></h2>
+            <h2><?php esc_html_e('Are you sure?', 'wp-bankid'); ?></h2>
             <p id="wizard-modal-confirmation-text"></p>
         </div>
         <hr>
         <div id="wizard-modal-footer">
-            <button class="button button-primary" id="wizard-modal-abort"><?php _e('Abort', 'wp-bankid'); ?></button>
-            <button class="button button-secondary" onclick="confirmconfirmation()" id="wizard-modal-confirm"><?php _e('Confirm', 'wp-bankid'); ?></button>
+            <button class="button button-primary" id="wizard-modal-abort"><?php esc_html_e('Abort', 'wp-bankid'); ?></button>
+            <button class="button button-secondary" onclick="confirmconfirmation()" id="wizard-modal-confirm"><?php esc_html_e('Confirm', 'wp-bankid'); ?></button>
         </div>
     </div>
 </div>
@@ -21,16 +21,16 @@ $step = intval($step);
     <div class="steps">
         <ol>
             <li <?php if ($step > 1) {?>class="done"<?} else {?>class="active"<?} ?>>
-                <span class="title">Welcome</span>
+                <span class="title"><? esc_html_e('Welcome', 'wp-bankid') ?></span>
             </li>
             <li <?php if ($step > 2) {?>class="done"<?} elseif ($step == 2) {?>class="active"<?} ?>>
-                <span class="title">Configuration</span>
+                <span class="title"><? esc_html_e('Configuration', 'wp-bankid') ?></span>
             </li>
             <li <?php if ($step > 3) {?>class="done"<?} elseif ($step == 3) {?>class="active"<?} ?>>
-                <span class="title">Settings</span>
+                <span class="title"><? esc_html_e('Settings', 'wp-bankid') ?></span>
             </li>
             <li <?php if ($step == 4) {?>class="active"<?} ?>>
-                <span class="title">Finish</span>
+                <span class="title"><? esc_html_e('Finish', 'wp-bankid') ?></span>
             </li>
         </ol>
     </div><br>
