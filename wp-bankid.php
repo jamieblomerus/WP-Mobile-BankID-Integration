@@ -28,9 +28,12 @@ if (!class_exists("wp_bankid")) {
 
             // Load plugin files
             $this->load_plugin_files();
+
+            // Add link in plugin list
+            add_filter('plugin_action_links_' . plugin_basename(__FILE__), [$this, 'plugin_list_link']);
         }
 
-        public function load_plugin_files()
+        private function load_plugin_files()
         {
             require_once WP_BANKID_PLUGIN_DIR . 'includes/class-core.php';
             require_once WP_BANKID_PLUGIN_DIR . 'includes/class-activation.php';
@@ -39,6 +42,12 @@ if (!class_exists("wp_bankid")) {
             require_once WP_BANKID_PLUGIN_DIR . 'includes/settings/class-user.php';
             require_once WP_BANKID_PLUGIN_DIR . 'includes/wp-login/class-api.php';
             require_once WP_BANKID_PLUGIN_DIR . 'includes/wp-login/class-login.php';
+        }
+
+        public function plugin_list_link($links) {
+            $settings_link = '<a href="admin.php?page=wp-bankid-setup">Setup</a>';
+            array_unshift($links, $settings_link);
+            return $links;
         }
     }
     new wp_bankid;
