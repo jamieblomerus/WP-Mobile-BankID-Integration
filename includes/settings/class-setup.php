@@ -12,7 +12,7 @@ class Setup {
     public function wizard() {
         // Register the wizard page as submenu
         add_submenu_page(
-            'options-general.php',
+            'non-existent-page-slug',
             esc_html__('WP BankID Setup', 'wp-bankid'),
             esc_html__('WP BankID Setup', 'wp-bankid'),
             'manage_options',
