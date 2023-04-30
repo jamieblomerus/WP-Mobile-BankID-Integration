@@ -18,4 +18,4 @@
         <p class="description"><?php esc_html_e('This setting does not affect, nor is affected by, the native "Allow registration" setting.', 'wp-bankid'); ?></p>
     </div>
 </form><br>
-<button class="button button-primary" onclick="settingsSubmit()" id="wp-bankid-setup"><?php _e('Next', 'wp-bankid'); ?></button>
+<button class="button button-primary" onclick="settingsSubmit()" id="wp-bankid-setup"><?php esc_html_e('Next', 'wp-bankid'); ?></button>

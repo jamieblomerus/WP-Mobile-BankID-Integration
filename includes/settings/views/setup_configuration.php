@@ -25,8 +25,8 @@
         <p class="description"><?php esc_html_e('Please note that the certificate shall, for security reasons, not be placed within any publicly accessible directory.', 'wp-bankid'); ?></p>
     </div>
     <div class="form-group">
-        <label for="wp-bankid-password"><?php _e('Certificate password', 'wp-bankid'); ?></label>
+        <label for="wp-bankid-password"><?php esc_html_e('Certificate password', 'wp-bankid'); ?></label>
         <input type="password" id="wp-bankid-password" autocomplete="off" data-lpignore="true" >
     </div>
 </form><br>
-<button class="button button-primary" onclick="configureSubmit()" id="wp-bankid-setup"><?php _e('Next', 'wp-bankid'); ?></button>
+<button class="button button-primary" onclick="configureSubmit()" id="wp-bankid-setup"><?php esc_html_e('Next', 'wp-bankid'); ?></button>
