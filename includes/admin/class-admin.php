@@ -74,7 +74,7 @@ class Admin {
     }
 
     public function page_integrations() {
-        // Make grid of integrations to be in  wp-admin with styling
+        // Make grid of integrations to be in wp-admin with styling
         ?>
         <div class="wp-bankid-integrations">
             <div class="wp-bankid-integration">
