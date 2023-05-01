@@ -4,8 +4,14 @@ namespace Webbstart\WP_BankID;
 new Admin;
 
 class Admin {
+    private static array $tabs = [];
     public function __construct() {
         add_action('admin_menu', array($this, 'register_page'));
+
+        // Register tabs
+        self::add_tab(__('Settings', 'wp-bankid'), 'settings', [$this, 'page_settings']);
+        self::add_tab(__('Integrations', 'wp-bankid'), 'integrations', [$this, 'page_integrations']);
+        self::remove_tab('settings');
     }
 
     public function register_page() {
@@ -20,30 +26,45 @@ class Admin {
         );
     }
 
+    public static function add_tab(string $display_name, string $slug, callable $callback): void {
+        if (array_key_exists($slug, self::$tabs)) {
+            throw new \Exception("Tab with that slug already exists.");
+        }
+
+        self::$tabs[$slug] = [
+            'display_name' => $display_name,
+            'callback' => $callback
+        ];
+    }
+
+    public static function remove_tab(string $slug) {
+        if (!array_key_exists($slug, self::$tabs)) {
+            throw new \Exception("Tab with that slug does not exist.");
+        }
+
+        unset(self::$tabs[$slug]);
+    }
+
     public function page() {
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
         $current_tab = isset($_GET['tab']) ? $_GET['tab'] : null;
-        $tabs = [
-            'settings' => __('Settings', 'wp-bankid'),
-            'integrations' => __('Integrations', 'wp-bankid'),
-        ];
-        if (!isset($current_tab) || !array_key_exists($current_tab, $tabs)) {
-            $current_tab = 'settings';
+        if (!isset($current_tab) || !array_key_exists($current_tab, self::$tabs)) {
+            $current_tab = array_key_first(self::$tabs);
         }
         ?>
         <div class="wrap">
             <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
             <nav class="nav-tab-wrapper">
-                <?php foreach ($tabs as $tab => $name) : ?>
-                    <a href="<?php echo esc_url(admin_url('admin.php?page=wp-bankid&tab=' . $tab)); ?>" class="nav-tab <?php echo $current_tab == $tab ? 'nav-tab-active' : ''; ?>"><?php echo $name; ?></a>
+                <?php foreach (self::$tabs as $tab => $content) : ?>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=wp-bankid&tab=' . $tab)); ?>" class="nav-tab <?php echo $current_tab == $tab ? 'nav-tab-active' : ''; ?>"><?php echo esc_html($content['display_name']); ?></a>
                 <?php endforeach; ?>
             </nav>
             <br>
             <?php
-            call_user_func([$this, 'page_' . $current_tab]);
+            call_user_func(self::$tabs[$current_tab]['callback']);
             ?>
         </div>
         <?php
