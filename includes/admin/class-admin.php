@@ -60,6 +60,8 @@ class Admin {
                 <?php foreach (self::$tabs as $tab => $content) : ?>
                     <a href="<?php echo esc_url(admin_url('admin.php?page=wp-bankid&tab=' . $tab)); ?>" class="nav-tab <?php echo $current_tab == $tab ? 'nav-tab-active' : ''; ?>"><?php echo esc_html($content['display_name']); ?></a>
                 <?php endforeach; ?>
+                <!-- Setup link --->
+                <a href="<?php echo esc_url(admin_url('admin.php?page=wp-bankid-setup')); ?>" class="nav-tab" style="float:right"><?php echo esc_html(__('Run setup wizard again', 'wp-bankid')); ?></a>
             </nav>
             <br>
             <?php
