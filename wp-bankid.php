@@ -30,7 +30,7 @@ if (!class_exists("wp_bankid")) {
             $this->load_plugin_files();
 
             // Add link in plugin list
-            add_filter('plugin_action_links_' . plugin_basename(__FILE__), [$this, 'plugin_list_link']);
+            add_filter('plugin_action_links_' . plugin_basename(WP_BANKID_PLUGIN_FILE), [$this, 'plugin_list_link']);
         }
 
         private function load_plugin_files()
