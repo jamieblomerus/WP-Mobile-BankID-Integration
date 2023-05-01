@@ -28,7 +28,7 @@ class Admin {
         $current_tab = isset($_GET['tab']) ? $_GET['tab'] : null;
         $tabs = [
             'settings' => __('Settings', 'wp-bankid'),
-            'logs' => __('Logs', 'wp-bankid'),
+            'integrations' => __('Integrations', 'wp-bankid'),
         ];
         if (!isset($current_tab) || !array_key_exists($current_tab, $tabs)) {
             $current_tab = 'settings';
@@ -41,6 +41,7 @@ class Admin {
                     <a href="<?php echo esc_url(admin_url('admin.php?page=wp-bankid&tab=' . $tab)); ?>" class="nav-tab <?php echo $current_tab == $tab ? 'nav-tab-active' : ''; ?>"><?php echo $name; ?></a>
                 <?php endforeach; ?>
             </nav>
+            <br>
             <?php
             call_user_func([$this, 'page_' . $current_tab]);
             ?>
@@ -52,7 +53,73 @@ class Admin {
         echo "Settings";
     }
 
-    public function page_logs() {
-        echo "Logs";
+    public function page_integrations() {
+        // Make grid of integrations to be in  wp-admin with styling
+        ?>
+        <div class="wp-bankid-integrations">
+            <div class="wp-bankid-integration">
+                <div class="wp-bankid-integration__logo">
+                    <img src="<?php echo esc_url(WP_BANKID_PLUGIN_URL . 'assets/images/woocommerce.svg'); ?>" alt="WooCommerce">
+                </div>
+                <div class="wp-bankid-integration__content">
+                    <h2 class="wp-bankid-integration__title">WooCommerce</h2>
+                    <p class="wp-bankid-integration__description">WooCommerce is the most popular e-commerce platform for WordPress. With WP BankID by Webbstart you can perform age checks using BankID.</p>
+                    <?php if (is_plugin_active('woocommerce/woocommerce.php')) : ?>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=wc-settings&tab=bankid')); ?>" class="button button-primary"><?php esc_html_e('Go to settings', 'wp-bankid'); ?></a>
+                    <?php else : 
+                        // Generate _wpnonce
+                        $nonce = wp_create_nonce('install-plugin_woocommerce');
+                        ?>
+                        <a href="<?php echo esc_url(admin_url("update.php?action=install-plugin&plugin=woocommerce&_wpnonce=$nonce")); ?>" class="button button-primary"><?php esc_html_e('Install WooCommerce', 'wp-bankid'); ?></a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <!-- More coming soon -->
+            <div class="wp-bankid-integration coming-soon">
+                <div class="wp-bankid-integration__content">
+                    <h2 class="wp-bankid-integration__title">More coming soon</h2>
+                    <p class="wp-bankid-integration__description">We are working on more integrations. If you have any suggestions, please let us know.</p>
+                </div>
+            </div>
+        </div>
+        <style>
+            .wp-bankid-integrations {
+                display: flex;
+                flex-wrap: wrap;
+                margin-left: 5px;
+            }
+            .wp-bankid-integration {
+                display: flex;
+                flex-direction: column;
+                background: #fff;
+                border: 1px solid #e5e5e5;
+                border-radius: 4px;
+                padding: 20px;
+                max-width: 300px;
+            }
+            .wp-bankid-integration__logo {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .wp-bankid-integration__logo img {
+                max-width: 100%;
+                height: 50px;
+            }
+            .wp-bankid-integration__title {
+                margin-top: 0;
+            }
+            .wp-bankid-integration__description {
+                margin-bottom: 20px;
+            }
+            .coming-soon {
+                background: #e5e5e5;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+        <?php
     }
 }
