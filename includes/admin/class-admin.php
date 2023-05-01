@@ -11,7 +11,6 @@ class Admin {
         // Register tabs
         self::add_tab(__('Settings', 'wp-bankid'), 'settings', [$this, 'page_settings']);
         self::add_tab(__('Integrations', 'wp-bankid'), 'integrations', [$this, 'page_integrations']);
-        self::remove_tab('settings');
     }
 
     public function register_page() {
