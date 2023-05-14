@@ -71,11 +71,11 @@ class Admin {
         <?php
     }
 
-    public function page_settings() {
+    private function page_settings() {
         echo "Settings";
     }
 
-    public function page_integrations() {
+    private function page_integrations() {
         ?>
         <div class="wp-bankid-integrations">
             <div class="wp-bankid-integration">
