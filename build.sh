@@ -1,24 +1,25 @@
 # Check if argument is set
 if [ -z "$1" ]
 then
-  echo "No argument supplied"
+  echo "BUILD ERROR: No argument supplied"
   exit 1
 fi
 
 # Check if argument is "production" or "dev"
 if [ $1 != "production" ] && [ $1 != "dev" ]
 then
-  echo "Argument must be 'production' or 'dev'"
+  echo "BUILD ERROR: Argument must be 'production' or 'dev'"
   exit 1
 fi
 
 # Update composer packages
-composer update -o --no-progress
+echo "Updating composer packages (should also be made manually as often as possible)..."
+composer update -o --no-progress > /dev/null 2>&1
 
 # Check if argument is "production" and version number is set
 if [ $1 == "production" ] && [ -z "$2" ]
 then
-  echo "No version number supplied"
+  echo "BUILD ERROR: No version number supplied"
   exit 1
 fi
 
@@ -36,6 +37,7 @@ cp -r index.php build
 # If argument is "production", add license file and update version number
 if [ $1 == "production" ]
 then
+  echo "Building production version $2..."
   cp -r LICENSE.md build/LICENSE.md
   sed -i 's/Version: .*/Version: '$2'/g' build/wp-bankid.php
   sed -i "s/define( 'WP_BANKID_VERSION', '.*' );/define( 'WP_BANKID_VERSION', '$2' );/g" build/wp-bankid.php
@@ -44,6 +46,25 @@ fi
 # If argument is "dev", change plugin name and change license file
 if [ $1 == "dev" ]
 then
+  echo "Building development version..."
   sed -i 's/Plugin Name: WP BankID by Webbstart/Plugin Name: WP BankID DEV/g' build/wp-bankid.php
   cp -r _dev/LICENSE.md build/LICENSE.md
 fi
+
+# Zip contents of build folder
+cd build
+if [ $1 == "production" ]
+then
+  zip -r ../build-$2.zip . > /dev/null 2>&1
+fi
+if [ $1 == "dev" ]
+then
+  zip -r ../build-dev.zip . > /dev/null 2>&1
+fi
+cd ..
+
+# Remove build folder
+rm -rf build
+
+# Done
+echo "Done!"
