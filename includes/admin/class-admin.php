@@ -46,7 +46,7 @@ class Admin {
 
     public function page() {
         if ( ! current_user_can( 'manage_options' ) ) {
-            return;
+            wp_die("You do not have sufficient priviliges to see this page.");
         }
 
         $current_tab = isset($_GET['tab']) ? $_GET['tab'] : null;
