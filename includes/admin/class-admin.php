@@ -76,7 +76,6 @@ class Admin {
     }
 
     public function page_integrations() {
-        // Make grid of integrations to be in wp-admin with styling
         ?>
         <div class="wp-bankid-integrations">
             <div class="wp-bankid-integration">
@@ -88,6 +87,11 @@ class Admin {
                     <p class="wp-bankid-integration__description">WooCommerce is the most popular e-commerce platform for WordPress. With WP BankID by Webbstart you can perform age checks using BankID.</p>
                     <?php if (is_plugin_active('woocommerce/woocommerce.php')) : ?>
                         <a href="<?php echo esc_url(admin_url('admin.php?page=wc-settings&tab=bankid')); ?>" class="button button-primary"><?php esc_html_e('Go to settings', 'wp-bankid'); ?></a>
+                    <?php elseif (file_exists(WP_PLUGIN_DIR . '/woocommerce/woocommerce.php')):
+                        // Generate _wpnonce
+                        $nonce = wp_create_nonce('activate-plugin_woocommerce/woocommerce.php');
+                        ?>
+                        <a href="<?php echo esc_url(admin_url("plugins.php?action=activate&plugin=woocommerce/woocommerce.php&_wpnonce=$nonce")); ?>" class="button button-primary"><?php esc_html_e('Activate WooCommerce', 'wp-bankid'); ?></a>
                     <?php else : 
                         // Generate _wpnonce
                         $nonce = wp_create_nonce('install-plugin_woocommerce');
