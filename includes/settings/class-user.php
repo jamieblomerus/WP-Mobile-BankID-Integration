@@ -1,5 +1,6 @@
 <?php
 namespace Webbstart\WP_BankID\Settings;
+use Personnummer\Personnummer;
 
 new UserSettings;
 
@@ -26,7 +27,7 @@ class UserSettings {
     public function savePersonalNumber($user_id) {
         if (current_user_can('administrator')) {
             // Check if personal number is valid and save it if it is.
-            if (preg_match('/^[0-9]{12}$/', $_POST['personal_number'])) {
+            if (preg_match('/^[0-9]{12}$/', $_POST['personal_number']) && Personnummer::valid($_POST['personal_number'])) {
                 // Check if user with this personal number already exists.
                 $check = get_users(array(
                     'meta_key' => 'wp_bankid_personal_number',
