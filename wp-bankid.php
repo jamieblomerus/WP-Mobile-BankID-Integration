@@ -46,7 +46,7 @@ if (!class_exists("wp_bankid")) {
         }
 
         public function plugin_list_link($links) {
-            $setup_link = '<a href="admin.php?page=wp-bankid-setup">'.esc_html__("Setup", "wp-bankid").'</a>';
+            $setup_link = '<a href="admin.php?page=wp-bankid">'.esc_html__("Settings", "wp-bankid").'</a>';
             array_unshift($links, $setup_link);
             return $links;
         }
