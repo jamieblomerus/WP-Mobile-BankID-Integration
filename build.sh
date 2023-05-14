@@ -12,6 +12,9 @@ then
   exit 1
 fi
 
+# Update composer packages
+composer update --no-progress
+
 # Check if argument is "production" and version number is set
 if [ $1 == "production" ] && [ -z "$2" ]
 then
