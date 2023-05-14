@@ -13,7 +13,7 @@ then
 fi
 
 # Update composer packages
-composer update --no-progress
+composer update -o --no-progress
 
 # Check if argument is "production" and version number is set
 if [ $1 == "production" ] && [ -z "$2" ]
