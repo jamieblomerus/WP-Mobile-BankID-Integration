@@ -21,6 +21,10 @@ class API {
             'methods' => 'POST',
             'callback' => [$this, 'setup_settings'],
         ));
+        register_rest_route('wp-bankid/v1/settings', '/settings', array(
+            'methods' => 'POST',
+            'callback' => [$this, 'settings'],
+        ));
     }
 
     public function configuration() {
@@ -104,5 +108,24 @@ class API {
         update_option('wp_bankid_wplogin', $_POST["wplogin"]);
         update_option('wp_bankid_registration', $_POST["registration"]);
         return true;
+    }
+
+    public function settings() {
+        // Check if user is administator.
+        if (!current_user_can('manage_options')) {
+            return new \WP_Error('rest_forbidden', esc_html__('You do not have permission to access this resource.', 'wp-bankid'), array('status' => 401));
+        }
+
+        if (!in_array($_POST["wplogin"], array('as_alternative', 'hide'))) {
+            return new \WP_Error('invalid_wplogin', esc_html__('Invalid value for wplogin.', 'wp-bankid'), array('status' => 400));
+        }
+
+        if (!in_array($_POST["registration"], array('yes', 'no'))) {
+            return new \WP_Error('invalid_registration', esc_html__('Invalid value for registration.', 'wp-bankid'), array('status' => 400));
+        }
+
+        // Update the WP options.
+        update_option('wp_bankid_wplogin', $_POST["wplogin"]);
+        update_option('wp_bankid_registration', $_POST["registration"]);
     }
 }

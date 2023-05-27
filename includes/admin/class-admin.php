@@ -72,7 +72,118 @@ class Admin {
     }
 
     private function page_settings() {
-        echo "Settings";
+        ?>
+<form autocomplete="off">
+    <h2><?php esc_html_e('Basic configuration', 'wp-bankid'); ?></h2>
+    <p class="description"><?php esc_html_e('These settings can only be changed by running the setup wizard again.', 'wp-bankid'); ?></p>
+    <div class="form-group">
+        <label for="wp-bankid-endpoint"><?php esc_html_e('API Endpoint', 'wp-bankid'); ?></label>
+        <input type="text" name="wp-bankid-endpoint" id="wp-bankid-endpoint" disabled readonly value="<?php echo esc_url(get_option('wp_bankid_endpoint')); ?>">
+    </div>
+    <div class="form-group">
+        <label for="wp-bankid-certificate"><?php esc_html_e('Certificate location (absolute path)', 'wp-bankid'); ?></label>
+        <input type="text" name="wp-bankid-certificate" id="wp-bankid-certificate" disabled readonly value="<?php echo esc_attr(get_option('wp_bankid_certificate')); ?>">
+    </div>
+    <div class="form-group">
+        <label for="wp-bankid-password"><?php esc_html_e('Certificate password', 'wp-bankid'); ?></label>
+        <input type="password" name="wp-bankid-password" id="wp-bankid-password" autocomplete="off" disabled readonly value="<?php if (get_option('wp_bankid_password')) { echo "********"; } ?>">
+    </div>
+
+    <h2><?php esc_html_e('Login page', 'wp-bankid'); ?></h2>
+    <div class="form-group">
+        <label for="wp-bankid-wplogin"><?php esc_html_e('Show BankID on login page', 'wp-bankid'); ?></label>
+        <select name="wp-bankid-wplogin" id="wp-bankid-wplogin">
+            <option value="as_alternative" <?php if (get_option('wp_bankid_wplogin') == "as_alternative") { echo 'selected'; } ?>><?php esc_html_e('Show as alternative to traditional login', 'wp-bankid'); ?></option>
+            <option value="hide" <?php if (get_option('wp_bankid_wplogin') == "hide") { echo 'selected'; } ?>><?php esc_html_e('Do not show at all', 'wp-bankid'); ?></option>
+        </select>
+    </div><br>
+    <div class="form-group">
+        <label for="wp-bankid-registration"><?php esc_html_e('Allow registration with BankID', 'wp-bankid'); ?></label>
+        <select name="wp-bankid-registration" id="wp-bankid-registration">
+            <option value="yes" <?php if (get_option('wp_bankid_registration') == "yes") { echo 'selected'; } ?>><?php esc_html_e('Yes', 'wp-bankid'); ?></option>
+            <option value="no" <?php if (get_option('wp_bankid_registration') == "no") { echo 'selected'; } ?>><?php esc_html_e('No', 'wp-bankid'); ?></option>
+        </select>
+        <p class="description"><?php esc_html_e('This setting does not affect, nor is affected by, the native "Allow registration" setting.', 'wp-bankid'); ?></p>
+    </div>
+</form>
+<button class="button button-primary" onclick="settingsSubmit()" id="wp-bankid-save"><?php esc_html_e('Save changes', 'wp-bankid'); ?></button>
+<style>
+    form {
+        width: fit-content;
+    }
+    form .description {
+        /* Line break when description is too long */
+        max-width: 500px;
+        word-break: break-word;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .form-group label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="password"] {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+        background-color: #fff;
+        font-size: 1rem;
+        line-height: 1.2;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    .form-group select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+        background-color: #fff;
+        font-size: 1rem;
+        line-height: 1.2;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+</style>
+<script>
+    function settingsSubmit() {
+        document.getElementById("wp-bankid-save").innerHTML = "<?php esc_html_e('Saving...', 'wp-bankid'); ?>";
+        document.getElementById("wp-bankid-save").disabled = true;
+        var wplogin = document.getElementById("wp-bankid-wplogin").value;
+        var registration = document.getElementById("wp-bankid-registration").value;
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "<?php echo esc_url(rest_url('wp-bankid/v1/settings')). '/settings'; ?>", true);
+        xhr.setRequestHeader("X-WP-Nonce", "<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>");
+
+        xhr.onload = function() {
+            if (this.status == 200) {
+                document.getElementById("wp-bankid-save").innerHTML = "<?php esc_html_e('Saved!', 'wp-bankid'); ?>";
+                setTimeout(function() {
+                    document.getElementById("wp-bankid-save").innerHTML = "<?php esc_html_e('Save changes', 'wp-bankid'); ?>";
+                    document.getElementById("wp-bankid-save").disabled = false;
+                }, 2000);
+            } else {
+                response = JSON.parse(this.responseText);
+                alert(wp_bankid_setup_localization.configuration_failed + response['message']);
+            }
+        }
+
+        formdata = new FormData();
+        formdata.append("wplogin", wplogin);
+        formdata.append("registration", registration);
+
+        xhr.send(formdata);
+    }
+</script>
+        <?php
     }
 
     private function page_integrations() {
