@@ -12,27 +12,30 @@ class API {
         register_rest_route('wp-bankid/v1/settings', '/configuration', array(
             'methods' => 'POST',
             'callback' => [$this, 'configuration'],
+            'permission_callback' => [$this, 'haveRights'],
         ));
         register_rest_route('wp-bankid/v1/settings', '/autoconfiguretestenv', array(
             'methods' => 'GET',
             'callback' => [$this, 'auto_configure_test_env'],
+            'permission_callback' => [$this, 'haveRights'],
         ));
         register_rest_route('wp-bankid/v1/settings', '/setup_settings', array(
             'methods' => 'POST',
             'callback' => [$this, 'setup_settings'],
+            'permission_callback' => [$this, 'haveRights'],
         ));
         register_rest_route('wp-bankid/v1/settings', '/settings', array(
             'methods' => 'POST',
             'callback' => [$this, 'settings'],
+            'permission_callback' => [$this, 'haveRights'],
         ));
     }
 
-    public function configuration() {
-        // Check if user is administator.
-        if (!current_user_can('manage_options')) {
-            return new \WP_Error('rest_forbidden', esc_html__('You do not have permission to access this resource.', 'wp-bankid'), array('status' => 401));
-        }
+    function haveRights() {
+        return current_user_can('manage_options');
+    }
 
+    public function configuration() {
         // Check endpoint domain is one of the allowed endpoints
         if (!preg_match("/^https:\/\/appapi2\.(test\.)?bankid\.com\/rp\/v5\.1$/", $_POST["endpoint"])) {
             var_dump($_POST["endpoint"]);
@@ -71,11 +74,6 @@ class API {
     }
 
     public function auto_configure_test_env() {
-        // Check if user is administator.
-        if (!current_user_can('manage_options')) {
-            return new \WP_Error('rest_forbidden', esc_html__('You do not have permission to access this resource.', 'wp-bankid'), array('status' => 401));
-        }
-
         // Check if certificate exists
         $certificate_dir = WP_BANKID_PLUGIN_DIR . 'assets/certs/';
         if (!file_exists($certificate_dir . 'testenv.p12')) {
@@ -91,11 +89,6 @@ class API {
     }
 
     public function setup_settings() {
-        // Check if user is administator.
-        if (!current_user_can('manage_options')) {
-            return new \WP_Error('rest_forbidden', esc_html__('You do not have permission to access this resource.', 'wp-bankid'), array('status' => 401));
-        }
-
         // Make sure that the submitted values are valid
         if (!in_array($_POST["wplogin"], array('as_alternative', 'hide'))) {
             return new \WP_Error('invalid_wplogin', esc_html__('Invalid value for wplogin.', 'wp-bankid'), array('status' => 400));
@@ -111,11 +104,6 @@ class API {
     }
 
     public function settings() {
-        // Check if user is administator.
-        if (!current_user_can('manage_options')) {
-            return new \WP_Error('rest_forbidden', esc_html__('You do not have permission to access this resource.', 'wp-bankid'), array('status' => 401));
-        }
-
         if (!in_array($_POST["wplogin"], array('as_alternative', 'hide'))) {
             return new \WP_Error('invalid_wplogin', esc_html__('Invalid value for wplogin.', 'wp-bankid'), array('status' => 400));
         }
