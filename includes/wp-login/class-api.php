@@ -15,10 +15,12 @@ class API {
         register_rest_route('wp-bankid/v1/login', '/identify', array(
             'methods' => 'POST',
             'callback' => [$this, 'identify'],
+            'permission_callback' => '__return_true'
         ));
         register_rest_route('wp-bankid/v1/login', '/status', array(
             'methods' => 'GET',
             'callback' => [$this, 'status'],
+            'permission_callback' => '__return_true'
         ));
     }
 
