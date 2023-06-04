@@ -34,13 +34,19 @@ cp -r vendor build
 cp -r wp-bankid.php build
 cp -r index.php build
 
-# If argument is "production", add license file and update version number
+# If argument is "production", add license file, minimize js/css and update version number
 if [ $1 == "production" ]
 then
   echo "Building production version $2..."
   cp -r LICENSE.md build/LICENSE.md
   sed -i 's/Version: .*/Version: '$2'/g' build/wp-bankid.php
   sed -i "s/define( 'WP_BANKID_VERSION', '.*' );/define( 'WP_BANKID_VERSION', '$2' );/g" build/wp-bankid.php
+  #Minimize CSS
+  cleancss -o build/assets/css/setup.css build/assets/css/setup.css
+
+  #Minimize JS
+  uglifyjs build/assets/js/setup.js -o build/assets/js/setup.js
+  uglifyjs build/assets/js/login.js -o build/assets/js/login.js
 fi
 
 # If argument is "dev", change plugin name and change license file
