@@ -42,10 +42,13 @@ then
   sed -i 's/Version: .*/Version: '$2'/g' build/wp-bankid.php
   sed -i "s/define( 'WP_BANKID_VERSION', '.*' );/define( 'WP_BANKID_VERSION', '$2' );/g" build/wp-bankid.php
   #Minimize CSS
+  cp -r build/assets/css/setup.css build/assets/css/setup.full.css
   cleancss -o build/assets/css/setup.css build/assets/css/setup.css
 
   #Minimize JS
+  cp -r build/assets/js/setup.js build/assets/js/setup.full.js
   uglifyjs build/assets/js/setup.js -o build/assets/js/setup.js
+  cp -r build/assets/js/login.js build/assets/js/login.full.js
   uglifyjs build/assets/js/login.js -o build/assets/js/login.js
 fi
 
