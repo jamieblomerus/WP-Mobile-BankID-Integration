@@ -9,8 +9,8 @@ class Login {
             add_action('login_form', array($this, 'login_button'), 40);
         }
     }
-    public function login_button() {
-        echo '<p><a href="#" id="bankid-login-button" class="button" style="width: 100%; text-align: center;">'.esc_html__('Login with BankID', 'wp-bankid').'</a></p><br>';
+    public function login_button(string $redirect = "/wp-admin/") {
+        echo '<p><a href="#" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center;">'.esc_html__('Login with BankID', 'wp-bankid').'</a></p><br>';
         echo '<noscript><style>#bankid-login-button { display: none; height: 0; margin: 0; }</style></noscript>';
         wp_register_script('wp-bankid-login', WP_BANKID_PLUGIN_URL . 'assets/js/login.js', array('jquery'), WP_BANKID_VERSION, true);
         wp_enqueue_script('wp-bankid-login');
@@ -33,6 +33,6 @@ class Login {
             'hintcode_startFailed' => esc_html__("Failed to scan the QR code.", 'wp-bankid'),
             'hintcode_certificateErr' => esc_html__('The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank.', 'wp-bankid'),
         ]);
-        wp_add_inline_script('wp-bankid-login', 'var wp_bankid_rest_api = "' . rest_url('wp-bankid/v1/login') . '"; var wp_bankid_redirect_url = "/wp-admin/";', 'before');
+        wp_add_inline_script('wp-bankid-login', 'var wp_bankid_rest_api = "' . rest_url('wp-bankid/v1/login') . '"; var wp_bankid_redirect_url = "' . $redirect . '";', 'before');
     }
 }

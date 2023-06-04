@@ -33,7 +33,7 @@ jQuery(document).ready(function() {
 });
 
 function loginPage(autoStartToken) {
-    document.getElementById("bankid-login-button").parentElement.parentElement.innerHTML = '<h2>'+wp_bankid_login_localization.title+'</h2><p id="bankid-status">'+wp_bankid_login_localization.qr_instructions+'</p><img id="bankid-qr-code" src="" alt="'+wp_bankid_login_localization.qr_alt+'" /><br><br><a href="#" class="button" onclick="window.location.reload();">'+wp_bankid_login_localization.cancel+'</a><a style="margin-left: 5px;" target="_blank" id="open_bankid" href="https://app.bankid.com/?autostarttoken='+autoStartToken+'&redirect=null" class="button">'+wp_bankid_login_localization.open_on_this_device+'</a>';
+    document.getElementById("bankid-login-button").parentElement.parentElement.innerHTML = '<h2>'+wp_bankid_login_localization.title+'</h2><p id="bankid-status">'+wp_bankid_login_localization.qr_instructions+'</p><img id="bankid-qr-code" src="" alt="'+wp_bankid_login_localization.qr_alt+'" /><br><br><a href="#" class="button wp-element-button" onclick="window.location.reload();">'+wp_bankid_login_localization.cancel+'</a><a style="margin-left: 5px;" target="_blank" id="open_bankid" href="https://app.bankid.com/?autostarttoken='+autoStartToken+'&redirect=null" class="button wp-element-button">'+wp_bankid_login_localization.open_on_this_device+'</a>';
 }
 
 function status() {
