@@ -116,6 +116,7 @@ class API {
         }
         wp_set_current_user($user_id);
         wp_set_auth_cookie($user_id);
+        Core::$instance->createAuthCookie($user_id);
         do_action('wp_login', $personal_number, $user);
         return $user;
     }

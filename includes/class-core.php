@@ -109,4 +109,28 @@ class Core {
 
         update_user_meta($user_id, 'wp_bankid_personal_number', $personal_number);
     }
+
+    /**
+     * Authentication cookies are used to verify the identity of a user who logs in to the site.
+     * 
+     * Authentication cookies are set when a user logs in to the site, and are used to verify the identity of a user who logs in to the site.
+     * They are a guarantee that the user signed in to the site using Mobile BankID.
+     * The cookie itself is a nonce.
+     */
+    public function createAuthCookie($user_id) {
+        $personal_number = get_user_meta($user_id, 'wp_bankid_personal_number', true);
+        $nonce = wp_create_nonce('wp_bankid_auth_nonce_'. $personal_number);
+        setcookie('wp_bankid_auth_cookie', $nonce, time() + (86400), "/");
+    }
+    public function verifyAuthCookie() {
+        $personal_number = get_user_meta(get_current_user_id(), 'wp_bankid_personal_number', true);
+        if (!isset($_COOKIE['wp_bankid_auth_cookie'])) {
+            return false;
+        }
+        $nonce = $_COOKIE['wp_bankid_auth_cookie'];
+        if (!wp_verify_nonce($nonce, 'wp_bankid_auth_nonce_'. $personal_number)) {
+            return false;
+        }
+        return true;
+    }
 }
