@@ -43,6 +43,7 @@ if (!class_exists("wp_bankid")) {
             require_once WP_BANKID_PLUGIN_DIR . 'includes/wp-login/class-api.php';
             require_once WP_BANKID_PLUGIN_DIR . 'includes/wp-login/class-login.php';
             require_once WP_BANKID_PLUGIN_DIR . 'includes/admin/class-admin.php';
+            require_once WP_BANKID_PLUGIN_DIR . 'includes/integrations/load.php';
         }
 
         public function plugin_list_link($links) {
