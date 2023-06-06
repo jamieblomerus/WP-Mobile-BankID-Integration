@@ -1,6 +1,7 @@
 <?php
 namespace Webbstart\WP_BankID\Integrations\WooCommerce;
 use Webbstart\WP_BankID\Core;
+use Personnummer\Personnummer;
 
 new Settings;
 new Login;
@@ -81,16 +82,28 @@ class Checkout {
         add_action('woocommerce_after_checkout_validation', array($this, 'validate'),10,2);
     }
     public function checkout_block() {
-        if (Core::$instance->verifyAuthCookie()) {
+        if (Core::$instance->verifyAuthCookie() && get_option('wp_bankid_woocommerce_age_check', 0) <= 0) {
             return;
+        } else if (Core::$instance->verifyAuthCookie()) {
+            if ($this->age_check()) {
+                return;
+            } else {
+                wc_add_notice( sprintf( __( 'You must be over %s years old to make an order.', 'wp-bankid' ), get_option('wp_bankid_woocommerce_age_check') ), 'error' );
+                return;
+            }
         }
         ?>
         <div id="bankid-checkout-block" style="background: #c1ced9; border-radius: 10px; padding:15px;">
             <div class="woocommerce-billing-fields">
-                <h3>BankID Authentication is required</h3>
+                <h3><?php esc_html_e('Mobile BankID Authentication required', 'wp-bankid') ?></h3>
                 <p><?php esc_html_e("This site requires you to be authenticated through Mobile BankID to make an order.") ?></p>
-                <p><a href="#" id="bankid-login-button" class="button wp-element-button" style="text-align: center;"><?php esc_html_e('Login with BankID', 'wp-bankid')?></a></p><br>
-                <noscript><style>#bankid-login-button { display: none; height: 0; margin: 0; }</style></noscript>
+
+                <p><a href="#" id="bankid-login-button" class="button wp-element-button" style="text-align: center;"><?php esc_html_e('Login with BankID', 'wp-bankid')?></a></p>
+                <p><?php esc_html_e('If you do not have Mobile BankID, you can download it from your bank.', 'wp-bankid') ?></p>
+                <noscript>
+                    <p><?php esc_html_e('This feature requires JavaScript. Please enable it.', 'wp-bankid') ?></p>
+                    <style>#bankid-login-button { display: none; height: 0; margin: 0; }</style>
+                </noscript>
                 <?php
                 // Load scripts
                 $login = new \Webbstart\WP_BankID\WP_Login\Login;
@@ -100,7 +113,30 @@ class Checkout {
         </div>
         <?php
     }
+    public function age_check(): bool {
+        $age = get_option('wp_bankid_woocommerce_age_check', 0);
+        if ($age <= 0) {
+            return true;
+        }
+        $personnummer = get_user_meta(get_current_user_id(), 'wp_bankid_personal_number', true);
+        if (!$personnummer) {
+            return false;
+        }
+        $userage = (new Personnummer($personnummer))->getAge();
+        if ($userage < $age) {
+            return false;
+        }
+        return true;
+    }
     public function validate($data, $errors) {
-        
+        if (Core::$instance->verifyAuthCookie()) {
+            if ($this->age_check()) {
+                return;
+            } else {
+                $errors->add('bankid_error', sprintf( __( 'You must be over %s years old to make an order.', 'wp-bankid' ), get_option('wp_bankid_woocommerce_age_check') ));
+                return;
+            }
+        }
+        $errors->add('bankid_error', __('You must be authenticated through Mobile BankID to make an order.', 'wp-bankid'));
     }
 }

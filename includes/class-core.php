@@ -14,6 +14,7 @@ class Core {
         }
         self::$instance = $this;
         add_action('init', array($this, 'init'));
+        add_action('wp_logout', array($this, 'deleteAuthCookie'));
     }
     public function init() {
         if (get_option('wp_bankid_endpoint') && get_option('wp_bankid_certificate') && get_option('wp_bankid_password')) {
@@ -115,22 +116,61 @@ class Core {
      * 
      * Authentication cookies are set when a user logs in to the site, and are used to verify the identity of a user who logs in to the site.
      * They are a guarantee that the user signed in to the site using Mobile BankID.
-     * The cookie itself is a nonce.
+     * It shall be a custom PHP SESSION.
      */
     public function createAuthCookie($user_id) {
+        // START SESSION
+        if (!session_id()) {
+            session_start();
+        }
         $personal_number = get_user_meta($user_id, 'wp_bankid_personal_number', true);
-        $nonce = wp_create_nonce('wp_bankid_auth_nonce_'. $personal_number);
-        setcookie('wp_bankid_auth_cookie', $nonce, time() + (86400), "/");
+        if (!$personal_number) {
+            return;
+        }
+        $auth_cookie = [
+            "user_id" => $user_id,
+            "personal_number" => $personal_number,
+            "time_created" => time()
+        ];
+        $_SESSION['wp_bankid_auth_cookie'] = $auth_cookie;
     }
     public function verifyAuthCookie() {
-        $personal_number = get_user_meta(get_current_user_id(), 'wp_bankid_personal_number', true);
-        if (!isset($_COOKIE['wp_bankid_auth_cookie'])) {
+        // START SESSION
+        if (!session_id()) {
+            session_start();
+        }
+        if (!isset($_SESSION['wp_bankid_auth_cookie'])) {
             return false;
         }
-        $nonce = $_COOKIE['wp_bankid_auth_cookie'];
-        if (!wp_verify_nonce($nonce, 'wp_bankid_auth_nonce_'. $personal_number)) {
+        $auth_cookie = $_SESSION['wp_bankid_auth_cookie'];
+        if (!isset($auth_cookie['user_id']) || !isset($auth_cookie['personal_number']) || !isset($auth_cookie['time_created'])) {
+            return false;
+        }
+        $user_id = $auth_cookie['user_id'];
+        $personal_number = $auth_cookie['personal_number'];
+        $time_created = $auth_cookie['time_created'];
+        // Check if user is same.
+        if (get_current_user_id() !== $user_id) {
+            return false;
+        }
+        // Check if personal number is correct.
+        if (get_user_meta($user_id, 'wp_bankid_personal_number', true) !== $personal_number) {
+            return false;
+        }
+        // Check if time created is not older than 24 hours.
+        if ($time_created < time() - 86400) {
             return false;
         }
         return true;
+    }
+    public function deleteAuthCookie() {
+        // START SESSION
+        if (!session_id()) {
+            session_start();
+        }
+        try {
+            unset($_SESSION['wp_bankid_auth_cookie']);
+        } catch (\Throwable $th) {
+        }
     }
 }

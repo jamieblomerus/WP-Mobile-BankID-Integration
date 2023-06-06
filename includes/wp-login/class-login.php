@@ -9,12 +9,15 @@ class Login {
             add_action('login_form', array($this, 'login_button'), 40);
         }
     }
-    public function login_button(string $redirect = "/wp-admin/") {
-        echo '<p><a href="#" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center;">'.esc_html__('Login with BankID', 'wp-bankid').'</a></p><br>';
+    public function login_button($redirect = null) {
+        if ($redirect == null) {
+            $redirect = "/wp-admin/";
+        }
+        echo '<p><a href="#" target="_self" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center;">'.esc_html__('Login with BankID', 'wp-bankid').'</a></p><br>';
         echo '<noscript><style>#bankid-login-button { display: none; height: 0; margin: 0; }</style></noscript>';
         $this->load_scripts($redirect);
     }
-    public function load_scripts(string $redirect) {
+    public function load_scripts(string $redirect) { // If the messages are updated, remember to update it in woocommerce.php as well
         wp_register_script('wp-bankid-login', WP_BANKID_PLUGIN_URL . 'assets/js/login.js', array('jquery'), WP_BANKID_VERSION, true);
         wp_enqueue_script('wp-bankid-login');
         wp_enqueue_script('jquery');
