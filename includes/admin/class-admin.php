@@ -105,6 +105,11 @@ class Admin {
         </select>
         <p class="description"><?php esc_html_e('This setting does not affect, nor is affected by, the native "Allow registration" setting.', 'wp-bankid'); ?></p>
     </div>
+    <div class="form-group">
+        <label for="wp-bankid-terms"><?php esc_html_e('Terms to show with login (Supports HTML)', 'wp-bankid'); ?></label>
+        <textarea name="wp-bankid-terms" id="wp-bankid-terms" rows="5"><?php echo esc_html(get_option('wp_bankid_terms', _("By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy."))); ?></textarea>
+        <p class="description"><?php esc_html_e('Following HTML elements are supported: a, br, em, strong and i. All others will be escaped.', 'wp-bankid'); ?></p>
+    </div>
 </form>
 <button class="button button-primary" onclick="settingsSubmit()" id="wp-bankid-save"><?php esc_html_e('Save changes', 'wp-bankid'); ?></button>
 <style>
@@ -127,7 +132,8 @@ class Admin {
         margin-bottom: 0.5rem;
     }
     .form-group input[type="text"],
-    .form-group input[type="password"] {
+    .form-group input[type="password"],
+    .form-group textarea {
         width: 100%;
         padding: 0.5rem;
         border: 1px solid #ddd;
@@ -138,6 +144,7 @@ class Admin {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
+        resize: none;
     }
     .form-group select {
         width: 100%;
@@ -158,6 +165,7 @@ class Admin {
         document.getElementById("wp-bankid-save").disabled = true;
         var wplogin = document.getElementById("wp-bankid-wplogin").value;
         var registration = document.getElementById("wp-bankid-registration").value;
+        var terms = document.getElementById("wp-bankid-terms").value;
         
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "<?php echo esc_url(rest_url('wp-bankid/v1/settings')). '/settings'; ?>", true);
@@ -179,6 +187,7 @@ class Admin {
         formdata = new FormData();
         formdata.append("wplogin", wplogin);
         formdata.append("registration", registration);
+        formdata.append("terms", terms);
 
         xhr.send(formdata);
     }

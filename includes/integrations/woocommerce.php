@@ -68,6 +68,7 @@ class Login extends \Webbstart\WP_BankID\WP_Login\Login {
         if (get_option('wp_bankid_woocommerce_login') == "yes" && (get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint'))) {
             add_action('woocommerce_login_form_end', function() {
                 $this->login_button("/my-account");
+                $this->terms(0.9);
             });
         }
     }

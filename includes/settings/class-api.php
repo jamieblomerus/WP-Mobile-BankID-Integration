@@ -115,5 +115,6 @@ class API {
         // Update the WP options.
         update_option('wp_bankid_wplogin', $_POST["wplogin"]);
         update_option('wp_bankid_registration', $_POST["registration"]);
+        update_option('wp_bankid_terms', $_POST["terms"]);
     }
 }
