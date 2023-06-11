@@ -107,7 +107,7 @@ class Admin {
     </div>
     <div class="form-group">
         <label for="wp-bankid-terms"><?php esc_html_e('Terms to show with login (Supports HTML)', 'wp-bankid'); ?></label>
-        <textarea name="wp-bankid-terms" id="wp-bankid-terms" rows="5"><?php echo esc_html(get_option('wp_bankid_terms', _("By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy."))); ?></textarea>
+        <textarea name="wp-bankid-terms" id="wp-bankid-terms" rows="5"><?php echo stripslashes(esc_html(get_option('wp_bankid_terms', _("By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.")))); ?></textarea>
         <p class="description"><?php esc_html_e('Following HTML elements are supported: a, br, em, strong and i. All others will be escaped.', 'wp-bankid'); ?></p>
     </div>
 </form>
