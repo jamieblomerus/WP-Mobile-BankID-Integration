@@ -21,6 +21,9 @@ class Login {
         $this->load_scripts($redirect);
     }
     public function terms(float $font_size = 0.7) {
+        if (get_option('wp_bankid_terms') == "") {
+            return;
+        }
         ?>
         <p class="bankid-terms">
             <?php
