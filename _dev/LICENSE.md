@@ -35,4 +35,4 @@ NOW, THEREFORE, in consideration of the mutual promises and covenants contained 
     9. GENERAL PROVISIONS
         This Agreement constitutes the entire agreement between the parties and supersedes all prior or contemporaneous agreements or understandings, whether written or oral, relating to the subject matter of this Agreement. This Agreement may not be amended or modified except in writing signed by both parties. This Agreement shall be governed by and construed in accordance with the laws of [STATE], without giving effect to any choice or conflict of law provision or rule. Any legal suit, action or proceeding arising out of or related to this Agreement shall be instituted in the federal or state courts located in [CITY, STATE], and each party irrevocably submits to the jurisdiction of such courts in any such suit, action or proceeding.
 
-IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first above written.
+The parties have executed this Agreement as of the date the plugin is first activated.
