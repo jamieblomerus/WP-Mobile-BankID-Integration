@@ -6,6 +6,7 @@ new Admin;
 class Admin {
     private static array $tabs = [];
     public function __construct() {
+        add_action('admin_init', [$this, 'redirect_to_setup_if_incomplete']);
         add_action('admin_menu', array($this, 'register_page'));
 
         // Register tabs
@@ -42,6 +43,16 @@ class Admin {
         }
 
         unset(self::$tabs[$slug]);
+    }
+
+    function redirect_to_setup_if_incomplete() {
+        if (get_admin_page_parent() == 'wp-bankid') {
+            if (!(get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint'))) {
+                // Redirect to setup wizard
+                wp_redirect(home_url().'/wp-admin/admin.php?page=wp-bankid-setup');
+                exit();
+            }
+        }
     }
 
     public function page() {
