@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP BankID by Webbstart
-Description: This plugin allows you to integrate BankID with your WordPress site.
+Description: A plugin that allows you to integrate Mobile BankID with your WordPress site.
 Version: Indev
 Author: Webbstart
 Author URI: https://webbstart.nu/
