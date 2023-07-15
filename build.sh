@@ -39,8 +39,8 @@ if [ $1 == "production" ]
 then
   echo "Building production version $2..."
   cp -r LICENSE.md build/LICENSE.md
-  sed -i 's/Version: .*/Version: '$2'/g' build/wp-bankid.php
-  sed -i "s/define( 'WP_BANKID_VERSION', '.*' );/define( 'WP_BANKID_VERSION', '$2' );/g" build/wp-bankid.php
+  gsed -i 's/Version: .*/Version: '$2'/g' build/wp-bankid.php
+  gsed -i "s/define( 'WP_BANKID_VERSION', '.*' );/define( 'WP_BANKID_VERSION', '$2' );/g" build/wp-bankid.php
   #Minimize CSS
   cp -r build/assets/css/setup.css build/assets/css/setup.full.css
   cleancss -o build/assets/css/setup.css build/assets/css/setup.css
@@ -56,7 +56,7 @@ fi
 if [ $1 == "dev" ]
 then
   echo "Building development version..."
-  sed -i 's/Plugin Name: WP BankID by Webbstart/Plugin Name: WP BankID DEV/g' build/wp-bankid.php
+  gsed -i 's/Plugin Name: WP BankID by Webbstart/Plugin Name: WP BankID DEV/g' build/wp-bankid.php
   cp -r _dev/LICENSE.md build/LICENSE.md
 fi
 
