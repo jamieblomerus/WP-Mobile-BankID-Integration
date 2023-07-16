@@ -56,5 +56,5 @@ $step = intval($step);
         }
         ?>
     </div>
-    <p class="footer-info"><?php esc_html_e('WP BankID version: ', 'mobile-bankid-integration'); ?> <?php echo esc_html(MOBILE_BANKID_INTEGRATION_VERSION); ?></p>
+    <p class="footer-info"><?php esc_html_e('Mobile BankID Integration version: ', 'mobile-bankid-integration'); ?> <?php echo esc_html(MOBILE_BANKID_INTEGRATION_VERSION); ?></p>
 </div>

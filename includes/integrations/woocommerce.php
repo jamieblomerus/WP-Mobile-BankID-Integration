@@ -14,7 +14,7 @@ final class Settings {
     }
 
     public function addSettingsSection( $sections ) {
-        $sections['mobile_bankid_integration'] = __( 'WP BankID', 'mobile-bankid-integration' );
+        $sections['mobile_bankid_integration'] = __( 'Mobile BankID Integration', 'mobile-bankid-integration' );
         return $sections;
     }
 
@@ -22,7 +22,7 @@ final class Settings {
         if ($current_section == 'mobile_bankid_integration') {
             $settings_mobile_bankid_integration = array();
             $settings_mobile_bankid_integration[] = array(
-                'name' => __( 'WP BankID', 'mobile-bankid-integration' ),
+                'name' => __( 'Mobile BankID Integration', 'mobile-bankid-integration' ),
                 'type' => 'title',
                 'desc' => '',
                 'id' => 'mobile_bankid_integration'

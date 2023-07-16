@@ -13,8 +13,8 @@ class Setup {
         // Register the wizard page as submenu
         add_submenu_page(
             'non-existent-page-slug',
-            esc_html__('WP BankID Setup', 'mobile-bankid-integration'),
-            esc_html__('WP BankID Setup', 'mobile-bankid-integration'),
+            esc_html__('Mobile BankID Integration Setup', 'mobile-bankid-integration'),
+            esc_html__('Mobile BankID Integration Setup', 'mobile-bankid-integration'),
             'manage_options',
             'mobile-bankid-integration-setup',
             array($this, 'wizard_page')

@@ -16,8 +16,8 @@ class Admin {
 
     public function register_page() {
         add_menu_page(
-            __( 'WP BankID by Webbstart', 'mobile-bankid-integration' ),
-            __( 'WP BankID by Webbstart', 'mobile-bankid-integration' ),
+            __( 'Mobile BankID Integration', 'mobile-bankid-integration' ),
+            __( 'Mobile BankID Integration', 'mobile-bankid-integration' ),
             'manage_options',
             'mobile-bankid-integration',
             [$this, 'page'],
@@ -215,7 +215,7 @@ class Admin {
                 </div>
                 <div class="mobile-bankid-integration-integration__content">
                     <h2 class="mobile-bankid-integration-integration__title">WooCommerce</h2>
-                    <p class="mobile-bankid-integration-integration__description">WooCommerce is the most popular e-commerce platform for WordPress. With WP BankID by Webbstart you can perform age checks using BankID.</p>
+                    <p class="mobile-bankid-integration-integration__description">WooCommerce is the most popular e-commerce platform for WordPress. With Mobile BankID Integration you can perform age checks using Mobile BankID.</p>
                     <?php if (is_plugin_active('woocommerce/woocommerce.php')) : ?>
                         <a href="<?php echo esc_url(admin_url('admin.php?page=wc-settings&tab=advanced&section=mobile_bankid_integration')); ?>" class="button button-primary"><?php esc_html_e('Go to settings', 'mobile-bankid-integration'); ?></a>
                     <?php elseif (file_exists(WP_PLUGIN_DIR . '/woocommerce/woocommerce.php')):
