@@ -1,19 +1,19 @@
 <?php
-namespace Webbstart\WP_BankID;
+namespace Mobile_BankID_Integration;
 
 new Activation;
 
 class Activation {
     function __construct() {
-        register_activation_hook(WP_BANKID_PLUGIN_FILE, array($this, 'activation'));
-        register_deactivation_hook(WP_BANKID_PLUGIN_FILE, array($this, 'deactivation'));
+        register_activation_hook(MOBILE_BANKID_INTEGRATION_PLUGIN_FILE, array($this, 'activation'));
+        register_deactivation_hook(MOBILE_BANKID_INTEGRATION_PLUGIN_FILE, array($this, 'deactivation'));
     }
 
     public function activation() {
         $this->checkrequirements();
         // Create DB table for storing auth responses.
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wp_bankid_auth_responses';
+        $table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
         $charset_collate = $wpdb->get_charset_collate();
         $sql = "CREATE TABLE $table_name (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -29,7 +29,7 @@ class Activation {
     public function deactivation() {
         // Delete DB table.
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wp_bankid_auth_responses';
+        $table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
         $sql = "DROP TABLE $table_name";
         $wpdb->query($sql);
 

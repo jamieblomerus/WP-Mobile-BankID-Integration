@@ -1,6 +1,6 @@
 <?php
-namespace Webbstart\WP_BankID\Integrations\WooCommerce;
-use Webbstart\WP_BankID\Core;
+namespace Mobile_BankID_Integration\Integrations\WooCommerce;
+use \Mobile_BankID_Integration\Core;
 use Personnummer\Personnummer;
 
 new Settings;
@@ -14,58 +14,58 @@ final class Settings {
     }
 
     public function addSettingsSection( $sections ) {
-        $sections['wp_bankid'] = __( 'WP BankID', 'wp-bankid' );
+        $sections['mobile_bankid_integration'] = __( 'WP BankID', 'wp-bankid' );
         return $sections;
     }
 
     public function addSettings($settings, $current_section) {
-        if ($current_section == 'wp_bankid') {
-            $settings_wp_bankid = array();
-            $settings_wp_bankid[] = array(
+        if ($current_section == 'mobile_bankid_integration') {
+            $settings_mobile_bankid_integration = array();
+            $settings_mobile_bankid_integration[] = array(
                 'name' => __( 'WP BankID', 'wp-bankid' ),
                 'type' => 'title',
                 'desc' => '',
-                'id' => 'wp_bankid'
+                'id' => 'mobile_bankid_integration'
             );
             /* Login using BankID */
-            $settings_wp_bankid[] = array(
+            $settings_mobile_bankid_integration[] = array(
                 'name' => __( 'Login using BankID', 'wp-bankid' ),
                 'desc' => __( 'Let customers login using Mobile BankID on My Account page.', 'wp-bankid' ),
-                'id' => 'wp_bankid_woocommerce_login',
+                'id' => 'mobile_bankid_integration_woocommerce_login',
                 'type' => 'checkbox',
                 'css' => 'min-width:300px;',
                 'default' => 'no'
             );
             /* Require customer to be logged in with BankID at checkout */
-            $settings_wp_bankid[] = array(
+            $settings_mobile_bankid_integration[] = array(
                 'name' => __( 'Require users to be authenticated through Mobile BankID at checkout', 'wp-bankid' ),
                 'desc' => __( 'Require customer to be logged in with BankID at checkout. This helps to follow the law regarding sale of age-restricted products.', 'wp-bankid' ),
-                'id' => 'wp_bankid_woocommerce_checkout_require_bankid',
+                'id' => 'mobile_bankid_integration_woocommerce_checkout_require_bankid',
                 'type' => 'checkbox',
                 'css' => 'min-width:300px;',
                 'default' => 'no'
             );
             /* Require customer to be over a certain age at checkout */
-            $settings_wp_bankid[] = array(
+            $settings_mobile_bankid_integration[] = array(
                 'name' => __( 'Require users to be over a certain age at checkout (0 to disable)', 'wp-bankid' ),
                 'desc' => __( 'Require customer to be over a certain age at checkout. This helps to follow the law regarding sale of age-restricted products.<br>This requires that users are forced to sign in with BankID at checkout.', 'wp-bankid' ),
-                'id' => 'wp_bankid_woocommerce_age_check',
+                'id' => 'mobile_bankid_integration_woocommerce_age_check',
                 'type' => 'number',
                 'css' => 'min-width:300px;',
                 'default' => '0'
             );
 
-            $settings_wp_bankid[] = array( 'type' => 'sectionend', 'id' => 'wcslider' );
-            return $settings_wp_bankid;
+            $settings_mobile_bankid_integration[] = array( 'type' => 'sectionend', 'id' => 'wcslider' );
+            return $settings_mobile_bankid_integration;
         } else {
             return $settings;
         }
     }
 }
 
-class Login extends \Webbstart\WP_BankID\WP_Login\Login {
+class Login extends \Mobile_BankID_Integration\WP_Login\Login {
     function __construct() {
-        if (get_option('wp_bankid_woocommerce_login') == "yes" && (get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint'))) {
+        if (get_option('mobile_bankid_integration_woocommerce_login') == "yes" && (get_option('mobile_bankid_integration_certificate') && get_option('mobile_bankid_integration_password') && get_option('mobile_bankid_integration_endpoint'))) {
             add_action('woocommerce_login_form_end', function() {
                 $this->login_button("/my-account");
                 $this->terms(0.9);
@@ -76,20 +76,20 @@ class Login extends \Webbstart\WP_BankID\WP_Login\Login {
 
 class Checkout {
     public function __construct() {
-        if (get_option('wp_bankid_woocommerce_checkout_require_bankid') != "yes") {
+        if (get_option('mobile_bankid_integration_woocommerce_checkout_require_bankid') != "yes") {
             return;
         }
         add_action('woocommerce_checkout_before_customer_details', array($this, 'checkout_block'));
         add_action('woocommerce_after_checkout_validation', array($this, 'validate'),10,2);
     }
     public function checkout_block() {
-        if (Core::$instance->verifyAuthCookie() && get_option('wp_bankid_woocommerce_age_check', 0) <= 0) {
+        if (Core::$instance->verifyAuthCookie() && get_option('mobile_bankid_integration_woocommerce_age_check', 0) <= 0) {
             return;
         } else if (Core::$instance->verifyAuthCookie()) {
             if ($this->age_check()) {
                 return;
             } else {
-                wc_add_notice( sprintf( __( 'You must be over %s years old to make an order.', 'wp-bankid' ), get_option('wp_bankid_woocommerce_age_check') ), 'error' );
+                wc_add_notice( sprintf( __( 'You must be over %s years old to make an order.', 'wp-bankid' ), get_option('mobile_bankid_integration_woocommerce_age_check') ), 'error' );
                 return;
             }
         }
@@ -107,7 +107,7 @@ class Checkout {
                 </noscript>
                 <?php
                 // Load scripts
-                $login = new \Webbstart\WP_BankID\WP_Login\Login;
+                $login = new \Mobile_BankID_Integration\WP_Login\Login;
                 $login->load_scripts("/checkout");
                 ?>
             </div>
@@ -115,11 +115,11 @@ class Checkout {
         <?php
     }
     public function age_check(): bool {
-        $age = get_option('wp_bankid_woocommerce_age_check', 0);
+        $age = get_option('mobile_bankid_integration_woocommerce_age_check', 0);
         if ($age <= 0) {
             return true;
         }
-        $personnummer = get_user_meta(get_current_user_id(), 'wp_bankid_personal_number', true);
+        $personnummer = get_user_meta(get_current_user_id(), 'mobile_bankid_integration_personal_number', true);
         if (!$personnummer) {
             return false;
         }
@@ -134,7 +134,7 @@ class Checkout {
             if ($this->age_check()) {
                 return;
             } else {
-                $errors->add('bankid_error', sprintf( __( 'You must be over %s years old to make an order.', 'wp-bankid' ), get_option('wp_bankid_woocommerce_age_check') ));
+                $errors->add('bankid_error', sprintf( __( 'You must be over %s years old to make an order.', 'wp-bankid' ), get_option('mobile_bankid_integration_woocommerce_age_check') ));
                 return;
             }
         }

@@ -1,5 +1,5 @@
 <?php
-namespace Webbstart\WP_BankID;
+namespace Mobile_BankID_Integration;
 
 use Dimafe6\BankID\Service\BankIDService;
 
@@ -17,18 +17,18 @@ class Core {
         add_action('wp_logout', array($this, 'deleteAuthCookie'));
     }
     public function init() {
-        if (get_option('wp_bankid_endpoint') && get_option('wp_bankid_certificate') && get_option('wp_bankid_password')) {
+        if (get_option('mobile_bankid_integration_endpoint') && get_option('mobile_bankid_integration_certificate') && get_option('mobile_bankid_integration_password')) {
             $this->createBankIDService();
-            do_action('wp_bankid_init');
+            do_action('mobile_bankid_integration_init');
         }
     }
     private function createBankIDService() {
         $this->bankIDService = new BankIDService(
-            get_option('wp_bankid_endpoint'),
+            get_option('mobile_bankid_integration_endpoint'),
             $_SERVER["REMOTE_ADDR"],
             [
                 'verify' => false,
-                'cert'   => [get_option('wp_bankid_certificate'), get_option('wp_bankid_password')],
+                'cert'   => [get_option('mobile_bankid_integration_certificate'), get_option('mobile_bankid_integration_password')],
             ]
         );
     }
@@ -53,7 +53,7 @@ class Core {
 
     public function getAuthResponseFromDB($orderRef) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wp_bankid_auth_responses';
+        $table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
         $response = $wpdb->get_row("SELECT * FROM $table_name WHERE orderRef = '$orderRef'");
         if (!$response) {
             return null;
@@ -67,7 +67,7 @@ class Core {
 
     private function saveAuthResponseToDB($orderRef, $response) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wp_bankid_auth_responses';
+        $table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
         $wpdb->insert(
             $table_name,
             array(
@@ -80,7 +80,7 @@ class Core {
 
     public function deleteAuthResponseFromDB($orderRef) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wp_bankid_auth_responses';
+        $table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
         $wpdb->delete(
             $table_name,
             array(
@@ -92,7 +92,7 @@ class Core {
     public function getUserIdFromPersonalNumber($personal_number) {
         // Get user by personal number from User Meta.
         $user_query = new \WP_User_Query(array(
-            'meta_key' => 'wp_bankid_personal_number',
+            'meta_key' => 'mobile_bankid_integration_personal_number',
             'meta_value' => $personal_number,
         ));
         $users = $user_query->get_results();
@@ -108,7 +108,7 @@ class Core {
             return;
         }
 
-        update_user_meta($user_id, 'wp_bankid_personal_number', $personal_number);
+        update_user_meta($user_id, 'mobile_bankid_integration_personal_number', $personal_number);
     }
 
     /**
@@ -123,7 +123,7 @@ class Core {
         if (!session_id()) {
             session_start();
         }
-        $personal_number = get_user_meta($user_id, 'wp_bankid_personal_number', true);
+        $personal_number = get_user_meta($user_id, 'mobile_bankid_integration_personal_number', true);
         if (!$personal_number) {
             return;
         }
@@ -132,17 +132,17 @@ class Core {
             "personal_number" => $personal_number,
             "time_created" => time()
         ];
-        $_SESSION['wp_bankid_auth_cookie'] = $auth_cookie;
+        $_SESSION['mobile_bankid_integration_auth_cookie'] = $auth_cookie;
     }
     public function verifyAuthCookie() {
         // START SESSION
         if (!session_id()) {
             session_start();
         }
-        if (!isset($_SESSION['wp_bankid_auth_cookie'])) {
+        if (!isset($_SESSION['mobile_bankid_integration_auth_cookie'])) {
             return false;
         }
-        $auth_cookie = $_SESSION['wp_bankid_auth_cookie'];
+        $auth_cookie = $_SESSION['mobile_bankid_integration_auth_cookie'];
         if (!isset($auth_cookie['user_id']) || !isset($auth_cookie['personal_number']) || !isset($auth_cookie['time_created'])) {
             return false;
         }
@@ -154,7 +154,7 @@ class Core {
             return false;
         }
         // Check if personal number is correct.
-        if (get_user_meta($user_id, 'wp_bankid_personal_number', true) !== $personal_number) {
+        if (get_user_meta($user_id, 'mobile_bankid_integration_personal_number', true) !== $personal_number) {
             return false;
         }
         // Check if time created is not older than 24 hours.
@@ -169,7 +169,7 @@ class Core {
             session_start();
         }
         try {
-            unset($_SESSION['wp_bankid_auth_cookie']);
+            unset($_SESSION['mobile_bankid_integration_auth_cookie']);
         } catch (\Throwable $th) {
         }
     }

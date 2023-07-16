@@ -1,11 +1,11 @@
 <?php
-namespace Webbstart\WP_BankID\WP_Login;
+namespace Mobile_BankID_Integration\WP_Login;
 
 new Login;
 
 class Login {
     public function __construct() {
-        if (get_option('wp_bankid_wplogin') == "as_alternative" && (get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint'))) {
+        if (get_option('mobile_bankid_integration_wplogin') == "as_alternative" && (get_option('mobile_bankid_integration_certificate') && get_option('mobile_bankid_integration_password') && get_option('mobile_bankid_integration_endpoint'))) {
             add_action('login_form', array($this, 'login_button'), 40);
             add_action('login_footer', function(){
                 $this->terms();
@@ -21,14 +21,14 @@ class Login {
         $this->load_scripts($redirect);
     }
     public function terms(float $font_size = 0.7) {
-        if (get_option('wp_bankid_terms') == "") {
+        if (get_option('mobile_bankid_integration_terms') == "") {
             return;
         }
         ?>
         <p class="bankid-terms">
             <?php
             echo wp_kses(
-                get_option('wp_bankid_terms', esc_html__("By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.")),
+                get_option('mobile_bankid_integration_terms', esc_html__("By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.")),
                 array(
                     'a'      => array(
                         'href'  => array(),
@@ -53,10 +53,10 @@ class Login {
         <?php
     }
     public function load_scripts(string $redirect) { // If the messages are updated, remember to update it in woocommerce.php as well
-        wp_register_script('wp-bankid-login', WP_BANKID_PLUGIN_URL . 'assets/js/login.js', array('jquery'), WP_BANKID_VERSION, true);
+        wp_register_script('wp-bankid-login', MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/js/login.js', array('jquery'), MOBILE_BANKID_INTEGRATION_VERSION, true);
         wp_enqueue_script('wp-bankid-login');
         wp_enqueue_script('jquery');
-        wp_localize_script('wp-bankid-login', 'wp_bankid_login_localization', [
+        wp_localize_script('wp-bankid-login', 'mobile_bankid_integration_login_localization', [
             'title' => esc_html__('Login with BankID', 'wp-bankid'),
             'qr_instructions' => esc_html__('Scan the QR code with your Mobile BankID app.', 'wp-bankid'),
             'qr_alt' => esc_html__('QR code', 'wp-bankid'),
@@ -74,6 +74,6 @@ class Login {
             'hintcode_startFailed' => esc_html__("Failed to scan the QR code.", 'wp-bankid'),
             'hintcode_certificateErr' => esc_html__('The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank.', 'wp-bankid'),
         ]);
-        wp_add_inline_script('wp-bankid-login', 'var wp_bankid_rest_api = "' . rest_url('wp-bankid/v1/login') . '"; var wp_bankid_redirect_url = "' . $redirect . '";', 'before');
+        wp_add_inline_script('wp-bankid-login', 'var mobile_bankid_integration_rest_api = "' . rest_url('wp-bankid/v1/login') . '"; var mobile_bankid_integration_redirect_url = "' . $redirect . '";', 'before');
     }
 }

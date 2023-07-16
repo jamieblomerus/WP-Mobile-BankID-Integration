@@ -1,5 +1,5 @@
 <?php
-namespace Webbstart\WP_BankID\Settings;
+namespace Mobile_BankID_Integration\Settings;
 use Personnummer\Personnummer;
 
 new UserSettings;
@@ -18,7 +18,7 @@ class UserSettings {
         <tr>
         <th><label for="personal_number"><? esc_html_e('Personal number (12 digits, no hyphen)', 'wp-bankid') ?></label></th>
         <td>
-        <input type="text" name="personal_number" id="personal_number" <? if (!current_user_can('administrator')) { echo "disabled"; } ?> value="<? echo esc_attr(get_user_meta($user->ID, 'wp_bankid_personal_number', true)) ?>" placeholder="<? /* translators: Placeholder personal number. */ esc_attr_e('YYYYMMDDXXXX', 'wp-bankid') ?>" class="regular-text" />
+        <input type="text" name="personal_number" id="personal_number" <? if (!current_user_can('administrator')) { echo "disabled"; } ?> value="<? echo esc_attr(get_user_meta($user->ID, 'mobile_bankid_integration_personal_number', true)) ?>" placeholder="<? /* translators: Placeholder personal number. */ esc_attr_e('YYYYMMDDXXXX', 'wp-bankid') ?>" class="regular-text" />
         </td>
         </tr>
         </table>
@@ -30,7 +30,7 @@ class UserSettings {
             if (preg_match('/^[0-9]{12}$/', $_POST['personal_number']) && Personnummer::valid($_POST['personal_number'])) {
                 // Check if user with this personal number already exists.
                 $check = get_users(array(
-                    'meta_key' => 'wp_bankid_personal_number',
+                    'meta_key' => 'mobile_bankid_integration_personal_number',
                     'meta_value' => $_POST['personal_number'],
                     'number' => 1,
                     'count_total' => false,
@@ -40,7 +40,7 @@ class UserSettings {
                     return;
                 }
 
-                update_user_meta($user_id, 'wp_bankid_personal_number', $_POST['personal_number']);
+                update_user_meta($user_id, 'mobile_bankid_integration_personal_number', $_POST['personal_number']);
             } elseif (strlen($_POST['personal_number']) < 1) {
                 try {
                     delete_user_meta($user_id, 'personal_number');

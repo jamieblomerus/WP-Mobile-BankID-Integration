@@ -1,5 +1,5 @@
 <?php
-namespace Webbstart\WP_BankID\Settings;
+namespace Mobile_BankID_Integration\Settings;
 
 new API;
 
@@ -66,24 +66,24 @@ class API {
         //TODO: Check that password is valid, test it against the certificate
 
         // Update the WP options.
-        update_option('wp_bankid_certificate', $_POST["certificate"]);
-        update_option('wp_bankid_endpoint', $_POST["endpoint"]);
-        update_option('wp_bankid_password', $_POST["password"]);
+        update_option('mobile_bankid_integration_certificate', $_POST["certificate"]);
+        update_option('mobile_bankid_integration_endpoint', $_POST["endpoint"]);
+        update_option('mobile_bankid_integration_password', $_POST["password"]);
 
         return true;
     }
 
     public function auto_configure_test_env() {
         // Check if certificate exists
-        $certificate_dir = WP_BANKID_PLUGIN_DIR . 'assets/certs/';
+        $certificate_dir = MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'assets/certs/';
         if (!file_exists($certificate_dir . 'testenv.p12')) {
             return new \WP_Error('certificate_does_not_exist', esc_html__('Certificate does not exist.', 'wp-bankid'), array('status' => 400));
         }
 
         // Update the WP options.
-        update_option('wp_bankid_certificate', $certificate_dir . 'testenv.p12');
-        update_option('wp_bankid_endpoint', 'https://appapi2.test.bankid.com/rp/v5.1/');
-        update_option('wp_bankid_password', 'qwerty123');
+        update_option('mobile_bankid_integration_certificate', $certificate_dir . 'testenv.p12');
+        update_option('mobile_bankid_integration_endpoint', 'https://appapi2.test.bankid.com/rp/v5.1/');
+        update_option('mobile_bankid_integration_password', 'qwerty123');
 
         return true;
     }
@@ -98,8 +98,8 @@ class API {
         }
 
         // Update the WP options.
-        update_option('wp_bankid_wplogin', $_POST["wplogin"]);
-        update_option('wp_bankid_registration', $_POST["registration"]);
+        update_option('mobile_bankid_integration_wplogin', $_POST["wplogin"]);
+        update_option('mobile_bankid_integration_registration', $_POST["registration"]);
         return true;
     }
 
@@ -113,8 +113,8 @@ class API {
         }
 
         // Update the WP options.
-        update_option('wp_bankid_wplogin', $_POST["wplogin"]);
-        update_option('wp_bankid_registration', $_POST["registration"]);
-        update_option('wp_bankid_terms', $_POST["terms"]);
+        update_option('mobile_bankid_integration_wplogin', $_POST["wplogin"]);
+        update_option('mobile_bankid_integration_registration', $_POST["registration"]);
+        update_option('mobile_bankid_integration_terms', $_POST["terms"]);
     }
 }

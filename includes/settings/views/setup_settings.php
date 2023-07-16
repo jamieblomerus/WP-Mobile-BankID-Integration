@@ -5,15 +5,15 @@
     <div class="form-group">
         <label for="wp-bankid-wplogin"><?php esc_html_e('Show BankID on WordPress login page (wp-login.php)', 'wp-bankid'); ?></label>
         <select name="wp-bankid-wplogin" id="wp-bankid-wplogin">
-            <option value="as_alternative" <?php if (get_option('wp_bankid_wplogin') == "as_alternative") { echo 'selected'; } ?>><?php esc_html_e('Show as alternative to traditional login', 'wp-bankid'); ?></option>
-            <option value="hide" <?php if (get_option('wp_bankid_wplogin') == "hide") { echo 'selected'; } ?>><?php esc_html_e('Do not show at all', 'wp-bankid'); ?></option>
+            <option value="as_alternative" <?php if (get_option('mobile_bankid_integration_wplogin') == "as_alternative") { echo 'selected'; } ?>><?php esc_html_e('Show as alternative to traditional login', 'wp-bankid'); ?></option>
+            <option value="hide" <?php if (get_option('mobile_bankid_integration_wplogin') == "hide") { echo 'selected'; } ?>><?php esc_html_e('Do not show at all', 'wp-bankid'); ?></option>
         </select>
     </div>
     <div class="form-group">
         <label for="wp-bankid-registration"><?php esc_html_e('Allow registration with BankID', 'wp-bankid'); ?></label>
         <select name="wp-bankid-registration" id="wp-bankid-registration">
-            <option value="yes" <?php if (get_option('wp_bankid_registration') == "yes") { echo 'selected'; } ?>><?php esc_html_e('Yes', 'wp-bankid'); ?></option>
-            <option value="no" <?php if (get_option('wp_bankid_registration') == "no") { echo 'selected'; } ?>><?php esc_html_e('No', 'wp-bankid'); ?></option>
+            <option value="yes" <?php if (get_option('mobile_bankid_integration_registration') == "yes") { echo 'selected'; } ?>><?php esc_html_e('Yes', 'wp-bankid'); ?></option>
+            <option value="no" <?php if (get_option('mobile_bankid_integration_registration') == "no") { echo 'selected'; } ?>><?php esc_html_e('No', 'wp-bankid'); ?></option>
         </select>
         <p class="description"><?php esc_html_e('This setting does not affect, nor is affected by, the native "Allow registration" setting.', 'wp-bankid'); ?></p>
     </div>

@@ -1,7 +1,7 @@
 <h1><?php esc_html_e('Configuration', 'wp-bankid'); ?></h1>
 <p><?php esc_html_e('Let\'s configure the plugin for it to give that personal touch.', 'wp-bankid'); ?></p>
 <form autocomplete="off">
-    <input autocomplete="false" type="text" name="wp_bankid_setup" value="1" style="display: none;">
+    <input autocomplete="false" type="text" name="mobile_bankid_integration_setup" value="1" style="display: none;">
     <h2><?php esc_html_e('Auto-configuration', 'wp-bankid'); ?></h2>
     <div class="form-group">
         <label for="wp-bankid-testenv"><?php esc_html_e('Auto-configure for test enviroment', 'wp-bankid'); ?></label>

@@ -1,7 +1,7 @@
 <?php
-namespace Webbstart\WP_BankID\WP_Login;
+namespace Mobile_BankID_Integration\WP_Login;
 
-use \Webbstart\WP_BankID\Core;
+use \Mobile_BankID_Integration\Core;
 use \chillerlan\QRCode\QRCode;
 
 new API;
@@ -94,7 +94,7 @@ class API {
 
         $user = get_user_by('id', $user_id);
         if (!$user) {
-            if (get_option('wp_bankid_registration') != "yes") {
+            if (get_option('mobile_bankid_integration_registration') != "yes") {
                 return false;
             }
 

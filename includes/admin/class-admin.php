@@ -1,5 +1,5 @@
 <?php
-namespace Webbstart\WP_BankID;
+namespace Mobile_BankID_Integration;
 
 new Admin;
 
@@ -47,7 +47,7 @@ class Admin {
 
     function redirect_to_setup_if_incomplete() {
         if (get_admin_page_parent() == 'wp-bankid') {
-            if (!(get_option('wp_bankid_certificate') && get_option('wp_bankid_password') && get_option('wp_bankid_endpoint'))) {
+            if (!(get_option('mobile_bankid_integration_certificate') && get_option('mobile_bankid_integration_password') && get_option('mobile_bankid_integration_endpoint'))) {
                 // Redirect to setup wizard
                 wp_redirect(home_url().'/wp-admin/admin.php?page=wp-bankid-setup');
                 exit();
@@ -89,36 +89,36 @@ class Admin {
     <p class="description"><?php esc_html_e('These settings can only be changed by running the setup wizard again.', 'wp-bankid'); ?></p>
     <div class="form-group">
         <label for="wp-bankid-endpoint"><?php esc_html_e('API Endpoint', 'wp-bankid'); ?></label>
-        <input type="text" name="wp-bankid-endpoint" id="wp-bankid-endpoint" disabled readonly value="<?php echo esc_url(get_option('wp_bankid_endpoint')); ?>">
+        <input type="text" name="wp-bankid-endpoint" id="wp-bankid-endpoint" disabled readonly value="<?php echo esc_url(get_option('mobile_bankid_integration_endpoint')); ?>">
     </div>
     <div class="form-group">
         <label for="wp-bankid-certificate"><?php esc_html_e('Certificate location (absolute path)', 'wp-bankid'); ?></label>
-        <input type="text" name="wp-bankid-certificate" id="wp-bankid-certificate" disabled readonly value="<?php echo esc_attr(get_option('wp_bankid_certificate')); ?>">
+        <input type="text" name="wp-bankid-certificate" id="wp-bankid-certificate" disabled readonly value="<?php echo esc_attr(get_option('mobile_bankid_integration_certificate')); ?>">
     </div>
     <div class="form-group">
         <label for="wp-bankid-password"><?php esc_html_e('Certificate password', 'wp-bankid'); ?></label>
-        <input type="password" name="wp-bankid-password" id="wp-bankid-password" autocomplete="off" disabled readonly value="<?php if (get_option('wp_bankid_password')) { echo "********"; } ?>">
+        <input type="password" name="wp-bankid-password" id="wp-bankid-password" autocomplete="off" disabled readonly value="<?php if (get_option('mobile_bankid_integration_password')) { echo "********"; } ?>">
     </div>
 
     <h2><?php esc_html_e('Login page', 'wp-bankid'); ?></h2>
     <div class="form-group">
         <label for="wp-bankid-wplogin"><?php esc_html_e('Show BankID on login page', 'wp-bankid'); ?></label>
         <select name="wp-bankid-wplogin" id="wp-bankid-wplogin">
-            <option value="as_alternative" <?php if (get_option('wp_bankid_wplogin') == "as_alternative") { echo 'selected'; } ?>><?php esc_html_e('Show as alternative to traditional login', 'wp-bankid'); ?></option>
-            <option value="hide" <?php if (get_option('wp_bankid_wplogin') == "hide") { echo 'selected'; } ?>><?php esc_html_e('Do not show at all', 'wp-bankid'); ?></option>
+            <option value="as_alternative" <?php if (get_option('mobile_bankid_integration_wplogin') == "as_alternative") { echo 'selected'; } ?>><?php esc_html_e('Show as alternative to traditional login', 'wp-bankid'); ?></option>
+            <option value="hide" <?php if (get_option('mobile_bankid_integration_wplogin') == "hide") { echo 'selected'; } ?>><?php esc_html_e('Do not show at all', 'wp-bankid'); ?></option>
         </select>
     </div><br>
     <div class="form-group">
         <label for="wp-bankid-registration"><?php esc_html_e('Allow registration with BankID', 'wp-bankid'); ?></label>
         <select name="wp-bankid-registration" id="wp-bankid-registration">
-            <option value="yes" <?php if (get_option('wp_bankid_registration') == "yes") { echo 'selected'; } ?>><?php esc_html_e('Yes', 'wp-bankid'); ?></option>
-            <option value="no" <?php if (get_option('wp_bankid_registration') == "no") { echo 'selected'; } ?>><?php esc_html_e('No', 'wp-bankid'); ?></option>
+            <option value="yes" <?php if (get_option('mobile_bankid_integration_registration') == "yes") { echo 'selected'; } ?>><?php esc_html_e('Yes', 'wp-bankid'); ?></option>
+            <option value="no" <?php if (get_option('mobile_bankid_integration_registration') == "no") { echo 'selected'; } ?>><?php esc_html_e('No', 'wp-bankid'); ?></option>
         </select>
         <p class="description"><?php esc_html_e('This setting does not affect, nor is affected by, the native "Allow registration" setting.', 'wp-bankid'); ?></p>
     </div>
     <div class="form-group">
         <label for="wp-bankid-terms"><?php esc_html_e('Terms to show with login (Supports HTML)', 'wp-bankid'); ?></label>
-        <textarea name="wp-bankid-terms" id="wp-bankid-terms" rows="5"><?php echo stripslashes(esc_html(get_option('wp_bankid_terms', _("By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.")))); ?></textarea>
+        <textarea name="wp-bankid-terms" id="wp-bankid-terms" rows="5"><?php echo stripslashes(esc_html(get_option('mobile_bankid_integration_terms', _("By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.")))); ?></textarea>
         <p class="description"><?php esc_html_e('Following HTML elements are supported: a, br, em, strong and i. All others will be escaped.', 'wp-bankid'); ?></p>
     </div>
 </form>
@@ -191,7 +191,7 @@ class Admin {
                 }, 2000);
             } else {
                 response = JSON.parse(this.responseText);
-                alert(wp_bankid_setup_localization.configuration_failed + response['message']);
+                alert(mobile_bankid_integration_setup_localization.configuration_failed + response['message']);
             }
         }
 
@@ -211,13 +211,13 @@ class Admin {
         <div class="wp-bankid-integrations">
             <div class="wp-bankid-integration">
                 <div class="wp-bankid-integration__logo">
-                    <img src="<?php echo esc_url(WP_BANKID_PLUGIN_URL . 'assets/images/woocommerce.svg'); ?>" alt="WooCommerce">
+                    <img src="<?php echo esc_url(MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/images/woocommerce.svg'); ?>" alt="WooCommerce">
                 </div>
                 <div class="wp-bankid-integration__content">
                     <h2 class="wp-bankid-integration__title">WooCommerce</h2>
                     <p class="wp-bankid-integration__description">WooCommerce is the most popular e-commerce platform for WordPress. With WP BankID by Webbstart you can perform age checks using BankID.</p>
                     <?php if (is_plugin_active('woocommerce/woocommerce.php')) : ?>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=wc-settings&tab=advanced&section=wp_bankid')); ?>" class="button button-primary"><?php esc_html_e('Go to settings', 'wp-bankid'); ?></a>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=wc-settings&tab=advanced&section=mobile_bankid_integration')); ?>" class="button button-primary"><?php esc_html_e('Go to settings', 'wp-bankid'); ?></a>
                     <?php elseif (file_exists(WP_PLUGIN_DIR . '/woocommerce/woocommerce.php')):
                         // Generate _wpnonce
                         $nonce = wp_create_nonce('activate-plugin_woocommerce/woocommerce.php');

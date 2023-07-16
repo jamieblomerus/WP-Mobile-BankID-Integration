@@ -4,6 +4,6 @@ add_action('init', function() {
         return;
     }
     if (is_plugin_active('woocommerce/woocommerce.php')) {
-        include_once WP_BANKID_PLUGIN_DIR . 'includes/integrations/woocommerce.php';
+        include_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/integrations/woocommerce.php';
     }
 });
