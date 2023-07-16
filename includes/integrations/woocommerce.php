@@ -48,7 +48,7 @@ final class Settings {
             /* Require customer to be over a certain age at checkout */
             $settings_mobile_bankid_integration[] = array(
                 'name' => __( 'Require users to be over a certain age at checkout (0 to disable)', 'mobile-bankid-integration' ),
-                'desc' => __( 'Require customer to be over a certain age at checkout. This helps to follow the law regarding sale of age-restricted products.<br>This requires that users are forced to sign in with BankID at checkout.', 'mobile-bankid-integration' ),
+                'desc' => __( 'Require customers to be over a certain age at checkout. This helps to follow the law regarding sale of age-restricted products.<br>This requires that users are forced to sign in with BankID at checkout.', 'mobile-bankid-integration' ),
                 'id' => 'mobile_bankid_integration_woocommerce_age_check',
                 'type' => 'number',
                 'css' => 'min-width:300px;',
