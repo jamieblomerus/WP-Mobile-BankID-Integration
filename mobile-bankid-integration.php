@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Unofficial Mobile BankID Integration
+Plugin Name: Mobile BankID Integration
 Description: A plugin that allows you to integrate Mobile BankID with your WordPress site.
 Version: Indev
 Author: Webbstart
