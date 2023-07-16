@@ -31,7 +31,7 @@ mkdir build
 cp -r assets build
 cp -r includes build
 cp -r vendor build
-cp -r wp-bankid.php build
+cp -r mobile-bankid-integration.php build
 cp -r index.php build
 
 # If argument is "production", add license file, minimize js/css and update version number
@@ -40,7 +40,7 @@ then
   echo "Building production version $2..."
   cp -r LICENSE.md build/LICENSE.md
   gsed -i 's/Version: .*/Version: '$2'/g' build/wp-bankid.php
-  gsed -i "s/define( 'WP_BANKID_VERSION', '.*' );/define( 'WP_BANKID_VERSION', '$2' );/g" build/wp-bankid.php
+  gsed -i "s/define( 'MOBILE_BANKID_INTEGRATION_VERSION', '.*' );/define( 'MOBILE_BANKID_INTEGRATION_VERSION', '$2' );/g" build/mobile-bankid-integration.php
   #Minimize CSS
   cp -r build/assets/css/setup.css build/assets/css/setup.full.css
   cleancss -o build/assets/css/setup.css build/assets/css/setup.css
@@ -56,7 +56,7 @@ fi
 if [ $1 == "dev" ]
 then
   echo "Building development version..."
-  gsed -i 's/Plugin Name: WP BankID by Webbstart/Plugin Name: WP BankID DEV/g' build/wp-bankid.php
+  gsed -i 's/Plugin Name: Mobile BankID Integration/Plugin Name: Mobile BankID Integration DEV/g' build/mobile-bankid-integration.php
   cp -r _dev/LICENSE.md build/LICENSE.md
 fi
 
