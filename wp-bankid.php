@@ -47,7 +47,7 @@ if (!class_exists("mobile_bankid_integration")) {
         }
 
         public function plugin_list_link($links) {
-            $setup_link = '<a href="admin.php?page=wp-bankid">'.esc_html__("Settings", "wp-bankid").'</a>';
+            $setup_link = '<a href="admin.php?page=mobile-bankid-integration">'.esc_html__("Settings", "mobile-bankid-integration").'</a>';
             array_unshift($links, $setup_link);
             return $links;
         }

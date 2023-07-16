@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
     jQuery('#bankid-login-button').on('click', function() {
         // Send REST API request to start BankID identification
         jQuery.ajax({
-            url: wp_bankid_rest_api + '/identify',
+            url: mobile_bankid_integration_rest_api + '/identify',
             type: 'POST',
             dataType: 'json',
             success: function(data) {
@@ -33,7 +33,7 @@ jQuery(document).ready(function() {
 });
 
 function loginPage(autoStartToken) {
-    document.getElementById("bankid-login-button").parentElement.parentElement.innerHTML = '<h2>'+wp_bankid_login_localization.title+'</h2><p id="bankid-status">'+wp_bankid_login_localization.qr_instructions+'</p><img id="bankid-qr-code" src="" alt="'+wp_bankid_login_localization.qr_alt+'" /><br><br><a href="#" class="button wp-element-button" onclick="window.location.reload();">'+wp_bankid_login_localization.cancel+'</a><a style="margin-left: 5px;" target="_blank" id="open_bankid" href="https://app.bankid.com/?autostarttoken='+autoStartToken+'&redirect=null" class="button wp-element-button">'+wp_bankid_login_localization.open_on_this_device+'</a>';
+    document.getElementById("bankid-login-button").parentElement.parentElement.innerHTML = '<h2>'+mobile_bankid_integration_login_localization.title+'</h2><p id="bankid-status">'+mobile_bankid_integration_login_localization.qr_instructions+'</p><img id="bankid-qr-code" src="" alt="'+mobile_bankid_integration_login_localization.qr_alt+'" /><br><br><a href="#" class="button wp-element-button" onclick="window.location.reload();">'+mobile_bankid_integration_login_localization.cancel+'</a><a style="margin-left: 5px;" target="_blank" id="open_bankid" href="https://app.bankid.com/?autostarttoken='+autoStartToken+'&redirect=null" class="button wp-element-button">'+mobile_bankid_integration_login_localization.open_on_this_device+'</a>';
 }
 
 function status() {
@@ -42,7 +42,7 @@ function status() {
     }
     // Send REST API request to get QR code
     jQuery.ajax({
-        url: wp_bankid_rest_api + '/status?orderRef=' + orderRef,
+        url: mobile_bankid_integration_rest_api + '/status?orderRef=' + orderRef,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -54,45 +54,45 @@ function status() {
             switch (data.status) {
                 case 'expired':
                     // Show error message
-                    showErrorMessage(wp_bankid_login_localization.status_expired);
+                    showErrorMessage(mobile_bankid_integration_login_localization.status_expired);
                     clearInterval(bankidRefreshId);
                     break;
                 case 'complete':
                     orderRef = null;
                     // Show success message
-                    document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.status_complete;
+                    document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.status_complete;
                     document.getElementById('bankid-qr-code').src = '';
                     document.getElementById('bankid-qr-code').style.display = 'none';
                     document.getElementById('open_bankid').style.display = 'none';
                     // Redirect to my account page
-                    window.location.href = wp_bankid_redirect_url;
+                    window.location.href = mobile_bankid_integration_redirect_url;
                     clearInterval(bankidRefreshId);
                     break;
                 case 'complete_no_user':
-                    showErrorMessage(wp_bankid_login_localization.status_complete_no_user);
+                    showErrorMessage(mobile_bankid_integration_login_localization.status_complete_no_user);
                     clearInterval(bankidRefreshId);
                     break;
                 case 'failed':
-                    showErrorMessage(wp_bankid_login_localization.status_failed);
+                    showErrorMessage(mobile_bankid_integration_login_localization.status_failed);
                     clearInterval(bankidRefreshId);
                     break;
             }
             if (data.hintCode !== null) {
                 switch (data.hintCode) {
                     case 'userCancel':
-                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_userCancel;
+                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_userCancel;
                         break;
                     case 'userSign':
-                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_userSign;
+                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_userSign;
                         break;
                     case 'startFailed':
-                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_startFailed;
+                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_startFailed;
                         break;
                     case 'certificateErr':
-                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.hintcode_certificateErr;
+                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_certificateErr;
                         break;
                     default:
-                        document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.qr_instructions;
+                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.qr_instructions;
                         break;
                 }
             }
@@ -103,7 +103,7 @@ function status() {
                 return;
             }
             // Show error message
-            document.getElementById('bankid-status').innerHTML = wp_bankid_login_localization.something_went_wrong;
+            document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.something_went_wrong;
             document.getElementById('bankid-qr-code').src = '';
             document.getElementById('bankid-qr-code').style.display = 'none';
             document.getElementById('open_bankid').style.display = 'none';

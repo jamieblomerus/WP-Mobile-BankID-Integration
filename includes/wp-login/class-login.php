@@ -16,7 +16,7 @@ class Login {
         if ($redirect == null) {
             $redirect = "/wp-admin/";
         }
-        echo '<p><a href="#" target="_self" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center; margin-bottom: 1em;">'.esc_html__('Login with BankID', 'wp-bankid').'</a></p>';
+        echo '<p><a href="#" target="_self" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center; margin-bottom: 1em;">'.esc_html__('Login with BankID', 'mobile-bankid-integration').'</a></p>';
         echo '<noscript><style>#bankid-login-button { display: none; height: 0; margin: 0; }</style></noscript>';
         $this->load_scripts($redirect);
     }
@@ -53,27 +53,27 @@ class Login {
         <?php
     }
     public function load_scripts(string $redirect) { // If the messages are updated, remember to update it in woocommerce.php as well
-        wp_register_script('wp-bankid-login', MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/js/login.js', array('jquery'), MOBILE_BANKID_INTEGRATION_VERSION, true);
-        wp_enqueue_script('wp-bankid-login');
+        wp_register_script('mobile-bankid-integration-login', MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/js/login.js', array('jquery'), MOBILE_BANKID_INTEGRATION_VERSION, true);
+        wp_enqueue_script('mobile-bankid-integration-login');
         wp_enqueue_script('jquery');
-        wp_localize_script('wp-bankid-login', 'mobile_bankid_integration_login_localization', [
-            'title' => esc_html__('Login with BankID', 'wp-bankid'),
-            'qr_instructions' => esc_html__('Scan the QR code with your Mobile BankID app.', 'wp-bankid'),
-            'qr_alt' => esc_html__('QR code', 'wp-bankid'),
-            'cancel' => esc_html__('Cancel', 'wp-bankid'),
-            'open_on_this_device' => esc_html__('Start the BankID app', 'wp-bankid'),
-            'status_expired' => esc_html__('BankID identification session has expired. Please try again.', 'wp-bankid'),
-            'status_complete' => esc_html__('BankID identification completed. Redirecting...', 'wp-bankid'),
-            'status_complete_no_user' => esc_html__('BankID identification completed, but no user was found. Please try again.', 'wp-bankid'),
-            'status_failed' => esc_html__('BankID identification failed. Please try again.', 'wp-bankid'),
-            'something_went_wrong' => esc_html__('Something went wrong. Please try again.', 'wp-bankid'),
+        wp_localize_script('mobile-bankid-integration-login', 'mobile_bankid_integration_login_localization', [
+            'title' => esc_html__('Login with BankID', 'mobile-bankid-integration'),
+            'qr_instructions' => esc_html__('Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration'),
+            'qr_alt' => esc_html__('QR code', 'mobile-bankid-integration'),
+            'cancel' => esc_html__('Cancel', 'mobile-bankid-integration'),
+            'open_on_this_device' => esc_html__('Start the BankID app', 'mobile-bankid-integration'),
+            'status_expired' => esc_html__('BankID identification session has expired. Please try again.', 'mobile-bankid-integration'),
+            'status_complete' => esc_html__('BankID identification completed. Redirecting...', 'mobile-bankid-integration'),
+            'status_complete_no_user' => esc_html__('BankID identification completed, but no user was found. Please try again.', 'mobile-bankid-integration'),
+            'status_failed' => esc_html__('BankID identification failed. Please try again.', 'mobile-bankid-integration'),
+            'something_went_wrong' => esc_html__('Something went wrong. Please try again.', 'mobile-bankid-integration'),
 
             // BankID Hint Code with translation note
-            'hintcode_userCancel' => esc_html__('Action cancelled.', 'wp-bankid'),
-            'hintcode_userSign' => esc_html__('Enter your security code in the BankID app and select Identify.', 'wp-bankid'),
-            'hintcode_startFailed' => esc_html__("Failed to scan the QR code.", 'wp-bankid'),
-            'hintcode_certificateErr' => esc_html__('The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank.', 'wp-bankid'),
+            'hintcode_userCancel' => esc_html__('Action cancelled.', 'mobile-bankid-integration'),
+            'hintcode_userSign' => esc_html__('Enter your security code in the BankID app and select Identify.', 'mobile-bankid-integration'),
+            'hintcode_startFailed' => esc_html__("Failed to scan the QR code.", 'mobile-bankid-integration'),
+            'hintcode_certificateErr' => esc_html__('The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank.', 'mobile-bankid-integration'),
         ]);
-        wp_add_inline_script('wp-bankid-login', 'var mobile_bankid_integration_rest_api = "' . rest_url('wp-bankid/v1/login') . '"; var mobile_bankid_integration_redirect_url = "' . $redirect . '";', 'before');
+        wp_add_inline_script('mobile-bankid-integration-login', 'var mobile_bankid_integration_rest_api = "' . rest_url('mobile-bankid-integration/v1/login') . '"; var mobile_bankid_integration_redirect_url = "' . $redirect . '";', 'before');
     }
 }
