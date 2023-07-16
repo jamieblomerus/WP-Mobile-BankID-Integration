@@ -1,1 +1,0 @@
-# WP BankID by Webbstart
