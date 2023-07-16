@@ -52,7 +52,7 @@ final class Settings {
                 'id' => 'wp_bankid_woocommerce_age_check',
                 'type' => 'number',
                 'css' => 'min-width:300px;',
-                'default' => '18'
+                'default' => '0'
             );
 
             $settings_wp_bankid[] = array( 'type' => 'sectionend', 'id' => 'wcslider' );
