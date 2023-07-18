@@ -33,6 +33,7 @@ cp -r includes build
 cp -r vendor build
 cp -r mobile-bankid-integration.php build
 cp -r index.php build
+cp -r readme.txt build
 
 # If argument is "production", add license file, minimize js/css and update version number
 if [ $1 == "production" ]
