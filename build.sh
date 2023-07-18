@@ -39,7 +39,7 @@ if [ $1 == "production" ]
 then
   echo "Building production version $2..."
   cp -r LICENSE.md build/LICENSE.md
-  gsed -i 's/Version: .*/Version: '$2'/g' build/wp-bankid.php
+  gsed -i 's/Version: .*/Version: '$2'/g' build/mobile-bankid-integration.php
   gsed -i "s/define( 'MOBILE_BANKID_INTEGRATION_VERSION', '.*' );/define( 'MOBILE_BANKID_INTEGRATION_VERSION', '$2' );/g" build/mobile-bankid-integration.php
   #Minimize CSS
   cp -r build/assets/css/setup.css build/assets/css/setup.full.css
