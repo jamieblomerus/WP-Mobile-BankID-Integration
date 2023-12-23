@@ -45,7 +45,7 @@ class API {
         $time = time();
         $time_since_auth = $time - $db_row['time_created'];
 
-        $status = $instance->getBankIDService()->collectResponse($auth_response->orderRef);
+        $status = $instance->get_bankid_service()->collectResponse($auth_response->orderRef);
 
         if ($status->status == "failed" ) {
             $instance->deleteAuthResponseFromDB($orderRef);

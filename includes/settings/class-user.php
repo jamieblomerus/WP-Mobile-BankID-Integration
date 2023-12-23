@@ -44,7 +44,7 @@ class UserSettings {
             } elseif (strlen($_POST['personal_number']) < 1) {
                 try {
                     delete_user_meta($user_id, 'personal_number');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     // Do nothing.
                 }
             } else {
