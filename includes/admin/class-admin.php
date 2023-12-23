@@ -12,6 +12,7 @@ class Admin {
         // Register tabs
         self::add_tab(__('Settings', 'mobile-bankid-integration'), 'settings', [$this, 'page_settings']);
         self::add_tab(__('Integrations', 'mobile-bankid-integration'), 'integrations', [$this, 'page_integrations']);
+        self::add_tab(__('Contribute', 'mobile-bankid-integration'), 'contribute', [$this, 'page_contribute']);
     }
 
     public function register_page() {
@@ -277,6 +278,22 @@ class Admin {
                 align-items: center;
             }
         </style>
+        <?php
+    }
+
+    private function page_contribute() {
+        // https://github.com/jamieblomerus/WP-Mobile-BankID-Integration
+        ?>
+        <h2><?php esc_html_e('Contribute to the development of WP Mobile BankID Integration', 'mobile-bankid-integration'); ?></h2>
+        <p><?php esc_html_e('This plugin is open source and available on GitHub. Feel free to contribute!', 'mobile-bankid-integration'); ?></p>
+        <p><?php esc_html_e('If you find this plugin useful, please consider donating to the developer.', 'mobile-bankid-integration'); ?></p>
+        <a href="https://github.com/jamieblomerus/WP-Mobile-BankID-Integration" class="button button-primary"><?php esc_html_e('Visit the GitHub repository', 'mobile-bankid-integration'); ?></a>
+        <a href="https://github.com/sponsors/jamieblomerus" class="button button-secondary dashicons-before dashicons-heart"><?php esc_html_e('Sponsor me on GitHub', 'mobile-bankid-integration'); ?></a>
+        <style>
+            .dashicons-before.dashicons-heart::before {
+                line-height: 28px;
+                color: rgb(201, 97, 152);
+            }
         <?php
     }
 }
