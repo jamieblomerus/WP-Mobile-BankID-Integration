@@ -3,5 +3,13 @@
         "dimafe6/bank-id": "^2.1",
         "chillerlan/php-qrcode": "^4.3",
         "personnummer/personnummer": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0"
     }
 }
