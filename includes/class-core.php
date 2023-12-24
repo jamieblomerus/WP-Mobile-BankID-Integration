@@ -101,10 +101,9 @@ class Core {
 	 */
 	public function getAuthResponseFromDB( $order_ref ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
-		$response = $wpdb->get_row(
+		$response = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prepare(
-				"SELECT * FROM $table_name WHERE orderRef = %s",
+				"SELECT * FROM {$wpdb->prefix}mobile_bankid_integration_auth_responses WHERE orderRef = %s",
 				$order_ref
 			)
 		);
@@ -114,26 +113,26 @@ class Core {
 		return array(
 			'time_created' => $response->time_created,
 			'response'     => unserialize( $response->response ),
-			'orderRef'     => $response->orderRef,
+			'orderRef'     => $response->orderRef, // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 		);
 	}
 
 	/**
 	 * Save the auth_response to DB.
 	 *
-	 * @param string $orderRef
-	 * @param array  $response
+	 * @param string $orderRef BankID order reference.
+	 * @param array  $response BankID response.
 	 * @return void
 	 */
-	private function saveAuthResponseToDB( $orderRef, $response ) {
+	private function saveAuthResponseToDB( $orderRef, $response ) { // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
-		$wpdb->insert(
+		$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$table_name,
 			array(
 				'time_created' => time(),
 				'response'     => serialize( $response ),
-				'orderRef'     => $orderRef,
+				'orderRef'     => $orderRef, // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 			)
 		);
 	}
@@ -141,16 +140,16 @@ class Core {
 	/**
 	 * Delete the auth_response from DB.
 	 *
-	 * @param string $orderRef
+	 * @param string $orderRef BankID order reference.
 	 * @return void
 	 */
-	public function deleteAuthResponseFromDB( $orderRef ) {
+	public function deleteAuthResponseFromDB( $orderRef ) { // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
-		$wpdb->delete(
+		$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$table_name,
 			array(
-				'orderRef' => $orderRef,
+				'orderRef' => $orderRef, // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 			)
 		);
 	}
@@ -158,7 +157,7 @@ class Core {
 	/**
 	 * Get user ID from personal number.
 	 *
-	 * @param string $personal_number
+	 * @param string $personal_number Personal number (12 digits, no hyphen).
 	 * @return int|false
 	 */
 	public function getUserIdFromPersonalNumber( $personal_number ) {
@@ -179,8 +178,8 @@ class Core {
 	/**
 	 * Set personal number for user.
 	 *
-	 * @param int    $user_id
-	 * @param string $personal_number
+	 * @param int    $user_id User ID.
+	 * @param string $personal_number Personal number (12 digits, no hyphen).
 	 * @return void
 	 */
 	public function setPersonalNumberForUser( $user_id, $personal_number ) {
@@ -199,11 +198,11 @@ class Core {
 	 * They are a guarantee that the user signed in to the site using Mobile BankID.
 	 * It shall be a custom PHP SESSION.
 	 *
-	 * @param int $user_id
+	 * @param int $user_id User ID.
 	 * @return void
 	 */
 	public function createAuthCookie( $user_id ) {
-		// START SESSION
+		// START SESSION.
 		if ( ! session_id() ) {
 			session_start();
 		}
@@ -225,14 +224,14 @@ class Core {
 	 * @return bool
 	 */
 	public function verifyAuthCookie() {
-		// START SESSION
+		// START SESSION.
 		if ( ! session_id() ) {
 			session_start();
 		}
 		if ( ! isset( $_SESSION['mobile_bankid_integration_auth_cookie'] ) ) {
 			return false;
 		}
-		$auth_cookie = $_SESSION['mobile_bankid_integration_auth_cookie'];
+		$auth_cookie = $_SESSION['mobile_bankid_integration_auth_cookie']; // phpcs:ignore -- $_SESSION is not user input.
 		if ( ! isset( $auth_cookie['user_id'] ) || ! isset( $auth_cookie['personal_number'] ) || ! isset( $auth_cookie['time_created'] ) ) {
 			return false;
 		}
@@ -260,13 +259,14 @@ class Core {
 	 * @return void
 	 */
 	public function deleteAuthCookie() {
-		// START SESSION
+		// START SESSION.
 		if ( ! session_id() ) {
 			session_start();
 		}
 		try {
 			unset( $_SESSION['mobile_bankid_integration_auth_cookie'] );
-		} catch ( \Throwable $th ) {
+		} catch ( \Throwable $th ) { // phpcs:ignore
+			// Do nothing.
 		}
 	}
 }
