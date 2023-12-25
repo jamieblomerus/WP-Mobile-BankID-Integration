@@ -28,6 +28,11 @@ if ( ! class_exists( 'mobile_bankid_integration' ) ) {
 		 * Class constructor.
 		 */
 		public function __construct() {
+			// Check if composer autoload exists.
+			if ( ! file_exists( MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+				wp_die( wp_kses_post( __( '<strong>Mobile BankID Integration</strong> requires its dependencies to be installed. These are included in all releases, but if you are using the development version, you need to run <code>composer install</code> in the plugin directory.', 'mobile-bankid-integration' ) ) );
+			}
+
 			// Composer autoload.
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'vendor/autoload.php';
 
