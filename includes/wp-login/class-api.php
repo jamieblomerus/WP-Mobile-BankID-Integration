@@ -45,7 +45,7 @@ class API {
         $time = time();
         $time_since_auth = $time - $db_row['time_created'];
 
-        $status = $instance->get_bankid_service()->collectResponse($auth_response->orderRef);
+        $status = $instance->get_bankid_service()->collectResponse($auth_response['orderRef']);
 
         if ($status->status == "failed" ) {
             $instance->deleteAuthResponseFromDB($orderRef);
@@ -78,7 +78,7 @@ class API {
         }
 
         $qr = new QRCode;
-        $qrCode = $qr->render("bankid.".$auth_response->qrStartToken.".".$time_since_auth.".".hash_hmac('sha256', $time_since_auth, $auth_response->qrStartSecret));
+        $qrCode = $qr->render("bankid.".$auth_response['qrStartToken'].".".$time_since_auth.".".hash_hmac('sha256', $time_since_auth, $auth_response['qrStartSecret']));
         return [
             "qr" => $qrCode,
             "orderRef" => $orderRef,
