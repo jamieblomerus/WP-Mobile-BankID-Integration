@@ -36,10 +36,19 @@ If you would like to suggest any feature to be added, please write an email to o
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
+* Security fix: Fixed a security issue where the plugin would deserialize data from the database without checking if it was safe to do so.
+* Added tab "Contribute" to the plugin settings page. This tab contains information about how you can contribute or support the plugin.
+* Changed some code to be more in line with WordPress coding standards.
+* Improved developer documentation.
+
+= 1.0.0 =
 * I ensured the plugin is stable for production use.
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.0.1 =
+This is a security update. Please update as soon as possible.
+
+= 1.0.0 =
 This is the first stable version.
