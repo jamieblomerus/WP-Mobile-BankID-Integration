@@ -13,12 +13,12 @@ class UserSettings {
     }
     public function showPersonalNumber($user) {
         ?>
-        <h3><? esc_html_e('BankID Authentication', 'mobile-bankid-integration') ?></h3>
+        <h3><?php esc_html_e('BankID Authentication', 'mobile-bankid-integration') ?></h3>
         <table class="form-table">
         <tr>
-        <th><label for="personal_number"><? esc_html_e('Personal number (12 digits, no hyphen)', 'mobile-bankid-integration') ?></label></th>
+        <th><label for="personal_number"><?php esc_html_e('Personal number (12 digits, no hyphen)', 'mobile-bankid-integration') ?></label></th>
         <td>
-        <input type="text" name="personal_number" id="personal_number" <? if (!current_user_can('administrator')) { echo "disabled"; } ?> value="<? echo esc_attr(get_user_meta($user->ID, 'mobile_bankid_integration_personal_number', true)) ?>" placeholder="<? /* translators: Placeholder personal number. */ esc_attr_e('YYYYMMDDXXXX', 'mobile-bankid-integration') ?>" class="regular-text" />
+        <input type="text" name="personal_number" id="personal_number" <?php if (!current_user_can('administrator')) { echo "disabled"; } ?> value="<?php echo esc_attr(get_user_meta($user->ID, 'mobile_bankid_integration_personal_number', true)) ?>" placeholder="<?php /* translators: Placeholder personal number. */ esc_attr_e('YYYYMMDDXXXX', 'mobile-bankid-integration') ?>" class="regular-text" />
         </td>
         </tr>
         </table>

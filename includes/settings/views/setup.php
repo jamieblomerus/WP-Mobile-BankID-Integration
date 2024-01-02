@@ -20,22 +20,22 @@ $step = intval($step);
 <div class="wizard">
     <div class="steps">
         <ol>
-            <li <?php if ($step > 1) {?>class="done"<?} else {?>class="active"<?} ?>>
-                <span class="title"><? esc_html_e('Welcome', 'mobile-bankid-integration') ?></span>
+            <li <?php if ($step > 1) {?>class="done"<?php } else {?>class="active"<?php } ?>>
+                <span class="title"><?php esc_html_e('Welcome', 'mobile-bankid-integration') ?></span>
             </li>
-            <li <?php if ($step > 2) {?>class="done"<?} elseif ($step == 2) {?>class="active"<?} ?>>
-                <span class="title"><? esc_html_e('Configuration', 'mobile-bankid-integration') ?></span>
+            <li <?php if ($step > 2) {?>class="done"<?php } elseif ($step == 2) {?>class="active"<?php } ?>>
+                <span class="title"><?php esc_html_e('Configuration', 'mobile-bankid-integration') ?></span>
             </li>
-            <li <?php if ($step > 3) {?>class="done"<?} elseif ($step == 3) {?>class="active"<?} ?>>
-                <span class="title"><? esc_html_e('Settings', 'mobile-bankid-integration') ?></span>
+            <li <?php if ($step > 3) {?>class="done"<?php } elseif ($step == 3) {?>class="active"<?php } ?>>
+                <span class="title"><?php esc_html_e('Settings', 'mobile-bankid-integration') ?></span>
             </li>
-            <li <?php if ($step == 4) {?>class="active"<?} ?>>
-                <span class="title"><? esc_html_e('Finish', 'mobile-bankid-integration') ?></span>
+            <li <?php if ($step == 4) {?>class="active"<?php } ?>>
+                <span class="title"><?php esc_html_e('Finish', 'mobile-bankid-integration') ?></span>
             </li>
         </ol>
     </div><br>
 
-    <div id="wizard-content" step="<? echo esc_attr($step); ?>">
+    <div id="wizard-content" step="<?php echo esc_attr($step); ?>">
         <?php
         switch ($step) {
             case 1:
