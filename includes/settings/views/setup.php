@@ -1,7 +1,9 @@
 <?php
-// Setup view on activation.
+/**
+ * Setup view on activation.
+ */
 
-$step = isset( $_GET['step'] ) ? $_GET['step'] : 1;
+$step = isset( $_GET['step'] ) ? $_GET['step'] : 1; // phpcs:ignore
 $step = intval( $step );
 ?>
 <div id="wizard-modal">
@@ -37,7 +39,7 @@ class="done"
 				?>
 class="done"
 				<?php
-			} elseif ( $step == 2 ) {
+			} elseif ( 2 === $step ) {
 				?>
 class="active"<?php } ?>>
 				<span class="title"><?php esc_html_e( 'Configuration', 'mobile-bankid-integration' ); ?></span>
@@ -48,14 +50,14 @@ class="active"<?php } ?>>
 				?>
 class="done"
 				<?php
-			} elseif ( $step == 3 ) {
+			} elseif ( 3 === $step ) {
 				?>
 class="active"<?php } ?>>
 				<span class="title"><?php esc_html_e( 'Settings', 'mobile-bankid-integration' ); ?></span>
 			</li>
 			<li 
 			<?php
-			if ( $step == 4 ) {
+			if ( 4 === $step ) {
 				?>
 class="active"<?php } ?>>
 				<span class="title"><?php esc_html_e( 'Finish', 'mobile-bankid-integration' ); ?></span>
