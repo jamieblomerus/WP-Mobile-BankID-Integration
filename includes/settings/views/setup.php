@@ -39,19 +39,19 @@ $step = intval($step);
         <?php
         switch ($step) {
             case 1:
-                include_once 'setup_welcome.php';
+                include_once 'setup-welcome.php';
                 break;
             case 2:
-                include_once 'setup_configuration.php';
+                include_once 'setup-configuration.php';
                 break;
             case 3:
-                include_once 'setup_settings.php';
+                include_once 'setup-settings.php';
                 break;
             case 4:
-                include_once 'setup_finish.php';
+                include_once 'setup-finish.php';
                 break;
             default:
-                include_once 'setup_welcome.php';
+                include_once 'setup-welcome.php';
                 break;
         }
         ?>
