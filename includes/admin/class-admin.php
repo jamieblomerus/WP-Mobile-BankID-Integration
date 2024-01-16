@@ -151,12 +151,7 @@ class Admin {
 	</div>
 	<div class="form-group">
 		<label for="mobile-bankid-integration-password"><?php esc_html_e( 'Certificate password', 'mobile-bankid-integration' ); ?></label>
-		<input type="password" name="mobile-bankid-integration-password" id="mobile-bankid-integration-password" autocomplete="off" disabled readonly value="
-		<?php
-		if ( get_option( 'mobile_bankid_integration_password' ) ) {
-			echo '********'; }
-		?>
-		">
+		<input type="password" name="mobile-bankid-integration-password" id="mobile-bankid-integration-password" autocomplete="off" disabled readonly value="<?php echo get_option( 'mobile_bankid_integration_password' ) ? '************' : '';?>">
 	</div>
 
 	<h2><?php esc_html_e( 'Login page', 'mobile-bankid-integration' ); ?></h2>
