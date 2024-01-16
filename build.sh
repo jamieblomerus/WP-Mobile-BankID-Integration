@@ -14,7 +14,8 @@ fi
 
 # Update composer packages
 echo "Updating composer packages (should also be made manually as often as possible)..."
-composer update -o --no-progress > /dev/null 2>&1
+rm -rf vendor
+composer update -o --no-progress --no-dev > /dev/null 2>&1
 
 # Check if argument is "production" and version number is set
 if [ $1 == "production" ] && [ -z "$2" ]
