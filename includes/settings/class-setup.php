@@ -1,6 +1,8 @@
 <?php
 namespace Mobile_BankID_Integration\Settings;
 
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+
 new Setup();
 
 /**

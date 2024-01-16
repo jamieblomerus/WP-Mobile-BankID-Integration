@@ -3,6 +3,8 @@
  * Setup view on activation.
  */
 
+ defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+
 $step = isset( $_GET['step'] ) ? $_GET['step'] : 1; // phpcs:ignore
 $step = intval( $step );
 ?>

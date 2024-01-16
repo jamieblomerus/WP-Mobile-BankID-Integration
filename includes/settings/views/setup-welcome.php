@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+?>
+
 <h1><?php esc_html_e( 'Mobile BankID Integration ⎯ Setup', 'mobile-bankid-integration' ); ?></h1>
 <p><?php esc_html_e( 'This is a plugin that allows you to use BankID to login to your WordPress site. But it also provides all these cool features:', 'mobile-bankid-integration' ); ?></p>
 <ul>

@@ -1,3 +1,7 @@
+<?php
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+?>
+
 <h1><?php esc_html_e( 'Configuration', 'mobile-bankid-integration' ); ?></h1>
 <p><?php esc_html_e( 'Let\'s configure the plugin for it to give that personal touch.', 'mobile-bankid-integration' ); ?></p>
 <form autocomplete="off">

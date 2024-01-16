@@ -6,10 +6,7 @@ Version: Indev
 Author: Jamie Blomerus
 */
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
 
 // Define constants.
 define( 'MOBILE_BANKID_INTEGRATION_VERSION', 'Indev' );

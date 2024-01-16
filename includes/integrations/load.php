@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+
 add_action(
 	'init',
 	function () {
