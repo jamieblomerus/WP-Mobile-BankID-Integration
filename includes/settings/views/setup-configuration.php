@@ -16,7 +16,7 @@
 		<?php
 		printf(
 			/* translators: %1$s Production API Endpoint, %1$s Test enviroment API Endpoint */
-			__( 'The API Endpoint is normally %1$s for production and %2$s for test environment.', 'mobile-bankid-integration' ),
+			esc_html__( 'The API Endpoint is normally %1$s for production and %2$s for test environment.', 'mobile-bankid-integration' ),
 			'<code>https://appapi2.bankid.com/rp/v5.1</code>',
 			'<code>https://appapi2.test.bankid.com/rp/v5.1</code>'
 		)
