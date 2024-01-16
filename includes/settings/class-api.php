@@ -77,7 +77,7 @@ class API {
 	 */
 	public function configuration() {
 		// Get params.
-		$endpoint    = isset( $_POST['endpoint'] ) ? sanitize_url( wp_unslash( $_POST['endpoint'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
+		$endpoint    = isset( $_POST['endpoint'] ) ? sanitize_text_field( wp_unslash( $_POST['endpoint'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
 		$certificate = isset( $_POST['certificate'] ) ? sanitize_text_field( wp_unslash( $_POST['certificate'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
 		$password    = isset( $_POST['password'] ) ? $_POST['password'] : null; // phpcs:ignore
 
