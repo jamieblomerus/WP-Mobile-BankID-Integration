@@ -6,10 +6,7 @@ Version: Indev
 Author: Jamie Blomerus
 */
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
 
 // Define constants.
 define( 'MOBILE_BANKID_INTEGRATION_VERSION', 'Indev' );
@@ -51,7 +48,7 @@ if ( ! class_exists( 'mobile_bankid_integration' ) ) {
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/class-activation.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/settings/class-setup.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/settings/class-api.php';
-			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/settings/class-user.php';
+			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/settings/class-usersettings.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/wp-login/class-api.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/wp-login/class-login.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/admin/class-admin.php';

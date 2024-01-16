@@ -1,6 +1,8 @@
 <?php
 namespace Mobile_BankID_Integration\Integrations\WooCommerce;
 
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+
 use Mobile_BankID_Integration\Core;
 use Personnummer\Personnummer;
 
