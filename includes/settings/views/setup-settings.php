@@ -7,13 +7,13 @@
 		<select name="mobile-bankid-integration-wplogin" id="mobile-bankid-integration-wplogin">
 			<option value="as_alternative" 
 			<?php
-			if ( get_option( 'mobile_bankid_integration_wplogin' ) == 'as_alternative' ) {
+			if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'as_alternative' ) {
 				echo 'selected'; }
 			?>
 			><?php esc_html_e( 'Show as alternative to traditional login', 'mobile-bankid-integration' ); ?></option>
 			<option value="hide" 
 			<?php
-			if ( get_option( 'mobile_bankid_integration_wplogin' ) == 'hide' ) {
+			if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'hide' ) {
 				echo 'selected'; }
 			?>
 			><?php esc_html_e( 'Do not show at all', 'mobile-bankid-integration' ); ?></option>
@@ -24,13 +24,13 @@
 		<select name="mobile-bankid-integration-registration" id="mobile-bankid-integration-registration">
 			<option value="yes" 
 			<?php
-			if ( get_option( 'mobile_bankid_integration_registration' ) == 'yes' ) {
+			if ( get_option( 'mobile_bankid_integration_registration' ) === 'yes' ) {
 				echo 'selected'; }
 			?>
 			><?php esc_html_e( 'Yes', 'mobile-bankid-integration' ); ?></option>
 			<option value="no" 
 			<?php
-			if ( get_option( 'mobile_bankid_integration_registration' ) == 'no' ) {
+			if ( get_option( 'mobile_bankid_integration_registration' ) === 'no' ) {
 				echo 'selected'; }
 			?>
 			><?php esc_html_e( 'No', 'mobile-bankid-integration' ); ?></option>
