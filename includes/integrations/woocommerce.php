@@ -143,9 +143,9 @@ class Checkout { // phpcs:ignore
 			}
 		}
 		?>
-		<div id="bankid-checkout-block" style="background: #c1ced9; border-radius: 10px; padding:15px;">
-			<div class="woocommerce-billing-fields">
-				<h3><?php esc_html_e( 'Mobile BankID Authentication required', 'mobile-bankid-integration' ); ?></h3>
+		<div id="bankid-checkout-block">
+			<div class="wc-block-components-notice-banner is-warning" style="display:block;" role="alert">
+				<h2><?php esc_html_e( 'Mobile BankID Authentication required', 'mobile-bankid-integration' ); ?></h3>
 				<p><?php esc_html_e( 'This site requires you to be authenticated through Mobile BankID to make an order.' ); ?></p>
 
 				<p><a href="#" id="bankid-login-button" class="button wp-element-button" style="text-align: center;"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ); ?></a></p>
@@ -162,6 +162,7 @@ class Checkout { // phpcs:ignore
 			</div>
 		</div>
 		<?php
+		echo wp_kses( apply_filters( 'mobile_bankid_integration_checkout_block_style', '<style>#bankid-checkout-block h2 { font-size: 1.5em; }</style>' ), array( 'style' => array() ) );
 	}
 
 	/**
