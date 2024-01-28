@@ -198,26 +198,17 @@ class Core {
 	 *
 	 * Authentication cookies are set when a user logs in to the site, and are used to verify the identity of a user who logs in to the site.
 	 * They are a guarantee that the user signed in to the site using Mobile BankID.
-	 * It shall be a custom PHP SESSION.
 	 *
 	 * @param int $user_id User ID.
 	 * @return void
 	 */
 	public function createAuthCookie( $user_id ) {
-		// START SESSION.
-		if ( ! session_id() ) {
-			session_start();
-		}
-		$personal_number = get_user_meta( $user_id, 'mobile_bankid_integration_personal_number', true );
-		if ( ! $personal_number ) {
+		// Check that user exists.
+		if ( ! get_user_by( 'id', $user_id ) ) {
 			return;
 		}
-		$auth_cookie                                       = array(
-			'user_id'         => $user_id,
-			'personal_number' => $personal_number,
-			'time_created'    => time(),
-		);
-		$_SESSION['mobile_bankid_integration_auth_cookie'] = $auth_cookie;
+		// START SESSION.
+		new Session( $user_id );
 	}
 
 	/**
@@ -227,31 +218,12 @@ class Core {
 	 */
 	public function verifyAuthCookie() {
 		// START SESSION.
-		if ( ! session_id() ) {
-			session_start();
-		}
-		if ( ! isset( $_SESSION['mobile_bankid_integration_auth_cookie'] ) ) {
+		$session = Session::load();
+
+		if ( ! $session ) {
 			return false;
 		}
-		$auth_cookie = $_SESSION['mobile_bankid_integration_auth_cookie']; // phpcs:ignore -- $_SESSION is not user input.
-		if ( ! isset( $auth_cookie['user_id'] ) || ! isset( $auth_cookie['personal_number'] ) || ! isset( $auth_cookie['time_created'] ) ) {
-			return false;
-		}
-		$user_id         = $auth_cookie['user_id'];
-		$personal_number = $auth_cookie['personal_number'];
-		$time_created    = $auth_cookie['time_created'];
-		// Check if user is same.
-		if ( get_current_user_id() !== $user_id ) {
-			return false;
-		}
-		// Check if personal number is correct.
-		if ( get_user_meta( $user_id, 'mobile_bankid_integration_personal_number', true ) !== $personal_number ) {
-			return false;
-		}
-		// Check if time created is not older than 24 hours.
-		if ( $time_created < time() - 86400 ) {
-			return false;
-		}
+
 		return true;
 	}
 
@@ -262,14 +234,13 @@ class Core {
 	 */
 	public function deleteAuthCookie() {
 		// START SESSION.
-		if ( ! session_id() ) {
-			session_start();
+		$session = Session::load();
+
+		if ( ! $session ) {
+			return;
 		}
-		try {
-			unset( $_SESSION['mobile_bankid_integration_auth_cookie'] );
-		} catch ( \Throwable $th ) { // phpcs:ignore
-			// Do nothing.
-		}
+
+		$session->destroy();
 	}
 
 	/**

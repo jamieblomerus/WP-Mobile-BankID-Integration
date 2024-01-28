@@ -46,6 +46,7 @@ if ( ! class_exists( 'mobile_bankid_integration' ) ) {
 		private function load_plugin_files() {
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/class-core.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/class-activation.php';
+			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/class-session.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/settings/class-setup.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/settings/class-api.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/settings/class-usersettings.php';

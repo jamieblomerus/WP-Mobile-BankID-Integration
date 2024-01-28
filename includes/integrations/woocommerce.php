@@ -174,11 +174,15 @@ class Checkout { // phpcs:ignore
 		if ( $age <= 0 ) {
 			return true;
 		}
-		$personnummer = get_user_meta( get_current_user_id(), 'mobile_bankid_integration_personal_number', true );
-		if ( ! $personnummer ) {
+		$session = \Mobile_BankID_Integration\Session::load();
+		if ( ! $session ) {
 			return false;
 		}
-		$userage = ( new Personnummer( $personnummer ) )->getAge();
+		$personal_number = $session->personal_number;
+		if ( ! $personal_number ) {
+			return false;
+		}
+		$userage = ( new Personnummer( $personal_number ) )->getAge();
 		if ( $userage < $age ) {
 			return false;
 		}

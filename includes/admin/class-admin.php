@@ -109,6 +109,8 @@ class Admin {
 			wp_die( 'You do not have sufficient priviliges to see this page.' );
 		}
 
+		Session::admin_notice(); // Show admin notice if session secret is not set.
+
 		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : null; // phpcs:ignore -- Sanitization not needed as it is used in array_key_exists().
 		if ( ! isset( $current_tab ) || ! array_key_exists( $current_tab, self::$tabs ) ) {
 			$current_tab = array_key_first( self::$tabs );
