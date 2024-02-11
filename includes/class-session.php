@@ -3,8 +3,6 @@ namespace Mobile_BankID_Integration;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-use Personnummer\Personnummer;
-
 /**
  * This class provides an alternative to PHP sessions, because they are not available on all servers and can cause problems.
  *
@@ -56,7 +54,7 @@ class Session {
 	 */
 	public function __construct( int $user_id, $personal_number = null, $time_created = null ) {
 		if ( ! isset( self::$session_secret ) ) {
-			self::$session_secret = $this->get_secret();
+			self::$session_secret = self::get_secret();
 		}
 
 		if ( ! self::$session_secret ) {
@@ -193,7 +191,7 @@ class Session {
 	 *
 	 * @return string|false The session secret or false if not found.
 	 */
-	private function get_secret() {
+	private static function get_secret() {
 		if ( defined( 'MOBILE_BANKID_INTEGRATION_SESSION_SECRET' ) ) {
 			return MOBILE_BANKID_INTEGRATION_SESSION_SECRET;
 		} else {
@@ -230,6 +228,11 @@ class Session {
 			return false;
 		}
 
+        // Check if session secret is set.
+        if ( ! isset( self::$session_secret ) ) {
+            self::$session_secret = self::get_secret();
+        }
+
 		$session = $_COOKIE['mobile_bankid_integration_session'];
 
 		$session = openssl_decrypt( $session, 'aes-256-cbc', self::$session_secret, 0, substr( self::$session_secret, 0, 16 ) );
@@ -257,7 +260,7 @@ class Session {
 			return false;
 		}
 
-		$session = new Session( $session->user_id );
+		$session = new Session( $session->user_id, $session->personal_number, $session->time_created );
 
 		return $session;
 	}
