@@ -1,7 +1,7 @@
 <?php
 namespace Mobile_BankID_Integration;
 
-defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 new Activation();
 
@@ -38,6 +38,9 @@ class Activation {
         ) $charset_collate;";
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
+
+		// Create session secret.
+		Session::install();
 	}
 
 	/**
@@ -49,6 +52,9 @@ class Activation {
 		// Delete DB table.
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %s', $wpdb->prefix . 'mobile_bankid_integration_auth_responses' ) ); // phpcs:ignore -- Safe query.
+
+		// Delete session secret.
+		Session::uninstall();
 	}
 
 	/**
