@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 ?>
 
 <h1><?php esc_html_e( 'Settings', 'mobile-bankid-integration' ); ?></h1>

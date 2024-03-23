@@ -228,12 +228,12 @@ class Session {
 			return false;
 		}
 
-        // Check if session secret is set.
-        if ( ! isset( self::$session_secret ) ) {
-            self::$session_secret = self::get_secret();
-        }
+		// Check if session secret is set.
+		if ( ! isset( self::$session_secret ) ) {
+			self::$session_secret = self::get_secret();
+		}
 
-		$session = $_COOKIE['mobile_bankid_integration_session'];
+		$session = $_COOKIE['mobile_bankid_integration_session']; // phpcs:ignore -- The data is handled securely by the openssl functions.
 
 		$session = openssl_decrypt( $session, 'aes-256-cbc', self::$session_secret, 0, substr( self::$session_secret, 0, 16 ) );
 

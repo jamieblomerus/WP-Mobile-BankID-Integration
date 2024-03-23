@@ -1,9 +1,11 @@
 <?php
 /**
  * Setup view on activation.
+ * 
+ * @package mobile-bankid-integration
  */
 
- defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 $step = isset( $_GET['step'] ) ? $_GET['step'] : 1; // phpcs:ignore
 $step = intval( $step );

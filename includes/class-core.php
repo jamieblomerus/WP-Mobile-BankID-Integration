@@ -1,7 +1,7 @@
-<?php
+<?php // phpcs:ignore
 namespace Mobile_BankID_Integration;
 
-defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 use Dimafe6\BankID\Service\BankIDService;
 

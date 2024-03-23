@@ -1,7 +1,7 @@
 <?php
 namespace Mobile_BankID_Integration\WP_Login;
 
-defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 new Login();
 
