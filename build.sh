@@ -35,12 +35,12 @@ cp -r vendor build
 cp -r mobile-bankid-integration.php build
 cp -r index.php build
 cp -r readme.txt build
+cp -r LICENSE.md build
 
 # If argument is "production", add license file, minimize js/css and update version number
 if [ $1 == "production" ]
 then
   echo "Building production version $2..."
-  cp -r LICENSE.md build/LICENSE.md
   gsed -i 's/Version: .*/Version: '$2'/g' build/mobile-bankid-integration.php
   gsed -i "s/define( 'MOBILE_BANKID_INTEGRATION_VERSION', '.*' );/define( 'MOBILE_BANKID_INTEGRATION_VERSION', '$2' );/g" build/mobile-bankid-integration.php
   #Minimize CSS
@@ -59,7 +59,6 @@ if [ $1 == "dev" ]
 then
   echo "Building development version..."
   gsed -i 's/Plugin Name: Mobile BankID Integration/Plugin Name: Mobile BankID Integration DEV/g' build/mobile-bankid-integration.php
-  cp -r _dev/LICENSE.md build/LICENSE.md
 fi
 
 # Zip contents of build folder
