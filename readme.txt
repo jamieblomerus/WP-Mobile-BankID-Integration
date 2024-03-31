@@ -3,7 +3,7 @@ Contributors: jamieblomerus
 Tags: mobile bankid, bankid, authentication
 Requires at least: 5.2
 Tested up to: 6.5
-Stable tag: 1.1
+Stable tag: 1.1.1
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -36,6 +36,10 @@ If you would like to suggest any feature to be added, please write an email to o
 
 == Changelog ==
 
+= 1.1.1 =
+* Changed the license of the plugin to GPLv3 or later.
+* Fixed a minor problem with translations.
+
 = 1.1 =
 * Replaced the use of $_SESSION with the use of a custom system to avoid bugs.
 * Minor improvements to code quality.
@@ -54,6 +58,9 @@ If you would like to suggest any feature to be added, please write an email to o
 * I ensured the plugin is stable for production use.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+This update changes the license of the plugin to GPLv3 or later. And fixes a minor problem with translations.
 
 = 1.1 =
 This update improves the plugin's compatibility with some hosting providers and plugins.
