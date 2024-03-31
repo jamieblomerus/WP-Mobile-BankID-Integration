@@ -196,7 +196,7 @@ class Admin {
 		<label for="mobile-bankid-integration-terms"><?php esc_html_e( 'Terms to show with login (Supports HTML)', 'mobile-bankid-integration' ); ?></label>
 		<textarea name="mobile-bankid-integration-terms" id="mobile-bankid-integration-terms" rows="5"><?php // phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.
 		echo wp_kses(
-			get_option( 'mobile_bankid_integration_terms', __( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.' ) ),
+			get_option( 'mobile_bankid_integration_terms', __( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
 			array(
 				'a'      => array(
 					'href'   => array(),

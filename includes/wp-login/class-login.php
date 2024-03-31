@@ -55,7 +55,7 @@ class Login {
 		<p class="bankid-terms">
 			<?php
 			echo wp_kses(
-				get_option( 'mobile_bankid_integration_terms', esc_html__( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.' ) ),
+				get_option( 'mobile_bankid_integration_terms', esc_html__( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
 				array(
 					'a'      => array(
 						'href'   => array(),

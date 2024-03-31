@@ -146,7 +146,7 @@ class Checkout { // phpcs:ignore
 		<div id="bankid-checkout-block">
 			<div class="wc-block-components-notice-banner is-warning" style="display:block;" role="alert">
 				<h2><?php esc_html_e( 'Mobile BankID Authentication required', 'mobile-bankid-integration' ); ?></h3>
-				<p><?php esc_html_e( 'This site requires you to be authenticated through Mobile BankID to make an order.' ); ?></p>
+				<p><?php esc_html_e( 'This site requires you to be authenticated through Mobile BankID to make an order.', 'mobile-bankid-integration' ); ?></p>
 
 				<p><a href="#" id="bankid-login-button" class="button wp-element-button" style="text-align: center;"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ); ?></a></p>
 				<p><?php esc_html_e( 'If you do not have Mobile BankID, you can download it from your bank.', 'mobile-bankid-integration' ); ?></p>
