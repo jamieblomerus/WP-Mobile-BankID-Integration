@@ -24,6 +24,10 @@ And more.
 I am currently working on creating documentation for the plugin. Right now I'll just ask you to be patient.
 You can use the WordPress support forum for help with installing and configuring the plugin.
 
+**Legal notice**
+
+This plugin is not affiliated with Finansiell ID-Teknik BID AB or any bank. Your use of the BankID Service is governed by your agreement with your bank or any other party that provides you with the BankID Service.
+
 == Frequently Asked Questions ==
 
 = Can I help translate it to my language? =
@@ -33,6 +37,13 @@ Contribute to the translation of this plugin at Translating WordPress.
 = I do miss one feature =
 
 If you would like to suggest any feature to be added, please write an email to our project manager [jamie.blomerus@protonmail.com](mailto:jamie.blomerus@protonmail.com).
+
+= How do I buy the BankID service? =
+To buy the BankID service and receive a FP certificate, you need to contact your bank. For more information, please visit this [guide](https://www.bankid.com/en/foretag/anslut-foeretag).
+
+= I want to test the plugin, but I don't have a Mobile BankID or FP certificate =
+
+If you are only testing the service out, you can during the setup choose to run the plugin against the testing environment and use a [test BankID](https://www.bankid.com/en/utvecklare/test/skaffa-testbankid/test-bankid-get).
 
 == Changelog ==
 
