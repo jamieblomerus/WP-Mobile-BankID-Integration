@@ -51,8 +51,9 @@ class Activation {
 	public function deactivation() {
 		// Delete DB table.
 		global $wpdb;
-		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %s', $wpdb->prefix . 'mobile_bankid_integration_auth_responses' ) ); // phpcs:ignore -- Safe query.
-
+		$table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
+		$wpdb->query("DROP TABLE IF EXISTS `{$table_name}`");
+		
 		// Delete session secret.
 		Session::uninstall();
 	}
