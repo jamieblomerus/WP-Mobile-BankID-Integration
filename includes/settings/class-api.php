@@ -77,17 +77,11 @@ class API {
 	 */
 	public function configuration() {
 		// Get params.
-		$endpoint    = isset( $_POST['endpoint'] ) ? sanitize_text_field( wp_unslash( $_POST['endpoint'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
 		$certificate = isset( $_POST['certificate'] ) ? sanitize_text_field( wp_unslash( $_POST['certificate'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
 		$password    = isset( $_POST['password'] ) ? $_POST['password'] : null; // phpcs:ignore
 
-		// Check endpoint domain is one of the allowed endpoints.
-		if ( ! isset( $endpoint ) || ! preg_match( '/^https:\/\/appapi2\.(test\.)?bankid\.com\/rp\/v5\.1$/', $endpoint ) ) {
-			return new \WP_Error( 'invalid_endpoint', esc_html__( 'API Endpoint is not valid.', 'mobile-bankid-integration' ), array( 'status' => 400 ) );
-		}
-
 		// Check that submitted certificate is valid and exists.
-		if ( ! isset( $certificate ) || ! preg_match( '/^\/([A-z0-9-_+]+\/)*([A-z0-9]+\.(p12))$/', $certificate ) ) {
+		if ( ! isset( $certificate ) || ! preg_match( '/^\/([A-z0-9-_+]+\/)*([A-z0-9]+\.(pem))$/', $certificate ) ) {
 			return new \WP_Error( 'invalid_certificate', esc_html__( 'Certificate is not valid.', 'mobile-bankid-integration' ), array( 'status' => 400 ) );
 		}
 		if ( ! file_exists( $certificate ) ) {
@@ -110,8 +104,8 @@ class API {
 		// TODO: Check that password is valid, test it against the certificate.
 
 		// Update the WP options.
+		update_option( 'mobile_bankid_integration_env', 'production' );
 		update_option( 'mobile_bankid_integration_certificate', $certificate );
-		update_option( 'mobile_bankid_integration_endpoint', $endpoint );
 		update_option( 'mobile_bankid_integration_password', $password );
 
 		return true;
@@ -126,16 +120,10 @@ class API {
 	 * @return bool|\WP_Error
 	 */
 	public function auto_configure_test_env() {
-		// Check if certificate exists.
-		$certificate_dir = MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'assets/certs/';
-		if ( ! file_exists( $certificate_dir . 'testenv.p12' ) ) {
-			return new \WP_Error( 'certificate_does_not_exist', esc_html__( 'Certificate does not exist.', 'mobile-bankid-integration' ), array( 'status' => 400 ) );
-		}
-
-		// Update the WP options.
-		update_option( 'mobile_bankid_integration_certificate', $certificate_dir . 'testenv.p12' );
-		update_option( 'mobile_bankid_integration_endpoint', 'https://appapi2.test.bankid.com/rp/v5.1/' );
-		update_option( 'mobile_bankid_integration_password', 'qwerty123' );
+		// Update the WP option.
+		update_option( 'mobile_bankid_integration_env', 'test' );
+		update_option( 'mobile_bankid_integration_certificate', 'test-env' );
+		update_option( 'mobile_bankid_integration_password', 'test-env' );
 
 		return true;
 	}

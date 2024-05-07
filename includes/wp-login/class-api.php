@@ -78,23 +78,26 @@ class API {
 		$time            = time();
 		$time_since_auth = $time - $db_row['time_created'];
 
-		$status = $instance->get_bankid_service()->collectResponse( $auth_response['orderRef'] );
+		$status = $instance->get_bankid_service()->collect( $_GET['orderRef'] ); // phpcs:ignore
 
-		if ( 'failed' === $status->status ) {
+		$status = $status->getBody();
+
+		if ( 'failed' === $status['status'] ) {
 			$instance->deleteAuthResponseFromDB( $order_ref );
 			$return = array(
 				'qr'              => null,
 				'orderRef'        => $order_ref,
 				'time_since_auth' => $time_since_auth,
 				'status'          => 'failed',
-				'hintCode'        => $status->hintCode, // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				'hintCode'        => $status['hintCode'], // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			);
 			return $return;
 		}
 
-		if ( 'complete' === $status->status ) {
+		if ( 'complete' === $status['status'] ) {
 			$instance->deleteAuthResponseFromDB( $order_ref );
-			if ( $this->sign_in_as_user_from_bankid( $status->completionData->user->personalNumber, $status->completionData->user->givenName, $status->completionData->user->surname ) === false ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$create_user = $this->sign_in_as_user_from_bankid( $status['completionData']['user']['personalNumber'], $status['completionData']['user']['givenName'], $status['completionData']['user']['surname'] );
+			if ( false === $create_user ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				return array(
 					'qr'              => null,
 					'orderRef'        => $order_ref,
@@ -116,8 +119,8 @@ class API {
 			'qr'              => $qr_code,
 			'orderRef'        => $order_ref,
 			'time_since_auth' => $time_since_auth,
-			'status'          => $status->status,
-			'hintCode'        => $status->hintCode ?? '', // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			'status'          => $status['status'],
+			'hintCode'        => $status['hintCode'] ?? '', // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		);
 	}
 
@@ -157,6 +160,7 @@ class API {
 		} else {
 			$user_id = $user->ID;
 		}
+		wp_clear_auth_cookie();
 		wp_set_current_user( $user_id );
 		wp_set_auth_cookie( $user_id );
 		Core::$instance->createAuthCookie( $user_id );

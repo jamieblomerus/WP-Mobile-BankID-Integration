@@ -139,22 +139,29 @@ class Admin {
 	 * @return void
 	 */
 	private function page_settings() {
+		$env = get_option( 'mobile_bankid_integration_env' );
 		?>
 <form autocomplete="off">
 	<h2><?php esc_html_e( 'Basic configuration', 'mobile-bankid-integration' ); ?></h2>
-	<p class="description"><?php esc_html_e( 'These settings can only be changed by running the setup wizard again.', 'mobile-bankid-integration' ); ?></p>
-	<div class="form-group">
-		<label for="mobile-bankid-integration-endpoint"><?php esc_html_e( 'API Endpoint', 'mobile-bankid-integration' ); ?></label>
-		<input type="text" name="mobile-bankid-integration-endpoint" id="mobile-bankid-integration-endpoint" disabled readonly value="<?php echo esc_url( get_option( 'mobile_bankid_integration_endpoint' ) ); ?>">
-	</div>
-	<div class="form-group">
-		<label for="mobile-bankid-integration-certificate"><?php esc_html_e( 'Certificate location (absolute path)', 'mobile-bankid-integration' ); ?></label>
-		<input type="text" name="mobile-bankid-integration-certificate" id="mobile-bankid-integration-certificate" disabled readonly value="<?php echo esc_attr( get_option( 'mobile_bankid_integration_certificate' ) ); ?>">
-	</div>
-	<div class="form-group">
-		<label for="mobile-bankid-integration-password"><?php esc_html_e( 'Certificate password', 'mobile-bankid-integration' ); ?></label>
-		<input type="password" name="mobile-bankid-integration-password" id="mobile-bankid-integration-password" autocomplete="off" disabled readonly value="<?php echo get_option( 'mobile_bankid_integration_password' ) ? '************' : '';?>">
-	</div>
+	<?php
+	if ( 'production' === $env ) {
+		?>
+		<p class="description"><?php esc_html_e( 'These settings can only be changed by running the setup wizard again.', 'mobile-bankid-integration' ); ?></p>
+		<div class="form-group">
+			<label for="mobile-bankid-integration-certificate"><?php esc_html_e( 'Certificate location (absolute path)', 'mobile-bankid-integration' ); ?></label>
+			<input type="text" name="mobile-bankid-integration-certificate" id="mobile-bankid-integration-certificate" disabled readonly value="<?php echo esc_attr( get_option( 'mobile_bankid_integration_certificate' ) ); ?>">
+		</div>
+		<div class="form-group">
+			<label for="mobile-bankid-integration-password"><?php esc_html_e( 'Certificate password', 'mobile-bankid-integration' ); ?></label>
+			<input type="password" name="mobile-bankid-integration-password" id="mobile-bankid-integration-password" autocomplete="off" disabled readonly value="<?php echo get_option( 'mobile_bankid_integration_password' ) ? '************' : '';?>">
+		</div>
+		<?php
+	} else {
+		?>
+		<p class="description"><?php esc_html_e( 'The plugin is configured for test environment. To change this, run the setup wizard again.', 'mobile-bankid-integration' ); ?></p>
+		<?php
+	}
+	?>
 
 	<h2><?php esc_html_e( 'Login page', 'mobile-bankid-integration' ); ?></h2>
 	<div class="form-group">
