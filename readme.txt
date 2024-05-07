@@ -47,6 +47,10 @@ If you are only testing the service out, you can during the setup choose to run 
 
 == Changelog ==
 
+= 1.2 =
+* Added support for API version 6.0 while removing support for API version 5.1.
+* Fixed some errors being thrown on activation and deactivation of the plugin.
+
 = 1.1.1 =
 * Changed the license of the plugin to GPLv3 or later.
 * Fixed a minor problem with translations.
@@ -69,6 +73,9 @@ If you are only testing the service out, you can during the setup choose to run 
 * I ensured the plugin is stable for production use.
 
 == Upgrade Notice ==
+
+= 1.2 =
+Major update. Requires total reinstallation of the plugin.
 
 = 1.1.1 =
 This update changes the license of the plugin to GPLv3 or later. And fixes a minor problem with translations.
