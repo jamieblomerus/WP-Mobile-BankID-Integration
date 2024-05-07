@@ -86,7 +86,6 @@ function configureSubmit() {
     }
 
     formdata = new FormData();
-    formdata.append('endpoint', document.getElementById('mobile-bankid-integration-endpoint').value);
     formdata.append('certificate', document.getElementById('mobile-bankid-integration-certificate').value);
     formdata.append('password', document.getElementById('mobile-bankid-integration-password').value);
 

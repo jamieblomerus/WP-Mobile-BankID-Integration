@@ -3,7 +3,8 @@ namespace Mobile_BankID_Integration;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
-use Dimafe6\BankID\Service\BankIDService;
+use LJSystem\BankID\BankID;
+use LJSystem\BankID\BankIDResponse;
 
 new Core();
 
@@ -23,9 +24,9 @@ class Core {
 	/**
 	 * BankIDService object.
 	 *
-	 * @var BankIDService|null
+	 * @var BankID|null
 	 */
-	private BankIDService $bankid_service;
+	private BankID $bankid_service;
 
 	/**
 	 * Class constructor that sets static $instance variable and adds actions.
@@ -45,7 +46,7 @@ class Core {
 	 * @return void
 	 */
 	public function init() {
-		if ( get_option( 'mobile_bankid_integration_endpoint' ) && get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) ) {
+		if ( get_option( 'mobile_bankid_integration_env' ) && get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) ) {
 			$this->create_bankid_service();
 			do_action( 'mobile_bankid_integration_init' );
 		}
@@ -57,6 +58,7 @@ class Core {
 	 * @return void
 	 */
 	private function create_bankid_service() {
+		/*
 		$this->bankid_service = new BankIDService(
 			get_option( 'mobile_bankid_integration_endpoint' ),
 			$_SERVER['REMOTE_ADDR'], // phpcs:ignore -- Does always exist and isn't user input.
@@ -65,12 +67,24 @@ class Core {
 				'cert'   => array( get_option( 'mobile_bankid_integration_certificate' ), get_option( 'mobile_bankid_integration_password' ) ),
 			)
 		);
+		*/
+		if ( 'test' === get_option( 'mobile_bankid_integration_env' ) ) {
+			$this->bankid_service = new BankID();
+		} else {
+			$this->bankid_service = new BankID(
+				'prod',
+				get_option( 'mobile_bankid_integration_certificate' ),
+				MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'assets/certs/prod_cacert.cer',
+				null,
+				get_option( 'mobile_bankid_integration_password' )
+			);
+		}
 	}
 
 	/**
 	 * Get BankIDService object.
 	 *
-	 * @return BankIDService
+	 * @return BankID
 	 */
 	public function get_bankid_service() {
 		return $this->bankid_service;
@@ -86,12 +100,12 @@ class Core {
 			$this->create_bankid_service();
 		}
 
-		$response = $this->bankid_service->getAuthResponse();
+		$response = $this->bankid_service->authenticate( $_SERVER['REMOTE_ADDR'] );
 		// Save the response in DB.
-		$this->saveAuthResponseToDB( $response->orderRef, $response ); // phpcs:ignore -- We cannot modify $orderRef to snake_case.
+		$this->saveAuthResponseToDB( $response->getOrderRef(), $response->getBody() );
 		return array(
-			'orderRef'       => $response->orderRef, // phpcs:ignore -- We cannot modify $orderRef to snake_case.
-			'autoStartToken' => $response->autoStartToken, // phpcs:ignore -- We cannot modify $autoStartToken to snake_case.
+			'orderRef'       => $response->getOrderRef(),
+			'autoStartToken' => $response->getAutoStartToken(),
 		);
 	}
 
@@ -114,7 +128,7 @@ class Core {
 		}
 		return array(
 			'time_created' => $response->time_created,
-			'response'     => $this->convert_json_order_response_to_array( $response->response ),
+			'response'     => json_decode( $response->response, true ),
 			'orderRef'     => $response->orderRef, // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 		);
 	}
@@ -133,7 +147,7 @@ class Core {
 			$table_name,
 			array(
 				'time_created' => time(),
-				'response'     => $this->convert_order_response_to_json( $response ),
+				'response'     => json_encode( $response ),
 				'orderRef'     => $orderRef, // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 			)
 		);
@@ -241,58 +255,5 @@ class Core {
 		}
 
 		$session->destroy();
-	}
-
-	/**
-	 * Convert Dimafe6\BankID\OrderResponse to json.
-	 *
-	 * @param Dimafe6\BankID\OrderResponse $order_response Order response.
-	 * @return array
-	 * @since 1.0.1
-	 */
-	private function convert_order_response_to_json( $order_response ): string {
-		// Make sure that $order_response is an instance of Dimafe6\BankID\Model\OrderResponse.
-		if ( ! $order_response instanceof \Dimafe6\BankID\Model\OrderResponse ) {
-			return array();
-		}
-		$array = array(
-			'orderRef'       => $order_response->orderRef, // phpcs:ignore -- We shall not modify $orderRef to snake_case.
-			'autoStartToken' => $order_response->autoStartToken // phpcs:ignore -- We shall not modify $autoStartToken to snake_case.
-		);
-		// If property qrStartToken exists, add it to the array.
-		if ( property_exists( $order_response, 'qrStartToken' ) ) {
-			$array['qrStartToken'] = $order_response->qrStartToken; // phpcs:ignore -- We shall not modify $qrStartToken to snake_case.
-		}
-		// If property qrStartSecret exists, add it to the array.
-		if ( property_exists( $order_response, 'qrStartSecret' ) ) {
-			$array['qrStartSecret'] = $order_response->qrStartSecret; // phpcs:ignore -- We shall not modify $qrStartSecret to snake_case.
-		}
-
-		$json = wp_json_encode( $array );
-
-		return $json ? $json : '{}';
-	}
-
-	/**
-	 * Convert JSON OrderResponse to array after checking if it is valid.
-	 *
-	 * @param string $json JSON OrderResponse.
-	 * @throws \Exception If JSON or data is not valid.
-	 * @return array
-	 * @since 1.0.1
-	 */
-	private function convert_json_order_response_to_array( $json ): array {
-		// Check each property in the JSON OrderResponse against [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
-		// If any of the properties is not valid, return an empty array.
-		$json = json_decode( $json, true );
-		if ( ! is_array( $json ) ) {
-			throw new \Exception( 'Invalid JSON' );
-		}
-		foreach ( $json as $key => $value ) {
-			if ( ! preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $value ) ) {
-				throw new \Exception( 'Data is not valid' );
-			}
-		}
-		return $json;
 	}
 }
