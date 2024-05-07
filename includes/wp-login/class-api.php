@@ -96,7 +96,8 @@ class API {
 
 		if ( 'complete' === $status['status'] ) {
 			$instance->deleteAuthResponseFromDB( $order_ref );
-			if ( $this->sign_in_as_user_from_bankid( $status['completionData']['user']['personalNumber'], $status['completionData']['user']['givenName'], $status['completionData']['user']['surname'] ) === false ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$create_user = $this->sign_in_as_user_from_bankid( $status['completionData']['user']['personalNumber'], $status['completionData']['user']['givenName'], $status['completionData']['user']['surname'] );
+			if ( false === $create_user ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				return array(
 					'qr'              => null,
 					'orderRef'        => $order_ref,
@@ -159,6 +160,7 @@ class API {
 		} else {
 			$user_id = $user->ID;
 		}
+		wp_clear_auth_cookie();
 		wp_set_current_user( $user_id );
 		wp_set_auth_cookie( $user_id );
 		Core::$instance->createAuthCookie( $user_id );

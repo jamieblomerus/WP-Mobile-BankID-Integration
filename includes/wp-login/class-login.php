@@ -32,8 +32,8 @@ class Login {
 	 * @param string $redirect URL to redirect to after login.
 	 * @return void
 	 */
-	public function login_button( $redirect = null ) {
-		if ( null === $redirect ) {
+	public function login_button( $redirect = '' ) {
+		if ( empty( $redirect ) ) {
 			$redirect = '/wp-admin/';
 		}
 		echo '<p><a href="#" target="_self" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center; margin-bottom: 1em;">' . esc_html__( 'Login with BankID', 'mobile-bankid-integration' ) . '</a></p>';
