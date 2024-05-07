@@ -91,7 +91,7 @@ class Admin {
 	 */
 	public function redirect_to_setup_if_incomplete() {
 		if ( get_admin_page_parent() === 'mobile-bankid-integration' ) {
-			if ( ! ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_endpoint' ) ) ) {
+			if ( ! ( get_option( 'mobile_bankid_integration_env' ) && get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) ) ) {
 				// Redirect to setup wizard.
 				wp_safe_redirect( home_url() . '/wp-admin/admin.php?page=mobile-bankid-integration-setup' );
 				exit();
