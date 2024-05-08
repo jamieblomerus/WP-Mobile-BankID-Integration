@@ -4,7 +4,6 @@ namespace Mobile_BankID_Integration;
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 use LJSystem\BankID\BankID;
-use LJSystem\BankID\BankIDResponse;
 
 new Core();
 
@@ -90,7 +89,7 @@ class Core {
 			$this->create_bankid_service();
 		}
 
-		$response = $this->bankid_service->authenticate( $_SERVER['REMOTE_ADDR'] );
+		$response = $this->bankid_service->authenticate( $_SERVER['REMOTE_ADDR'] ); // phpcs:ignore
 		// Save the response in DB.
 		$this->saveAuthResponseToDB( $response->getOrderRef(), $response->getBody() );
 		return array(
@@ -137,7 +136,7 @@ class Core {
 			$table_name,
 			array(
 				'time_created' => time(),
-				'response'     => json_encode( $response ),
+				'response'     => wp_json_encode( $response ),
 				'orderRef'     => $orderRef, // phpcs:ignore -- We shall not modify $orderRef to snake_case.
 			)
 		);

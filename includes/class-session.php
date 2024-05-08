@@ -106,10 +106,10 @@ class Session {
 	 * @return void
 	 */
 	public static function install() {
-		// Include the WordPress filesystem API functions
-		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		// Include the WordPress filesystem API functions.
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 		WP_Filesystem();
-		
+
 		// Check if a secret already exists.
 		if ( defined( 'MOBILE_BANKID_INTEGRATION_SESSION_SECRET' ) || get_option( 'mobile_bankid_integration_session_secret' ) ) {
 			return;
@@ -151,8 +151,8 @@ class Session {
 	 * @return void
 	 */
 	public static function uninstall() {
-		// Include the WordPress filesystem API functions
-		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		// Include the WordPress filesystem API functions.
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 		WP_Filesystem();
 
 		// Check if a secret exists.
