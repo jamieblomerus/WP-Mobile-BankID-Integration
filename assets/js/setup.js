@@ -57,11 +57,6 @@ function confirmconfirmation(id) {
 }
 
 function configureSubmit() {
-    // Check if all required fields are filled
-    if (!document.getElementById('mobile-bankid-integration-endpoint').value) {
-        alert(mobile_bankid_integration_setup_localization.endpoint_required);
-        return false;
-    }
     if (!document.getElementById('mobile-bankid-integration-certificate').value) {
         alert(mobile_bankid_integration_setup_localization.certificate_required);
         return false;
