@@ -58,21 +58,11 @@ class Core {
 	 * @return void
 	 */
 	private function create_bankid_service() {
-		/*
-		$this->bankid_service = new BankIDService(
-			get_option( 'mobile_bankid_integration_endpoint' ),
-			$_SERVER['REMOTE_ADDR'], // phpcs:ignore -- Does always exist and isn't user input.
-			array(
-				'verify' => false,
-				'cert'   => array( get_option( 'mobile_bankid_integration_certificate' ), get_option( 'mobile_bankid_integration_password' ) ),
-			)
-		);
-		*/
 		if ( 'test' === get_option( 'mobile_bankid_integration_env' ) ) {
 			$this->bankid_service = new BankID();
 		} else {
 			$this->bankid_service = new BankID(
-				'prod',
+				BankID::ENVIRONMENT_PRODUCTION,
 				get_option( 'mobile_bankid_integration_certificate' ),
 				MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'assets/certs/prod_cacert.cer',
 				null,
