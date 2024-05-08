@@ -1,4 +1,5 @@
 <?php
+
 namespace Mobile_BankID_Integration;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -9,6 +10,7 @@ new Admin();
  * This class handles the admin page and allows other plugins to add tabs to it.
  */
 class Admin {
+
 
 	/**
 	 * Array of tabs.
@@ -111,7 +113,7 @@ class Admin {
 
 		Session::admin_notice(); // Show admin notice if session secret is not set.
 
-		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : null; // phpcs:ignore -- Sanitization not needed as it is used in array_key_exists().
+		$current_tab = isset($_GET['tab']) ? $_GET['tab'] : null; // phpcs:ignore -- Sanitization not needed as it is used in array_key_exists().
 		if ( ! isset( $current_tab ) || ! array_key_exists( $current_tab, self::$tabs ) ) {
 			$current_tab = array_key_first( self::$tabs );
 		}
@@ -141,166 +143,176 @@ class Admin {
 	private function page_settings() {
 		$env = get_option( 'mobile_bankid_integration_env' );
 		?>
-<form autocomplete="off">
-	<h2><?php esc_html_e( 'Basic configuration', 'mobile-bankid-integration' ); ?></h2>
-	<?php
-	if ( 'production' === $env ) {
-		?>
-		<p class="description"><?php esc_html_e( 'These settings can only be changed by running the setup wizard again.', 'mobile-bankid-integration' ); ?></p>
-		<div class="form-group">
-			<label for="mobile-bankid-integration-certificate"><?php esc_html_e( 'Certificate location (absolute path)', 'mobile-bankid-integration' ); ?></label>
-			<input type="text" name="mobile-bankid-integration-certificate" id="mobile-bankid-integration-certificate" disabled readonly value="<?php echo esc_attr( get_option( 'mobile_bankid_integration_certificate' ) ); ?>">
-		</div>
-		<div class="form-group">
-			<label for="mobile-bankid-integration-password"><?php esc_html_e( 'Certificate password', 'mobile-bankid-integration' ); ?></label>
-			<input type="password" name="mobile-bankid-integration-password" id="mobile-bankid-integration-password" autocomplete="off" disabled readonly value="<?php echo get_option( 'mobile_bankid_integration_password' ) ? '************' : '';?>">
-		</div>
-		<?php
-	} else {
-		?>
-		<p class="description"><?php esc_html_e( 'The plugin is configured for test environment. To change this, run the setup wizard again.', 'mobile-bankid-integration' ); ?></p>
-		<?php
-	}
-	?>
-
-	<h2><?php esc_html_e( 'Login page', 'mobile-bankid-integration' ); ?></h2>
-	<div class="form-group">
-		<label for="mobile-bankid-integration-wplogin"><?php esc_html_e( 'Show BankID on login page', 'mobile-bankid-integration' ); ?></label>
-		<select name="mobile-bankid-integration-wplogin" id="mobile-bankid-integration-wplogin">
-			<option value="as_alternative" 
+		<form autocomplete="off">
+			<h2><?php esc_html_e( 'Basic configuration', 'mobile-bankid-integration' ); ?></h2>
 			<?php
-			if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'as_alternative' ) {
-				echo 'selected'; }
-			?>
-			><?php esc_html_e( 'Show as alternative to traditional login', 'mobile-bankid-integration' ); ?></option>
-			<option value="hide" 
-			<?php
-			if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'hide' ) {
-				echo 'selected'; }
-			?>
-			><?php esc_html_e( 'Do not show at all', 'mobile-bankid-integration' ); ?></option>
-		</select>
-	</div><br>
-	<div class="form-group">
-		<label for="mobile-bankid-integration-registration"><?php esc_html_e( 'Allow registration with BankID', 'mobile-bankid-integration' ); ?></label>
-		<select name="mobile-bankid-integration-registration" id="mobile-bankid-integration-registration">
-			<option value="yes" 
-			<?php
-			if ( get_option( 'mobile_bankid_integration_registration' ) === 'yes' ) {
-				echo 'selected'; }
-			?>
-			><?php esc_html_e( 'Yes', 'mobile-bankid-integration' ); ?></option>
-			<option value="no" 
-			<?php
-			if ( get_option( 'mobile_bankid_integration_registration' ) === 'no' ) {
-				echo 'selected'; }
-			?>
-			><?php esc_html_e( 'No', 'mobile-bankid-integration' ); ?></option>
-		</select>
-		<p class="description"><?php esc_html_e( 'This setting does not affect, nor is affected by, the native "Allow registration" setting.', 'mobile-bankid-integration' ); ?></p>
-	</div>
-	<div class="form-group">
-		<label for="mobile-bankid-integration-terms"><?php esc_html_e( 'Terms to show with login (Supports HTML)', 'mobile-bankid-integration' ); ?></label>
-		<textarea name="mobile-bankid-integration-terms" id="mobile-bankid-integration-terms" rows="5"><?php // phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.
-		echo wp_kses(
-			get_option( 'mobile_bankid_integration_terms', __( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
-			array(
-				'a'      => array(
-					'href'   => array(),
-					'title'  => array(),
-					'target' => array(),
-				),
-				'br'     => array(),
-				'em'     => array(),
-				'strong' => array(),
-				'i'      => array(),
-			)
-		);
-		// phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.?></textarea>
-		<p class="description"><?php esc_html_e( 'Following HTML elements are supported: a, br, em, strong and i. All others will be escaped.', 'mobile-bankid-integration' ); ?></p>
-	</div>
-</form>
-<button class="button button-primary" onclick="settingsSubmit()" id="mobile-bankid-integration-save"><?php esc_html_e( 'Save changes', 'mobile-bankid-integration' ); ?></button>
-<style>
-	form {
-		width: fit-content;
-	}
-	form .description {
-		/* Line break when description is too long */
-		max-width: 500px;
-		word-break: break-word;
-	}
-	.form-group {
-		margin-bottom: 1rem;
-		box-sizing: border-box;
-		width: 100%;
-	}
-	.form-group label {
-		font-weight: bold;
-		display: block;
-		margin-bottom: 0.5rem;
-	}
-	.form-group input[type="text"],
-	.form-group input[type="password"],
-	.form-group textarea {
-		width: 100%;
-		padding: 0.5rem;
-		border: 1px solid #ddd;
-		border-radius: 0.25rem;
-		background-color: #fff;
-		font-size: 1rem;
-		line-height: 1.2;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-		resize: none;
-	}
-	.form-group select {
-		width: 100%;
-		padding: 0.5rem;
-		border: 1px solid #ddd;
-		border-radius: 0.25rem;
-		background-color: #fff;
-		font-size: 1rem;
-		line-height: 1.2;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-	}
-</style>
-<script>
-	function settingsSubmit() {
-		document.getElementById("mobile-bankid-integration-save").innerHTML = "<?php esc_html_e( 'Saving...', 'mobile-bankid-integration' ); ?>";
-		document.getElementById("mobile-bankid-integration-save").disabled = true;
-		var wplogin = document.getElementById("mobile-bankid-integration-wplogin").value;
-		var registration = document.getElementById("mobile-bankid-integration-registration").value;
-		var terms = document.getElementById("mobile-bankid-integration-terms").value;
-		
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "<?php echo esc_url( rest_url( 'mobile-bankid-integration/v1/settings' ) ) . '/settings'; ?>", true);
-		xhr.setRequestHeader("X-WP-Nonce", "<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ); ?>");
-
-		xhr.onload = function() {
-			if (this.status == 200) {
-				document.getElementById("mobile-bankid-integration-save").innerHTML = "<?php esc_html_e( 'Saved!', 'mobile-bankid-integration' ); ?>";
-				setTimeout(function() {
-					document.getElementById("mobile-bankid-integration-save").innerHTML = "<?php esc_html_e( 'Save changes', 'mobile-bankid-integration' ); ?>";
-					document.getElementById("mobile-bankid-integration-save").disabled = false;
-				}, 2000);
+			if ( 'production' === $env ) {
+				?>
+				<p class="description"><?php esc_html_e( 'These settings can only be changed by running the setup wizard again.', 'mobile-bankid-integration' ); ?></p>
+				<div class="form-group">
+					<label for="mobile-bankid-integration-certificate"><?php esc_html_e( 'Certificate location (absolute path)', 'mobile-bankid-integration' ); ?></label>
+					<input type="text" name="mobile-bankid-integration-certificate" id="mobile-bankid-integration-certificate" disabled readonly value="<?php echo esc_attr( get_option( 'mobile_bankid_integration_certificate' ) ); ?>">
+				</div>
+				<div class="form-group">
+					<label for="mobile-bankid-integration-password"><?php esc_html_e( 'Certificate password', 'mobile-bankid-integration' ); ?></label>
+					<input type="password" name="mobile-bankid-integration-password" id="mobile-bankid-integration-password" autocomplete="off" disabled readonly value="<?php echo get_option( 'mobile_bankid_integration_password' ) ? '************' : ''; ?>">
+				</div>
+				<?php
 			} else {
-				response = JSON.parse(this.responseText);
-				alert(mobile_bankid_integration_setup_localization.configuration_failed + response['message']);
+				?>
+				<p class="description"><?php esc_html_e( 'The plugin is configured for test environment. To change this, run the setup wizard again.', 'mobile-bankid-integration' ); ?></p>
+				<?php
 			}
-		}
+			?>
 
-		formdata = new FormData();
-		formdata.append("wplogin", wplogin);
-		formdata.append("registration", registration);
-		formdata.append("terms", terms);
+			<h2><?php esc_html_e( 'Login page', 'mobile-bankid-integration' ); ?></h2>
+			<div class="form-group">
+				<label for="mobile-bankid-integration-wplogin"><?php esc_html_e( 'Show BankID on login page', 'mobile-bankid-integration' ); ?></label>
+				<select name="mobile-bankid-integration-wplogin" id="mobile-bankid-integration-wplogin">
+					<option value="as_alternative" 
+					<?php
+					if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'as_alternative' ) {
+						echo 'selected';
+					}
+					?>
+													><?php esc_html_e( 'Show as alternative to traditional login', 'mobile-bankid-integration' ); ?></option>
+					<option value="hide" 
+					<?php
+					if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'hide' ) {
+						echo 'selected';
+					}
+					?>
+											><?php esc_html_e( 'Do not show at all', 'mobile-bankid-integration' ); ?></option>
+				</select>
+			</div><br>
+			<div class="form-group">
+				<label for="mobile-bankid-integration-registration"><?php esc_html_e( 'Allow registration with BankID', 'mobile-bankid-integration' ); ?></label>
+				<select name="mobile-bankid-integration-registration" id="mobile-bankid-integration-registration">
+					<option value="yes" 
+					<?php
+					if ( get_option( 'mobile_bankid_integration_registration' ) === 'yes' ) {
+						echo 'selected';
+					}
+					?>
+										><?php esc_html_e( 'Yes', 'mobile-bankid-integration' ); ?></option>
+					<option value="no" 
+					<?php
+					if ( get_option( 'mobile_bankid_integration_registration' ) === 'no' ) {
+						echo 'selected';
+					}
+					?>
+										><?php esc_html_e( 'No', 'mobile-bankid-integration' ); ?></option>
+				</select>
+				<p class="description"><?php esc_html_e( 'This setting does not affect, nor is affected by, the native "Allow registration" setting.', 'mobile-bankid-integration' ); ?></p>
+			</div>
+			<div class="form-group">
+				<label for="mobile-bankid-integration-terms"><?php esc_html_e( 'Terms to show with login (Supports HTML)', 'mobile-bankid-integration' ); ?></label>
+				<textarea name="mobile-bankid-integration-terms" id="mobile-bankid-integration-terms" rows="5"><?php // phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.
+																												echo wp_kses(
+																													get_option( 'mobile_bankid_integration_terms', __( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
+																													array(
+																														'a'      => array(
+																															'href'   => array(),
+																															'title'  => array(),
+																															'target' => array(),
+																														),
+																														'br'     => array(),
+																														'em'     => array(),
+																														'strong' => array(),
+																														'i'      => array(),
+																													)
+																												);
+																												// phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.
+																												?></textarea>
+				<p class="description"><?php esc_html_e( 'Following HTML elements are supported: a, br, em, strong and i. All others will be escaped.', 'mobile-bankid-integration' ); ?></p>
+			</div>
+		</form>
+		<button class="button button-primary" onclick="settingsSubmit()" id="mobile-bankid-integration-save"><?php esc_html_e( 'Save changes', 'mobile-bankid-integration' ); ?></button>
+		<style>
+			form {
+				width: fit-content;
+			}
 
-		xhr.send(formdata);
-	}
-</script>
+			form .description {
+				/* Line break when description is too long */
+				max-width: 500px;
+				word-break: break-word;
+			}
+
+			.form-group {
+				margin-bottom: 1rem;
+				box-sizing: border-box;
+				width: 100%;
+			}
+
+			.form-group label {
+				font-weight: bold;
+				display: block;
+				margin-bottom: 0.5rem;
+			}
+
+			.form-group input[type="text"],
+			.form-group input[type="password"],
+			.form-group textarea {
+				width: 100%;
+				padding: 0.5rem;
+				border: 1px solid #ddd;
+				border-radius: 0.25rem;
+				background-color: #fff;
+				font-size: 1rem;
+				line-height: 1.2;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+				resize: none;
+			}
+
+			.form-group select {
+				width: 100%;
+				padding: 0.5rem;
+				border: 1px solid #ddd;
+				border-radius: 0.25rem;
+				background-color: #fff;
+				font-size: 1rem;
+				line-height: 1.2;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+			}
+		</style>
+		<script>
+			function settingsSubmit() {
+				document.getElementById("mobile-bankid-integration-save").innerHTML = "<?php esc_html_e( 'Saving...', 'mobile-bankid-integration' ); ?>";
+				document.getElementById("mobile-bankid-integration-save").disabled = true;
+				var wplogin = document.getElementById("mobile-bankid-integration-wplogin").value;
+				var registration = document.getElementById("mobile-bankid-integration-registration").value;
+				var terms = document.getElementById("mobile-bankid-integration-terms").value;
+
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", "<?php echo esc_url( rest_url( 'mobile-bankid-integration/v1/settings' ) ) . '/settings'; ?>", true);
+				xhr.setRequestHeader("X-WP-Nonce", "<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ); ?>");
+
+				xhr.onload = function() {
+					if (this.status == 200) {
+						document.getElementById("mobile-bankid-integration-save").innerHTML = "<?php esc_html_e( 'Saved!', 'mobile-bankid-integration' ); ?>";
+						setTimeout(function() {
+							document.getElementById("mobile-bankid-integration-save").innerHTML = "<?php esc_html_e( 'Save changes', 'mobile-bankid-integration' ); ?>";
+							document.getElementById("mobile-bankid-integration-save").disabled = false;
+						}, 2000);
+					} else {
+						response = JSON.parse(this.responseText);
+						alert(mobile_bankid_integration_setup_localization.configuration_failed + response['message']);
+					}
+				}
+
+				formdata = new FormData();
+				formdata.append("wplogin", wplogin);
+				formdata.append("registration", registration);
+				formdata.append("terms", terms);
+
+				xhr.send(formdata);
+			}
+		</script>
 		<?php
 	}
 
@@ -350,6 +362,7 @@ class Admin {
 				flex-wrap: wrap;
 				margin-left: 5px;
 			}
+
 			.mobile-bankid-integration-integration {
 				display: flex;
 				flex-direction: column;
@@ -359,22 +372,27 @@ class Admin {
 				padding: 20px;
 				max-width: 300px;
 			}
+
 			.mobile-bankid-integration-integration__logo {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				margin-bottom: 20px;
 			}
+
 			.mobile-bankid-integration-integration__logo img {
 				max-width: 100%;
 				height: 50px;
 			}
+
 			.mobile-bankid-integration-integration__title {
 				margin-top: 0;
 			}
+
 			.mobile-bankid-integration-integration__description {
 				margin-bottom: 20px;
 			}
+
 			.coming-soon {
 				background: #e5e5e5;
 				display: flex;
@@ -402,6 +420,7 @@ class Admin {
 				line-height: 28px;
 				color: rgb(201, 97, 152);
 			}
-		<?php
+
+			<?php
 	}
 }
