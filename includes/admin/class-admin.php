@@ -33,6 +33,13 @@ class Admin {
 		self::add_tab( __( 'Integrations', 'mobile-bankid-integration' ), 'integrations', array( $this, 'page_integrations' ) );
 		self::add_tab( __( 'Contribute', 'mobile-bankid-integration' ), 'contribute', array( $this, 'page_contribute' ) );
 		self::add_tab( __( 'Credits', 'mobile-bankid-integration' ), 'credits', array( $this, 'page_credits' ) );
+
+		/**
+		 * Fires after built-in tabs are registered. Use this action to add custom tabs.
+		 *
+		 * @since 1.3
+		 */
+		do_action( 'mobile_bankid_integration_admin_tabs' );
 	}
 
 	/**
