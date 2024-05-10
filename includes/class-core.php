@@ -47,6 +47,12 @@ class Core {
 	public function init() {
 		if ( get_option( 'mobile_bankid_integration_env' ) && get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) ) {
 			$this->create_bankid_service();
+
+			/**
+			 * Fires when the plugin is initialized and the BankID service has been created.
+			 * 
+			 * @since 1.0.0
+			 */
 			do_action( 'mobile_bankid_integration_init' );
 		}
 	}

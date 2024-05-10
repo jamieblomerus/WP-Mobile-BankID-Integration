@@ -172,6 +172,15 @@ class Checkout { // phpcs:ignore
 	 */
 	public function age_check(): bool {
 		$age = get_option( 'mobile_bankid_integration_woocommerce_age_check', 0 );
+
+		/**
+		 * Filter the age check.
+		 * 
+		 * @param int $age Age.
+		 * @since 1.3
+		 */
+		$age = apply_filters( 'mobile_bankid_integration_age_check', $age );
+
 		if ( $age <= 0 ) {
 			return true;
 		}
