@@ -165,6 +165,14 @@ class API {
 		wp_set_auth_cookie( $user_id );
 		Core::$instance->createAuthCookie( $user_id );
 		do_action( 'wp_login', $personal_number, $user );
+
+		/**
+		 * Fires after a user has successfully logged in via BankID.
+		 * 
+		 * @param WP_User $user WP_User object.
+		 */
+		do_action( 'mobile_bankid_integration_login_success', $user );
+
 		return $user;
 	}
 
@@ -179,6 +187,17 @@ class API {
 			$rnd_str     = sprintf( '%06d', wp_rand( 1, 999999 ) );
 			$user_exists = username_exists( 'user_' . $rnd_str );
 		} while ( $user_exists > 0 );
-		return 'user_' . $rnd_str;
+
+		$username = 'user_' . $rnd_str;
+
+		/**
+		 * Filter the username generated for new users.
+		 *
+		 * @param string $username Username.
+		 * @since 1.3
+		 */
+		$username = apply_filters( 'mobile_bankid_integration_new_user_username', $username );
+
+		return $username;
 	}
 }
