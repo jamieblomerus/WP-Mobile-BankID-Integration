@@ -32,6 +32,7 @@ class Admin {
 		self::add_tab( __( 'Settings', 'mobile-bankid-integration' ), 'settings', array( $this, 'page_settings' ) );
 		self::add_tab( __( 'Integrations', 'mobile-bankid-integration' ), 'integrations', array( $this, 'page_integrations' ) );
 		self::add_tab( __( 'Contribute', 'mobile-bankid-integration' ), 'contribute', array( $this, 'page_contribute' ) );
+		self::add_tab( __( 'Credits', 'mobile-bankid-integration' ), 'credits', array( $this, 'page_credits' ) );
 	}
 
 	/**
@@ -420,7 +421,53 @@ class Admin {
 				line-height: 28px;
 				color: rgb(201, 97, 152);
 			}
-
+		</style>
 			<?php
+	}
+
+	/**
+	 * Render credits tab.
+	 *
+	 * @return void
+	 */
+	private function page_credits() {
+		?>
+		<h2><?php esc_html_e( 'Credits', 'mobile-bankid-integration' ); ?></h2>
+		<p>
+			<?php
+			/* translators: %s: plugin version */
+			printf( esc_html__( 'There are many people who have contributed to this plugin. This page serves as a way to give credit to those who have helped as of version %s.', 'mobile-bankid-integration' ), MOBILE_BANKID_INTEGRATION_VERSION ); // phpcs:ignore
+			?>
+		</p>
+		<h3>Developer & Maintainer</h3>
+		<ul class="credits">
+			<li><a href="https://jamie.blomerus.se/" target="_blank"><?php esc_html_e( 'Jamie Blomerus', 'mobile-bankid-integration' ); ?></a></li>
+		</ul>
+		<h3>Contributors</h3>
+		<ul class="credits">
+			<li><a href="https://github.com/danceshorribly" target="_blank"><?php esc_html_e( 'danceshorribly (GitHub)', 'mobile-bankid-integration' ); ?></a></li>
+			<li><a href="https://github.com/itsabunny" target="_blank"><?php esc_html_e( 'itsabunny (GitHub)', 'mobile-bankid-integration' ); ?></a></li>
+		</ul>
+		<h3>Special thanks</h3>
+		<p>Special thanks to the authors of the following libraries that are used in this plugin:</p>
+		<ul class="credits">
+			<li><a href="https://github.com/chillerlan/php-qrcode" target="_blank"><?php esc_html_e( 'chillerlan/php-qrcode', 'mobile-bankid-integration' ); ?></a></li>
+			<li><a href="https://github.com/ljsystem/bankid" target="_blank"><?php esc_html_e( 'ljsystem/bankid', 'mobile-bankid-integration' ); ?></a></li>
+			<li><a href="https://github.com/personnummer/php" target="_blank"><?php esc_html_e( 'personnummer/php', 'mobile-bankid-integration' ); ?></a></li>
+		</ul>
+		<h3>Want to be listed here?</h3>
+		<p>
+			<?php
+			/* translators: %s: GitHub repository */
+			printf( esc_html__( 'Have you contributed to this plugin and want to be listed here? Open an issue on the %s.', 'mobile-bankid-integration' ), '<a href="https://github.com/jamieblomerus/WP-Mobile-BankID-Integration/issues/new" target="_blank">' . esc_html__( 'GitHub repository', 'mobile-bankid-integration' ) . '</a>' ); // phpcs:ignore
+			?>
+		</p>
+		<style>
+			.credits {
+				list-style-type: none;
+				padding-left: 0;
+			}
+		</style>
+		<?php
 	}
 }
