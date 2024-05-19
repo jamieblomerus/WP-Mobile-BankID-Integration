@@ -39,9 +39,9 @@ Contribute to the translation of this plugin at Translating WordPress.
 If you would like to suggest any feature to be added, please write an email to our project manager [jamie.blomerus@protonmail.com](mailto:jamie.blomerus@protonmail.com).
 
 = How do I buy the BankID service? =
-To buy the BankID service and receive a FP certificate, you need to contact your bank. For more information, please visit this [guide](https://www.bankid.com/en/foretag/anslut-foeretag).
+To buy the BankID service and receive a RP certificate, you need to contact your bank. For more information, please visit this [guide](https://www.bankid.com/en/foretag/anslut-foeretag).
 
-= I want to test the plugin, but I don't have a Mobile BankID or FP certificate =
+= I want to test the plugin, but I don't have a Mobile BankID or RP certificate =
 
 If you are only testing the service out, you can during the setup choose to run the plugin against the testing environment and use a [test BankID](https://www.bankid.com/en/utvecklare/test/skaffa-testbankid/test-bankid-get).
 
