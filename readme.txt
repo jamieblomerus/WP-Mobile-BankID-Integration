@@ -14,9 +14,9 @@ Let your users use Mobile BankID to authenticate themself.
 
 This is a plugin that allows you to integrate Mobile BankID with your WordPress site and use it for the following:
 
-    - Authenticate users (as an alternative to username and password)
-    - Perform age checks of customers (Woocommerce)
-    - Tailor it to your needs with extensions (Very developer friendly)
+- Authenticate users (as an alternative to username and password)
+- Perform age checks of customers (Woocommerce)
+- Tailor it to your needs with extensions (Very developer friendly)
 And more.
 
 **Docs and support**
