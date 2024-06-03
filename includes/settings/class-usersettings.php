@@ -75,7 +75,7 @@ class UserSettings {
 
 				update_user_meta( $user_id, 'mobile_bankid_integration_personal_number', $personal_number );
 			} elseif ( strlen( $personal_number ) === 0 ) {
-				delete_user_meta( $user_id, 'personal_number' );
+				delete_user_meta( $user_id, 'mobile_bankid_integration_personal_number' );
 			} else {
 				add_action( 'user_profile_update_errors', array( $this, 'personal_number_update_error_invalid' ), 10, 3 );
 				return;
