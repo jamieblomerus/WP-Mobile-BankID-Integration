@@ -58,6 +58,8 @@ if ( ! class_exists( 'mobile_bankid_integration' ) ) {
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/wp-login/class-login.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/admin/class-admin.php';
 			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/integrations/load.php';
+			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/privacy/class-privacy-policy.php';
+			require_once MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'includes/privacy/class-data-export.php';
 		}
 
 		/**
