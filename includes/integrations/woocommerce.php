@@ -97,7 +97,7 @@ class Login extends \Mobile_BankID_Integration\WP_Login\Login { // phpcs:ignore
 	 * Class constructor that adds the login button to the login page if the plugin is configured to do so.
 	 */
 	public function __construct() {
-		if ( get_option( 'mobile_bankid_integration_woocommerce_login' ) === 'yes' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_endpoint' ) ) ) {
+		if ( get_option( 'mobile_bankid_integration_woocommerce_login' ) === 'yes' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_env' ) ) ) {
 			add_action(
 				'woocommerce_login_form_end',
 				function () {
@@ -118,6 +118,10 @@ class Checkout { // phpcs:ignore
 	 * Class constructor that adds the checkout block to the checkout page if the plugin is configured to do so.
 	 */
 	public function __construct() {
+		if ( ! get_option( 'mobile_bankid_integration_certificate' ) || ! get_option( 'mobile_bankid_integration_password' ) || ! get_option( 'mobile_bankid_integration_env' ) ) {
+			return;
+		}
+
 		if ( get_option( 'mobile_bankid_integration_woocommerce_checkout_require_bankid' ) !== 'yes' ) {
 			return;
 		}

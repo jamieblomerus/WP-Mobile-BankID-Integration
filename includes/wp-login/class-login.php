@@ -14,7 +14,7 @@ class Login {
 	 * Class constructor that adds the login button to the login page if the plugin is configured to do so.
 	 */
 	public function __construct() {
-		if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'as_alternative' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_endpoint' ) ) ) {
+		if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'as_alternative' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_env' ) ) ) {
 			add_action( 'login_form', array( $this, 'login_button' ), 40 );
 			add_action(
 				'login_footer',
