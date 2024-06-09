@@ -64,10 +64,6 @@ class Activation {
 	 * @return void
 	 */
 	private function checkrequirements() {
-		// Check if running on Windows.
-		if ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) {
-			wp_die( esc_html__( 'Due to bugs and limitations in the plugins dependencies, this plugin does not work on Windows. Please try again on a Linux server.', 'mobile-bankid-integration' ) );
-		}
 		// Check if PHP version is 7.4 or higher.
 		if ( version_compare( PHP_VERSION, '7.4.0' ) < 0 ) {
 			wp_die( esc_html__( 'PHP version 7.4 or higher is required for this plugin to work.', 'mobile-bankid-integration' ) );
