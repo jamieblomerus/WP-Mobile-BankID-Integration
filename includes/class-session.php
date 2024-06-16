@@ -24,7 +24,7 @@ class Session {
 	public int $user_id;
 
 	/**
-	 * The personal number.
+	 * The personal identity number.
 	 *
 	 * @var string
 	 */
@@ -48,7 +48,7 @@ class Session {
 	 * Class constructor that starts the session.
 	 *
 	 * @param int         $user_id The user ID.
-	 * @param string|null $personal_number The personal number.
+	 * @param string|null $personal_number The personal identity number.
 	 * @param int|null    $time_created The time the session was created.
 	 * @return void|\WP_Error
 	 */
@@ -66,7 +66,7 @@ class Session {
 			$personal_number = get_user_meta( $user_id, 'mobile_bankid_integration_personal_number', true );
 		}
 		if ( ! $personal_number ) {
-			$this->error = new \WP_Error( 'no_personal_number', __( 'No personal number found.', 'mobile-bankid-integration' ) );
+			$this->error = new \WP_Error( 'no_personal_number', __( 'No personal identity number found.', 'mobile-bankid-integration' ) );
 		}
 		$this->user_id         = $user_id;
 		$this->personal_number = $personal_number;

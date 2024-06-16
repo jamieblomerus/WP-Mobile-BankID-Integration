@@ -127,13 +127,13 @@ class API {
 	/**
 	 * Sign in user from BankID or create user if it does not exist and registration is enabled.
 	 *
-	 * @param string $personal_number Personal number of user.
+	 * @param string $personal_number Personal identity number of user.
 	 * @param string $fname First name as returned from BankID API.
 	 * @param string $lname Last name as returned from BankID API.
 	 * @return bool|WP_User
 	 */
 	private function sign_in_as_user_from_bankid( $personal_number, $fname, $lname ) {
-		// Get user by personal number from DB.
+		// Get user by personal identity number from DB.
 		$user_id = Core::$instance->getUserIdFromPersonalNumber( $personal_number );
 
 		$user = get_user_by( 'id', $user_id );
@@ -155,7 +155,7 @@ class API {
 				)
 			);
 
-			// Set user personal number.
+			// Set user personal identity number.
 			Core::$instance->setPersonalNumberForUser( $user_id, $personal_number );
 		} else {
 			$user_id = $user->ID;
