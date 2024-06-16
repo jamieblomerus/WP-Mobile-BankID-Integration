@@ -166,13 +166,13 @@ class Core {
 	}
 
 	/**
-	 * Get user ID from personal number.
+	 * Get user ID from personal identity number.
 	 *
-	 * @param string $personal_number Personal number (12 digits, no hyphen).
+	 * @param string $personal_number Personal identity number (12 digits, no hyphen).
 	 * @return int|false
 	 */
 	public function getUserIdFromPersonalNumber( $personal_number ) {
-		// Get user by personal number from User Meta.
+		// Get user by personal identity number from User Meta.
 		$user_query = new \WP_User_Query(
 			array(
 				'meta_key'   => 'mobile_bankid_integration_personal_number',
@@ -187,14 +187,14 @@ class Core {
 	}
 
 	/**
-	 * Set personal number for user.
+	 * Set personal identity number for user.
 	 *
 	 * @param int    $user_id User ID.
-	 * @param string $personal_number Personal number (12 digits, no hyphen).
+	 * @param string $personal_number Personal identity number (12 digits, no hyphen).
 	 * @return void
 	 */
 	public function setPersonalNumberForUser( $user_id, $personal_number ) {
-		// Check if user already has a personal number.
+		// Check if user already has a personal identity number.
 		if ( $this->getUserIdFromPersonalNumber( $personal_number ) !== false ) {
 			return;
 		}

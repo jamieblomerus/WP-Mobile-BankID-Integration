@@ -35,7 +35,7 @@ class Data_Export {
     /**
      * Export personal data for Mobile BankID Integration.
      * 
-     * Export saved personal number.
+     * Export saved personal identity number.
      *
      * @param string $email_address Email address.
      * @return array
@@ -53,7 +53,7 @@ class Data_Export {
             );
         }
 
-        // Get personal number.
+        // Get personal identity number.
         $personal_number = get_user_meta( $user->ID, 'mobile_bankid_integration_personal_number', true );
 
         $data_to_export[] = array(
@@ -62,8 +62,8 @@ class Data_Export {
             'item_id'     => 'personal_number',
             'data'        => array(
                 array(
-                    'name'  => __( 'Personal number', 'mobile-bankid-integration' ),
-                    'value' => ( $personal_number ) ? $personal_number : __( 'No personal number found', 'mobile-bankid-integration' ),
+                    'name'  => __( 'Personal identity number', 'mobile-bankid-integration' ),
+                    'value' => ( $personal_number ) ? $personal_number : __( 'No personal identity number found', 'mobile-bankid-integration' ),
                 ),
             )
         );

@@ -28,8 +28,8 @@ class Privacy_Policy {
         }
 
         $content = '<h2>' . __( 'Mobile BankID Integration', 'mobile-bankid-integration' ) . '</h2>';
-        $content .= '<p>' . __( 'When you login, authenticate or sign using Mobile BankID, we collect your personal data such as your IP address, device information and sometimes your personal number. This data is shared with BankID for authentication purposes.', 'mobile-bankid-integration' ) . '</p>';
-        $content .= '<p>' . __( 'We may also store data from your Mobile BankID and store it in our database for future reference. This includes, but is not limited to, your personal number, name, ip address, unique hardware identifier, issue date of your BankID and related information.', 'mobile-bankid-integration' ) . '</p>';
+        $content .= '<p>' . __( 'When you login, authenticate or sign using Mobile BankID, we collect your personal data such as your IP address, device information and sometimes your personal identity number. This data is shared with BankID for authentication purposes.', 'mobile-bankid-integration' ) . '</p>';
+        $content .= '<p>' . __( 'We may also store data from your Mobile BankID and store it in our database for future reference. This includes, but is not limited to, your personal identity number, name, ip address, unique hardware identifier, issue date of your BankID and related information.', 'mobile-bankid-integration' ) . '</p>';
         $content .= '<p>' . __( 'The purpose of this data is to provide you with a secure and easy way to authenticate yourself on our website.', 'mobile-bankid-integration' ) . '</p>';
 
         wp_add_privacy_policy_content(
