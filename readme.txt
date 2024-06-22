@@ -32,7 +32,7 @@ This plugin is not affiliated with Finansiell ID-Teknik BID AB or any bank. Your
 
 = Can I help translate it to my language? =
 
-Contribute to the translation of this plugin at Translating WordPress.
+Contribute to the translation of this plugin at [Translating WordPress](https://translate.wordpress.org/projects/wp-plugins/mobile-bankid-integration/).
 
 = I do miss one feature =
 
