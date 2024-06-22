@@ -47,6 +47,15 @@ If you are only testing the service out, you can during the setup choose to run 
 
 == Changelog ==
 
+= 1.3 =
+* Added credits tab to admin page
+* Added more actions and filters to improve extensibility
+* Added privacy features
+* Fixed bug which made it impossible to update personal identity number in user settings
+* Added official support for the Windows platform
+* Resolved authentication button bug
+* Updated "Personal number" to "Personal identity number" in the user settings
+
 = 1.2 =
 * Added support for API version 6.0 while removing support for API version 5.1.
 * Fixed some errors being thrown on activation and deactivation of the plugin.
@@ -73,6 +82,9 @@ If you are only testing the service out, you can during the setup choose to run 
 * I ensured the plugin is stable for production use.
 
 == Upgrade Notice ==
+
+= 1.3 =
+Fixes some bugs and adds some minor new features.
 
 = 1.2 =
 Major update. Requires total reinstallation of the plugin.
