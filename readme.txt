@@ -3,7 +3,7 @@ Contributors: jamieblomerus
 Tags: mobile bankid, bankid, authentication
 Requires at least: 5.2
 Tested up to: 6.5
-Stable tag: 1.2
+Stable tag: 1.3
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -32,7 +32,7 @@ This plugin is not affiliated with Finansiell ID-Teknik BID AB or any bank. Your
 
 = Can I help translate it to my language? =
 
-Contribute to the translation of this plugin at Translating WordPress.
+Contribute to the translation of this plugin at [Translating WordPress](https://translate.wordpress.org/projects/wp-plugins/mobile-bankid-integration/).
 
 = I do miss one feature =
 
@@ -46,6 +46,15 @@ To buy the BankID service and receive a RP certificate, you need to contact your
 If you are only testing the service out, you can during the setup choose to run the plugin against the testing environment and use a [test BankID](https://www.bankid.com/en/utvecklare/test/skaffa-testbankid/test-bankid-get).
 
 == Changelog ==
+
+= 1.3 =
+* Added credits tab to admin page
+* Added more actions and filters to improve extensibility
+* Added privacy features
+* Fixed bug which made it impossible to update personal identity number in user settings
+* Added official support for the Windows platform
+* Resolved authentication button bug
+* Updated "Personal number" to "Personal identity number" in the user settings
 
 = 1.2 =
 * Added support for API version 6.0 while removing support for API version 5.1.
@@ -73,6 +82,9 @@ If you are only testing the service out, you can during the setup choose to run 
 * I ensured the plugin is stable for production use.
 
 == Upgrade Notice ==
+
+= 1.3 =
+Fixes some bugs and adds some minor new features.
 
 = 1.2 =
 Major update. Requires total reinstallation of the plugin.
