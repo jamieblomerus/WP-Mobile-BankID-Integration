@@ -37,16 +37,7 @@ class Login {
 			$redirect = '/wp-admin/';
 		}
 		?>
-		<button id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center; margin-bottom: 1em;"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></button>
-		<noscript>
-			<style>
-				#bankid-login-button {
-					display: none;
-					height: 0;
-					margin: 0;
-				}
-			</style>
-		</noscript>
+		<button id="bankid-login-button" class="button wp-element-button"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></button>
 		<?php
 		$this->load_scripts( $redirect );
 	}
@@ -62,7 +53,7 @@ class Login {
 			return;
 		}
 		?>
-		<p class="bankid-terms">
+		<p class="bankid-terms" style="font-size: <?php echo( esc_html( strval( $font_size ) ) ); ?>rem;">
 			<?php
 			echo wp_kses(
 				get_option( 'mobile_bankid_integration_terms', esc_html__( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
@@ -80,14 +71,6 @@ class Login {
 			);
 			?>
 		</p>
-		<style>
-			.bankid-terms {
-				text-align: center;
-				font-size: <?php echo( esc_html( strval( $font_size ) ) ); ?>rem;
-				margin-top: 0;
-				padding-top: 0;
-			}
-		</style>
 		<?php
 	}
 
@@ -125,5 +108,7 @@ class Login {
 			)
 		);
 		wp_add_inline_script( 'mobile-bankid-integration-login', 'var mobile_bankid_integration_rest_api = "' . rest_url( 'mobile-bankid-integration/v1/login' ) . '"; var mobile_bankid_integration_redirect_url = "' . $redirect . '";', 'before' );
+
+		wp_enqueue_style( 'mobile-bankid-integration-login', MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/css/login.css', array(), MOBILE_BANKID_INTEGRATION_VERSION );
 	}
 }

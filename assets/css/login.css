@@ -1,0 +1,66 @@
+/*------------------------------------*\
+    LOGIN BUTTON
+\*------------------------------------*/
+#bankid-login-button {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+/*------------------------------------*\
+    LOGIN TERMS
+\*------------------------------------*/
+p.bankid-terms {
+    text-align: center;
+    font-size: 0.7rem;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/*------------------------------------*\
+    BANKID LOGIN PAGE
+\*------------------------------------*/
+
+/* Order running out, a line at the bottom that become thinner */
+#bankid-login-container #bankid-qr-code-container {
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 1em auto;
+    width: fit-content;
+}
+
+#bankid-login-container #bankid-qr-code-container img {
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+#bankid-login-container #bankid-qr-code-container::after {
+    position: absolute;
+    content: '';
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: .5em;
+    background: #2271b1;
+    animation: running-out 30s linear infinite;
+}
+
+@keyframes running-out {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+
+/*------------------------------------*\
+    JAVASCRIPT DISABLED
+\*------------------------------------*/
+body.no-js #bankid-login-button,
+body.no-js p.bankid-terms {
+    display: none;
+    height: 0;
+    margin: 0;
+}
