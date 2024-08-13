@@ -36,8 +36,18 @@ class Login {
 		if ( empty( $redirect ) ) {
 			$redirect = '/wp-admin/';
 		}
-		echo '<p><a href="#" target="_self" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center; margin-bottom: 1em;">' . esc_html__( 'Login with BankID', 'mobile-bankid-integration' ) . '</a></p>';
-		echo '<noscript><style>#bankid-login-button { display: none; height: 0; margin: 0; }</style></noscript>';
+		?>
+		<button id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center; margin-bottom: 1em;"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></button>
+		<noscript>
+			<style>
+				#bankid-login-button {
+					display: none;
+					height: 0;
+					margin: 0;
+				}
+			</style>
+		</noscript>
+		<?php
 		$this->load_scripts( $redirect );
 	}
 
