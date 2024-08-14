@@ -10,7 +10,7 @@
 /*------------------------------------*\
     LOGIN TERMS
 \*------------------------------------*/
-p.bankid-terms {
+p#bankid-terms {
     text-align: center;
     font-size: 0.7rem;
     margin-top: 0;
@@ -20,8 +20,14 @@ p.bankid-terms {
 /*------------------------------------*\
     BANKID LOGIN PAGE
 \*------------------------------------*/
+#login.bankid-login {
+    width: 420px;
+}
 
-/* Order running out, a line at the bottom that become thinner */
+#bankid-login-container {
+    display: none;
+}
+
 #bankid-login-container #bankid-qr-code-container {
     position: relative;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -53,6 +59,66 @@ p.bankid-terms {
     100% {
         width: 0;
     }
+}
+
+#bankid-qr-code-container.full-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+#bankid-qr-code-container.full-screen img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 50vh;
+    height: 50vh;
+    background-color: #fff;
+}
+
+#bankid-login-container .accordion {
+    margin: 1em auto;
+    width: 100%;
+}
+
+#bankid-login-container .accordion button {
+    width: 100%;
+    text-align: left;
+    padding: 1em;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#bankid-login-container .accordion button span::after {
+    content: '\25BC';
+    float: right;
+}
+
+#bankid-login-container .accordion button.active {
+    background: #e5e5e5;
+    border-radius: 5px 5px 0 0;
+}
+
+#bankid-login-container .accordion button.active span::after {
+    content: '\25B2';
+}
+
+#bankid-login-container .accordion .accordion-content {
+    display: none;
+    padding: 1em;
+    border: 1px solid #e5e5e5;
+    border-radius: 0 0 5px 5px;
 }
 
 /*------------------------------------*\

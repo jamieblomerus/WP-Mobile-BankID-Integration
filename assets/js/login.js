@@ -7,58 +7,23 @@ var bankidRefreshId = null;
 
 function initializeLoginPage(autoStartToken) {
     const loginButtonContainer = document.getElementById("bankid-login-button").parentElement;
+    const bankIdLoginContainer = document.getElementById('bankid-login-container');
 
-    const bankIdLoginContainer = document.createElement('form');
-    bankIdLoginContainer.id = 'bankid-login-container';
-
-    // Create and append elements to the loginButtonContainer
-    const titleElement = document.createElement('h2');
-    titleElement.textContent = mobile_bankid_integration_login_localization.title;
-
-    const statusElement = document.createElement('p');
-    statusElement.id = 'bankid-status';
+    const statusElement = document.getElementById('bankid-status');
     statusElement.textContent = mobile_bankid_integration_login_localization.qr_instructions;
 
-    const qrCodeContainer = document.createElement('div');
-    qrCodeContainer.id = 'bankid-qr-code-container';
-
-    const qrCodeElement = document.createElement('img');
-    qrCodeElement.id = 'bankid-qr-code';
-    qrCodeElement.src = '';
-    qrCodeElement.alt = mobile_bankid_integration_login_localization.qr_alt;
-    qrCodeContainer.appendChild(qrCodeElement);
-
-    const lineBreak1 = document.createElement('br');
-    const lineBreak2 = document.createElement('br');
-
-    const cancelButton = document.createElement('a');
-    cancelButton.href = '#';
-    cancelButton.className = 'button wp-element-button';
+    const cancelButton = document.getElementById('cancel_bankid');
     cancelButton.onclick = cancelBankIdLogin;
-    cancelButton.textContent = mobile_bankid_integration_login_localization.cancel;
 
-    const openBankidButton = document.createElement('a');
-    openBankidButton.style.marginLeft = '5px';
-    openBankidButton.target = '_blank';
-    openBankidButton.id = 'open_bankid';
+    const openBankidButton = document.getElementById('open_bankid');
     openBankidButton.href = `https://app.bankid.com/?autostarttoken=${autoStartToken}&redirect=null`;
-    openBankidButton.className = 'button wp-element-button';
-    openBankidButton.textContent = mobile_bankid_integration_login_localization.open_on_this_device;
 
-    // Clear the container and append the new elements
-    bankIdLoginContainer.appendChild(titleElement);
-    bankIdLoginContainer.appendChild(statusElement);
-    bankIdLoginContainer.appendChild(qrCodeContainer);
-    bankIdLoginContainer.appendChild(lineBreak1);
-    bankIdLoginContainer.appendChild(lineBreak2);
-    bankIdLoginContainer.appendChild(cancelButton);
-    bankIdLoginContainer.appendChild(openBankidButton);
-
-    // Sibling to loginButtonContainer
     loginButtonContainer.after(bankIdLoginContainer);
-
-    // Hide the login button
     loginButtonContainer.style.display = 'none';
+
+    bankIdLoginContainer.style.display = 'block';
+
+    document.getElementById('login').classList.add('bankid-login');
 }
 
 function handleStatus() {
@@ -158,8 +123,15 @@ function completeLogin() {
 function cancelBankIdLogin() {
     const loginButtonContainer = document.getElementById("bankid-login-button").parentElement;
     const bankIdLoginContainer = document.getElementById("bankid-login-container");
-    bankIdLoginContainer.remove();
+    bankIdLoginContainer.style.display = 'none';
     loginButtonContainer.style.display = 'block';
+
+    // Close accordions
+    jQuery('#bankid-login-container button.accordion-button').removeClass('active');
+    jQuery('#bankid-login-container button.accordion-button').attr('aria-expanded', 'false');
+    jQuery('#bankid-login-container button.accordion-button').next().slideUp();
+
+    document.getElementById('login').classList.remove('bankid-login');
     clearInterval(bankidRefreshId);
 }
 
@@ -189,5 +161,27 @@ jQuery(document).ready(function () {
                 bankidRefreshId = setInterval(handleStatus, 1000);
             }
         );
+    });
+
+    jQuery('#bankid-login-container button.accordion-button').on('click', function (event) {
+        event.preventDefault();
+        jQuery(this).toggleClass('active');
+        jQuery(this).attr('aria-expanded', jQuery(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+        jQuery(this).next().slideToggle();
+    } );
+
+    jQuery('#bankid-qr-code-container').on('click', function (event) {
+        jQuery(this).toggleClass('full-screen');
+        jQuery(this).attr('aria-expanded', jQuery(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+        jQuery(this).attr('aria-label', jQuery(this).attr('aria-label') === mobile_bankid_integration_login_localization.qr_click_to_enlarge ? mobile_bankid_integration_login_localization.qr_click_to_shrink : mobile_bankid_integration_login_localization.qr_click_to_enlarge);
+        if (jQuery(this).hasClass('full-screen')) {
+            jQuery('#login').after(this);
+            jQuery('#login').hide();
+            jQuery('#bankid-terms').hide();
+        } else {
+            jQuery('#bankid-status').after(this);
+            jQuery('#login').show();
+            jQuery('#bankid-terms').show();
+        }
     });
 });
