@@ -7,7 +7,7 @@ let bankidRefreshId = null;
 
 jQuery(document).ready(function () {
     function initializeLoginPage(autoStartToken) {
-        const loginButtonContainer = jQuery("#bankid-login-button").parent();
+        const loginButtonContainer = jQuery("#bankid-login-button").parent().parent();
         const bankIdLoginContainer = jQuery('#bankid-login-container');
 
         const statusElement = jQuery('#bankid-status');
@@ -22,7 +22,7 @@ jQuery(document).ready(function () {
         loginButtonContainer.after(bankIdLoginContainer);
         loginButtonContainer.hide();
 
-        jQuery('h2').not('#bankid-login-h2').hide();
+        jQuery('h2').not('#bankid-login-h2').addClass('bankid-login-hidden');
 
         bankIdLoginContainer.show();
 
@@ -120,7 +120,7 @@ jQuery(document).ready(function () {
     }
 
     function cancelBankIdLogin() {
-        const loginButtonContainer = jQuery("#bankid-login-button").parent();
+        const loginButtonContainer = jQuery("#bankid-login-button").parent().parent();
         const bankIdLoginContainer = jQuery("#bankid-login-container");
         bankIdLoginContainer.hide();
         loginButtonContainer.show();
@@ -131,6 +131,7 @@ jQuery(document).ready(function () {
         jQuery('#bankid-login-container button.accordion-button').next().slideUp();
 
         jQuery('#login').removeClass('bankid-login');
+        jQuery('.bankid-login-hidden').removeClass('bankid-login-hidden');
         clearInterval(bankidRefreshId);
     }
 

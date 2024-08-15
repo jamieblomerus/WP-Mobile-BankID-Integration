@@ -129,6 +129,9 @@ p#bankid-terms {
     margin-left: 1.5em;
 }
 
+.bankid-login-hidden {
+    display: none;
+}
 /*------------------------------------*\
     JAVASCRIPT DISABLED
 \*------------------------------------*/

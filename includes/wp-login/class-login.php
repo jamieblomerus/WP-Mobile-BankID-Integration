@@ -38,7 +38,9 @@ class Login {
 			$redirect = '/wp-admin/';
 		}
 		?>
-		<button id="bankid-login-button" class="button wp-element-button"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></button>
+		<p>
+			<button id="bankid-login-button" class="button wp-element-button"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></button>
+		</p>
 		<?php
 		$this->load_scripts( $redirect );
 	}
@@ -48,9 +50,12 @@ class Login {
 	 *
 	 * @return void
 	 */
-	public function login_container($dom_element = 'form') {
+	public function login_container($dom_element = 'form', $class = array()) {
+		if ( ! in_array( $dom_element, array( 'form', 'div', 'section' ), true ) ) {
+			$dom_element = 'form';
+		}
 		?>
-		<<?php echo esc_html( $dom_element ); ?> id="bankid-login-container">
+		<<?php echo esc_attr( $dom_element ); ?> id="bankid-login-container" class="<?php echo esc_attr( implode( ' ', $class ) ); ?>">
 			<h2 id="bankid-login-h2"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></h2>
 			<p id="bankid-status"><?php esc_html_e( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ) ?></p>
 			<div id="bankid-qr-code-container" role="button" aria-label="<?php esc_attr_e( 'Enlarge the QR code', 'mobile-bankid-integration' ) ?>">
@@ -73,7 +78,7 @@ class Login {
 			</div>
 			<a href="#" id="cancel_bankid" class="button wp-element-button"><?php esc_html_e( 'Cancel', 'mobile-bankid-integration' ) ?></a>
 			<a target="_blank" id="open_bankid" href="#" class="button wp-element-button" style="margin-left: 5px;"><?php esc_html_e( 'Start the BankID app', 'mobile-bankid-integration' ) ?></a>
-		</form>
+		</<?php echo esc_attr( $dom_element ); ?>>
 		<?php
 	}
 
