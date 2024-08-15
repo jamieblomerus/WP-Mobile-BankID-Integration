@@ -48,10 +48,10 @@ class Login {
 	 *
 	 * @return void
 	 */
-	public function login_container() {
+	public function login_container($dom_element = 'form') {
 		?>
-		<form id="bankid-login-container">
-			<h2><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></h2>
+		<<?php echo esc_html( $dom_element ); ?> id="bankid-login-container">
+			<h2 id="bankid-login-h2"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></h2>
 			<p id="bankid-status"><?php esc_html_e( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ) ?></p>
 			<div id="bankid-qr-code-container" role="button" aria-label="<?php esc_attr_e( 'Enlarge the QR code', 'mobile-bankid-integration' ) ?>">
 				<img id="bankid-qr-code" src="" alt="<?php esc_attr_e( 'QR code', 'mobile-bankid-integration' ) ?>">

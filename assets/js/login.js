@@ -22,6 +22,8 @@ jQuery(document).ready(function () {
         loginButtonContainer.after(bankIdLoginContainer);
         loginButtonContainer.hide();
 
+        jQuery('h2').not('#bankid-login-h2').hide();
+
         bankIdLoginContainer.show();
 
         jQuery('#login').addClass('bankid-login');

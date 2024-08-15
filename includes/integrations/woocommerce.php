@@ -105,6 +105,9 @@ class Login extends \Mobile_BankID_Integration\WP_Login\Login { // phpcs:ignore
 					$this->terms( 0.9 );
 				}
 			);
+			add_action( 'woocommerce_login_form_end', function () {
+				$this->login_container( 'div' );
+			} );
 		}
 	}
 }
