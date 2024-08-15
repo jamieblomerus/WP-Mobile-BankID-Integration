@@ -41,7 +41,11 @@ p#bankid-terms {
     margin: 0 auto;
 }
 
-#bankid-login-container #bankid-qr-code-container::after {
+#bankid-login-container #bankid-qr-code-container img[src=""] {
+    display: none;
+}
+
+#bankid-login-container #bankid-qr-code-timeleft {
     position: absolute;
     content: '';
     bottom: 0;
@@ -49,16 +53,7 @@ p#bankid-terms {
     width: 100%;
     height: .5em;
     background: #2271b1;
-    animation: running-out 30s linear infinite;
-}
-
-@keyframes running-out {
-    0% {
-        width: 100%;
-    }
-    100% {
-        width: 0;
-    }
+    transition: width 1s linear;
 }
 
 #bankid-qr-code-container.full-screen {
@@ -75,6 +70,10 @@ p#bankid-terms {
     justify-content: center;
     align-items: center;
     margin: 0;
+}
+
+#bankid-qr-code-container.full-screen #bankid-qr-code-timeleft {
+    display: none;
 }
 
 #bankid-qr-code-container.full-screen img {
@@ -119,6 +118,15 @@ p#bankid-terms {
     padding: 1em;
     border: 1px solid #e5e5e5;
     border-radius: 0 0 5px 5px;
+}
+
+#bankid-login-container .accordion .accordion-content p,
+#bankid-login-container .accordion .accordion-content ul {
+    margin-bottom: 1em;
+}
+
+#bankid-login-container .accordion .accordion-content ul {
+    margin-left: 1.5em;
 }
 
 /*------------------------------------*\

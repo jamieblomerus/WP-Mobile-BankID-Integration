@@ -37,7 +37,7 @@ cp -r index.php build
 cp -r readme.txt build
 cp -r LICENSE.md build
 
-# If argument is "production", add license file, minimize js/css and update version number
+# If argument is "production", minimize js/css and update version number
 if [ $1 == "production" ]
 then
   echo "Building production version $2..."
@@ -46,6 +46,8 @@ then
   #Minimize CSS
   cp -r build/assets/css/setup.css build/assets/css/setup.full.css
   cleancss -o build/assets/css/setup.css build/assets/css/setup.css
+  cp -r build/assets/css/login.css build/assets/css/login.full.css
+  cleancss -o build/assets/css/login.css build/assets/css/login.css
 
   #Minimize JS
   cp -r build/assets/js/setup.js build/assets/js/setup.full.js
@@ -54,7 +56,7 @@ then
   uglifyjs build/assets/js/login.js -o build/assets/js/login.js
 fi
 
-# If argument is "dev", change plugin name and change license file
+# If argument is "dev", change plugin name
 if [ $1 == "dev" ]
 then
   echo "Building development version..."
