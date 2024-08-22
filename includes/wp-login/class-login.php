@@ -55,7 +55,7 @@ class Login {
 			$dom_element = 'form';
 		}
 		?>
-		<<?php echo esc_attr( $dom_element ); ?> id="bankid-login-container" class="<?php echo esc_attr( implode( ' ', $class ) ); ?>">
+		<<?php echo esc_attr( $dom_element ); ?> id="bankid-login-container" class="<?php echo esc_attr( implode( ' ', $class ) ); ?>" style="display: none;">
 			<h2 id="bankid-login-h2"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></h2>
 			<p id="bankid-status"><?php esc_html_e( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ) ?></p>
 			<div id="bankid-qr-code-container" role="button" aria-label="<?php esc_attr_e( 'Enlarge the QR code', 'mobile-bankid-integration' ) ?>">
