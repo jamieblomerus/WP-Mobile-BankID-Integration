@@ -40,6 +40,10 @@ jQuery(document).ready(function () {
 
             if (data.qr !== null) {
                 jQuery('#bankid-qr-code').attr('src', data.qr);
+
+                if (! jQuery('#bankid-qr-code-loading').hasClass('hidden')) {
+                    jQuery('#bankid-qr-code-loading').addClass('hidden');
+                }
             }
 
             if (data.status === 'failed' && data.hintCode === 'startFailed') {
@@ -129,6 +133,12 @@ jQuery(document).ready(function () {
         jQuery('#bankid-login-container button.accordion-button').removeClass('active');
         jQuery('#bankid-login-container button.accordion-button').attr('aria-expanded', 'false');
         jQuery('#bankid-login-container button.accordion-button').next().slideUp();
+
+        // Show loading spinner
+        jQuery('#bankid-qr-code-loading').removeClass('hidden');
+
+        // Unhide qr code container
+        jQuery('#bankid-qr-code-container').show();
 
         jQuery('#login').removeClass('bankid-login');
         jQuery('.bankid-login-hidden').removeClass('bankid-login-hidden');

@@ -60,6 +60,9 @@ class Login {
 			<p id="bankid-status"><?php esc_html_e( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ) ?></p>
 			<div id="bankid-qr-code-container" role="button" aria-label="<?php esc_attr_e( 'Enlarge the QR code', 'mobile-bankid-integration' ) ?>">
 				<img id="bankid-qr-code" src="" alt="<?php esc_attr_e( 'QR code', 'mobile-bankid-integration' ) ?>">
+				<div id="bankid-qr-code-loading" aria-hidden="true">
+					<div class="spinner"></div>
+				</div>
 				<div id="bankid-qr-code-timeleft" aria-hidden="true"></div>
 			</div>
 			<div class="accordion screen-reader-accordion" role="region">

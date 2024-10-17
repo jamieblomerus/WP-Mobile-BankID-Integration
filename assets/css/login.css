@@ -39,10 +39,56 @@ p#bankid-terms {
     height: auto;
     display: block;
     margin: 0 auto;
+    min-width: 245px;
+    aspect-ratio: 1/1;
 }
 
 #bankid-login-container #bankid-qr-code-container img[src=""] {
-    display: none;
+    background: url("data:image/png;base64,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");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 0;
+}
+
+#bankid-login-container #bankid-qr-code-container #bankid-qr-code-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(2px);
+    transition: opacity 500ms, backdrop-filter 500ms, visibility 0ms ease-in 500ms;
+}
+
+#bankid-login-container #bankid-qr-code-container #bankid-qr-code-loading.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 500ms, backdrop-filter 500ms, visibility 0ms ease-out 500ms;
+}
+
+#bankid-login-container #bankid-qr-code-container #bankid-qr-code-loading .spinner {
+    border: 16px solid rgba(255, 255, 255, 0);
+    border-top: 16px solid #2271b1;
+    border-right: 16px solid #2271b1;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 #bankid-login-container #bankid-qr-code-timeleft {
@@ -140,4 +186,15 @@ body.no-js p.bankid-terms {
     display: none;
     height: 0;
     margin: 0;
+}
+
+/*------------------------------------*\
+    WOOCOMMERCE
+\*------------------------------------*/
+.woocommerce #bankid-login-container #bankid-qr-code-container #bankid-qr-code-loading .spinner {
+    border: 13px solid rgba(255, 255, 255, 0);
+    border-top: 13px solid #2271b1;
+    border-right: 13px solid #2271b1;
+    width: 3em;
+    height: 3em;
 }
