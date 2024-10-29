@@ -64,7 +64,13 @@ class Core {
 	 */
 	private function create_bankid_service() {
 		if ( 'test' === get_option( 'mobile_bankid_integration_env' ) ) {
-			$this->bankid_service = new BankID();
+			$this->bankid_service = new BankID(
+				BankID::ENVIRONMENT_TEST,
+				MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'assets/certs/test.pem',
+				MOBILE_BANKID_INTEGRATION_PLUGIN_DIR . 'assets/certs/test_cacert.cer',
+				null,
+				'qwerty123'
+			);
 		} else {
 			$this->bankid_service = new BankID(
 				BankID::ENVIRONMENT_PRODUCTION,
