@@ -1,7 +1,7 @@
 # Unofficial Mobile BankID Integration for WordPress
 
-![WordPress Plugin Version](https://img.shields.io/badge/WordPress%20Version-5.2%20|%206.5-green)
-![Stable Version](https://img.shields.io/badge/Stable%20Tag-1.3-blue)
+![WordPress Plugin Version](https://img.shields.io/badge/WordPress%20Version-5.2%20|%206.7-green)
+![Stable Version](https://img.shields.io/badge/Stable%20Tag-1.4-blue)
 ![Required PHP](https://img.shields.io/badge/PHP-%3E%3D%207.2-red)
 ![License](https://img.shields.io/badge/License-GPLv3-orange)
 
