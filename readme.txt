@@ -2,7 +2,7 @@
 Contributors: jamieblomerus
 Tags: mobile bankid, bankid, authentication
 Requires at least: 5.2
-Tested up to: 6.5
+Tested up to: 6.7
 Stable tag: 1.3
 Requires PHP: 7.2
 License: GPLv3 or later
