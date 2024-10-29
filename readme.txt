@@ -47,6 +47,11 @@ If you are only testing the service out, you can during the setup choose to run 
 
 == Changelog ==
 
+= 1.4 =
+* Recreated the login screen to be more user-friendly, modern and accessible.
+* Fixed a contrast issue within the setup wizard.
+* Resolved a SSL verification issue which caused the plugin to not work with the BankID test environment.
+
 = 1.3 =
 * Added credits tab to admin page
 * Added more actions and filters to improve extensibility
@@ -82,6 +87,9 @@ If you are only testing the service out, you can during the setup choose to run 
 * I ensured the plugin is stable for production use.
 
 == Upgrade Notice ==
+
+= 1.4 =
+A major update that changes the login screen and fixes some bugs.
 
 = 1.3 =
 Fixes some bugs and adds some minor new features.
