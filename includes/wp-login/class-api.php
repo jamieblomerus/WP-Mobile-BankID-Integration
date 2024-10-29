@@ -60,9 +60,9 @@ class API {
 	/**
 	 * Handle status request.
 	 *
-	 * @return array
+	 * @return array|\WP_Error
 	 */
-	public function status(): array {
+	public function status() {
 		$instance = Core::$instance;
 
 		if ( ! isset( $_GET['orderRef'] ) || preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $_GET['orderRef'] ) !== 1 ) { // phpcs:ignore

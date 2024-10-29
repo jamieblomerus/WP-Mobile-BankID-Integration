@@ -16,6 +16,7 @@ class Login {
 	public function __construct() {
 		if ( get_option( 'mobile_bankid_integration_wplogin' ) === 'as_alternative' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_env' ) ) ) {
 			add_action( 'login_form', array( $this, 'login_button' ), 40 );
+			add_action( 'login_footer', array( $this, 'login_container' ) );
 			add_action(
 				'login_footer',
 				function () {
@@ -36,9 +37,52 @@ class Login {
 		if ( empty( $redirect ) ) {
 			$redirect = '/wp-admin/';
 		}
-		echo '<p><a href="#" target="_self" id="bankid-login-button" class="button wp-element-button" style="width: 100%; text-align: center; margin-bottom: 1em;">' . esc_html__( 'Login with BankID', 'mobile-bankid-integration' ) . '</a></p>';
-		echo '<noscript><style>#bankid-login-button { display: none; height: 0; margin: 0; }</style></noscript>';
+		?>
+		<p>
+			<button id="bankid-login-button" class="button wp-element-button"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></button>
+		</p>
+		<?php
 		$this->load_scripts( $redirect );
+	}
+
+	/**
+	 * Add login container to login page.
+	 *
+	 * @return void
+	 */
+	public function login_container($dom_element = 'form', $class = array()) {
+		if ( ! in_array( $dom_element, array( 'form', 'div', 'section' ), true ) ) {
+			$dom_element = 'form';
+		}
+		?>
+		<<?php echo esc_attr( $dom_element ); ?> id="bankid-login-container" class="<?php echo esc_attr( implode( ' ', $class ) ); ?>" style="display: none;">
+			<h2 id="bankid-login-h2"><?php esc_html_e( 'Login with BankID', 'mobile-bankid-integration' ) ?></h2>
+			<p id="bankid-status"><?php esc_html_e( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ) ?></p>
+			<div id="bankid-qr-code-container" role="button" aria-label="<?php esc_attr_e( 'Enlarge the QR code', 'mobile-bankid-integration' ) ?>">
+				<img id="bankid-qr-code" src="" alt="<?php esc_attr_e( 'QR code', 'mobile-bankid-integration' ) ?>">
+				<div id="bankid-qr-code-loading" aria-hidden="true">
+					<div class="spinner"></div>
+				</div>
+				<div id="bankid-qr-code-timeleft" aria-hidden="true"></div>
+			</div>
+			<div class="accordion screen-reader-accordion" role="region">
+				<button class="accordion-button" aria-expanded="false" aria-controls="bankid-screen-reader-help"><?php esc_html_e( 'If you use a screen reader', 'mobile-bankid-integration' ) ?><span class="icon" aria-hidden="true"></span></button>
+				<div id="bankid-screen-reader-help" class="accordion-content">
+					<p><?php esc_html_e( 'The most common problem is that the QR code doesn\'t fit on the screen. Please try to:', 'mobile-bankid-integration' ) ?></p>
+					<ul>
+						<li><?php esc_html_e( 'Ensure that the screen is switched on and Screen Curtain or similar functions are switched off.', 'mobile-bankid-integration' ) ?></li>
+						<li><?php esc_html_e( 'Zoom out in your browser by pressing Ctrl or Cmd-0.', 'mobile-bankid-integration' ) ?></li>
+						<li><?php esc_html_e( 'Zoom out with magnification tools such as ZoomText.', 'mobile-bankid-integration' ) ?></li>
+						<li><?php esc_html_e( 'Ensure the browser window is maximized.', 'mobile-bankid-integration' ) ?></li>
+						<li><?php esc_html_e( 'Hold your phone in portrait mode at an arm\'s lengths distance from the screen when you scan the QR code.', 'mobile-bankid-integration' ) ?></li>
+					</ul>
+					<p><?php esc_html_e( 'You can also click on the QR code above for it to be displayed bigger.', 'mobile-bankid-integration' ) ?></p>
+				</div>
+			</div>
+			<a href="#" id="cancel_bankid" class="button wp-element-button"><?php esc_html_e( 'Cancel', 'mobile-bankid-integration' ) ?></a>
+			<a target="_blank" id="open_bankid" href="#" class="button wp-element-button" style="margin-left: 5px;"><?php esc_html_e( 'Start the BankID app', 'mobile-bankid-integration' ) ?></a>
+		</<?php echo esc_attr( $dom_element ); ?>>
+		<?php
 	}
 
 	/**
@@ -52,7 +96,7 @@ class Login {
 			return;
 		}
 		?>
-		<p class="bankid-terms">
+		<p id="bankid-terms" style="font-size: <?php echo( esc_html( strval( $font_size ) ) ); ?>rem;">
 			<?php
 			echo wp_kses(
 				get_option( 'mobile_bankid_integration_terms', esc_html__( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
@@ -70,14 +114,6 @@ class Login {
 			);
 			?>
 		</p>
-		<style>
-			.bankid-terms {
-				text-align: center;
-				font-size: <?php echo( esc_html( strval( $font_size ) ) ); ?>rem;
-				margin-top: 0;
-				padding-top: 0;
-			}
-		</style>
 		<?php
 	}
 
@@ -96,11 +132,9 @@ class Login {
 			'mobile-bankid-integration-login',
 			'mobile_bankid_integration_login_localization',
 			array(
-				'title'                   => esc_html__( 'Login with BankID', 'mobile-bankid-integration' ),
+				'qr_click_to_enlarge'     => esc_attr__( 'Enlarge the QR code', 'mobile-bankid-integration' ),
+				'qr_click_to_shrink'      => esc_attr__( 'Shrink the QR code back to normal size', 'mobile-bankid-integration' ),
 				'qr_instructions'         => esc_html__( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ),
-				'qr_alt'                  => esc_html__( 'QR code', 'mobile-bankid-integration' ),
-				'cancel'                  => esc_html__( 'Cancel', 'mobile-bankid-integration' ),
-				'open_on_this_device'     => esc_html__( 'Start the BankID app', 'mobile-bankid-integration' ),
 				'status_expired'          => esc_html__( 'BankID identification session has expired. Please try again.', 'mobile-bankid-integration' ),
 				'status_complete'         => esc_html__( 'BankID identification completed. Redirecting...', 'mobile-bankid-integration' ),
 				'status_complete_no_user' => esc_html__( 'BankID identification completed, but no user was found. Please try again.', 'mobile-bankid-integration' ),
@@ -115,5 +149,7 @@ class Login {
 			)
 		);
 		wp_add_inline_script( 'mobile-bankid-integration-login', 'var mobile_bankid_integration_rest_api = "' . rest_url( 'mobile-bankid-integration/v1/login' ) . '"; var mobile_bankid_integration_redirect_url = "' . $redirect . '";', 'before' );
+
+		wp_enqueue_style( 'mobile-bankid-integration-login', MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/css/login.css', array(), MOBILE_BANKID_INTEGRATION_VERSION );
 	}
 }

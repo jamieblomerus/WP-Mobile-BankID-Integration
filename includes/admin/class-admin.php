@@ -216,22 +216,22 @@ class Admin {
 			<div class="form-group">
 				<label for="mobile-bankid-integration-terms"><?php esc_html_e( 'Terms to show with login (Supports HTML)', 'mobile-bankid-integration' ); ?></label>
 				<textarea name="mobile-bankid-integration-terms" id="mobile-bankid-integration-terms" rows="5"><?php // phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.
-																												echo wp_kses(
-																													get_option( 'mobile_bankid_integration_terms', __( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
-																													array(
-																														'a'      => array(
-																															'href'   => array(),
-																															'title'  => array(),
-																															'target' => array(),
-																														),
-																														'br'     => array(),
-																														'em'     => array(),
-																														'strong' => array(),
-																														'i'      => array(),
-																													)
-																												);
-																												// phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.
-																												?></textarea>
+					echo wp_kses(
+						get_option( 'mobile_bankid_integration_terms', __( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
+						array(
+							'a'      => array(
+								'href'   => array(),
+								'title'  => array(),
+								'target' => array(),
+							),
+							'br'     => array(),
+							'em'     => array(),
+							'strong' => array(),
+							'i'      => array(),
+						)
+					);
+					// phpcs:ignore -- PHP tag needed to prevent whitespace in textarea.
+					?></textarea>
 				<p class="description"><?php esc_html_e( 'Following HTML elements are supported: a, br, em, strong and i. All others will be escaped.', 'mobile-bankid-integration' ); ?></p>
 			</div>
 		</form>

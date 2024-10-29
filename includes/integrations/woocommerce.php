@@ -105,6 +105,9 @@ class Login extends \Mobile_BankID_Integration\WP_Login\Login { // phpcs:ignore
 					$this->terms( 0.9 );
 				}
 			);
+			add_action( 'woocommerce_login_form_end', function () {
+				$this->login_container( 'div' );
+			} );
 		}
 	}
 }
@@ -125,7 +128,7 @@ class Checkout { // phpcs:ignore
 		if ( get_option( 'mobile_bankid_integration_woocommerce_checkout_require_bankid' ) !== 'yes' ) {
 			return;
 		}
-		add_action( 'woocommerce_checkout_before_customer_details', array( $this, 'checkout_block' ) );
+		add_action( 'woocommerce_checkout_before_customer_details', array( $this, 'checkout_block' ), 10 );
 		add_action( 'woocommerce_after_checkout_validation', array( $this, 'validate' ), 10, 2 );
 	}
 
@@ -164,6 +167,9 @@ class Checkout { // phpcs:ignore
 				$login->load_scripts( '/checkout' );
 				?>
 			</div>
+			<?php
+			$login->login_container( 'div', array( 'wc-block-components-notice-banner', 'is-info' ) );
+			?>
 		</div>
 		<?php
 		echo wp_kses( apply_filters( 'mobile_bankid_integration_checkout_block_style', '<style>#bankid-checkout-block h2 { font-size: 1.5em; }</style>' ), array( 'style' => array() ) );

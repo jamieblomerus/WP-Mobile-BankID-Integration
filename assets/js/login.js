@@ -1,123 +1,196 @@
 if (typeof jQuery === 'undefined') {
-    throw new Error('This JavaScript requires jQuery');
+    throw new Error('Unofficial Mobile BankID Integration requires jQuery on the login page.');
 }
 
-var orderRef = null;
-var bankidRefreshId = null;
+let orderRef = null;
+let bankidRefreshId = null;
 
-jQuery(document).ready(function() {
-    // Add event listener to login button
-    jQuery('#bankid-login-button').on('click', function() {
-        // Send REST API request to start BankID identification
-        jQuery.ajax({
-            url: mobile_bankid_integration_rest_api + '/identify',
-            type: 'POST',
-            dataType: 'json',
-            success: function(data) {
-                if (data.orderRef !== null) {
-                    loginPage(data.autoStartToken);
+jQuery(document).ready(function () {
+    function initializeLoginPage(autoStartToken) {
+        const loginButtonContainer = jQuery("#bankid-login-button").parent().parent();
+        const bankIdLoginContainer = jQuery('#bankid-login-container');
 
-                    // Save orderRef
-                    orderRef = data.orderRef;
+        const statusElement = jQuery('#bankid-status');
+        statusElement.text(mobile_bankid_integration_login_localization.qr_instructions);
 
-                    // Show QR code
-                    bankidRefreshId = setInterval(status, 1000);
-                }
-            },
-            error: function(data) {
-                // Show error message
-                console.log("Something went wrong with BankID identify request.");
-            }
-        });
-    });
-});
+        const cancelButton = jQuery('#cancel_bankid');
+        cancelButton.on('click', cancelBankIdLogin);
 
-function loginPage(autoStartToken) {
-    document.getElementById("bankid-login-button").parentElement.parentElement.innerHTML = '<h2>'+mobile_bankid_integration_login_localization.title+'</h2><p id="bankid-status">'+mobile_bankid_integration_login_localization.qr_instructions+'</p><img id="bankid-qr-code" src="" alt="'+mobile_bankid_integration_login_localization.qr_alt+'" /><br><br><a href="#" class="button wp-element-button" onclick="window.location.reload();">'+mobile_bankid_integration_login_localization.cancel+'</a><a style="margin-left: 5px;" target="_blank" id="open_bankid" href="https://app.bankid.com/?autostarttoken='+autoStartToken+'&redirect=null" class="button wp-element-button">'+mobile_bankid_integration_login_localization.open_on_this_device+'</a>';
-}
+        const openBankidButton = jQuery('#open_bankid');
+        openBankidButton.attr('href', `https://app.bankid.com/?autostarttoken=${autoStartToken}&redirect=null`);
 
-function status() {
-    if (orderRef === null || document.getElementById('bankid-qr-code').style.display == 'none') {
-        return;
+        loginButtonContainer.after(bankIdLoginContainer);
+        loginButtonContainer.hide();
+
+        jQuery('h2').not('#bankid-login-h2').addClass('bankid-login-hidden');
+
+        bankIdLoginContainer.show();
+
+        jQuery('#login').addClass('bankid-login');
     }
-    // Send REST API request to get QR code
-    jQuery.ajax({
-        url: mobile_bankid_integration_rest_api + '/status?orderRef=' + orderRef,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data.qr !== null) {
-                // Show QR code
-                document.getElementById('bankid-qr-code').src = data.qr;
-            }
 
-            switch (data.status) {
-                case 'expired':
-                    // Show error message
-                    showErrorMessage(mobile_bankid_integration_login_localization.status_expired);
-                    clearInterval(bankidRefreshId);
-                    break;
-                case 'complete':
-                    orderRef = null;
-                    // Show success message
-                    document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.status_complete;
-                    document.getElementById('bankid-qr-code').src = '';
-                    document.getElementById('bankid-qr-code').style.display = 'none';
-                    document.getElementById('open_bankid').style.display = 'none';
-                    // Redirect to my account page
-                    window.location.href = mobile_bankid_integration_redirect_url;
-                    clearInterval(bankidRefreshId);
-                    break;
-                case 'complete_no_user':
-                    showErrorMessage(mobile_bankid_integration_login_localization.status_complete_no_user);
-                    clearInterval(bankidRefreshId);
-                    break;
-                case 'failed':
-                    showErrorMessage(mobile_bankid_integration_login_localization.status_failed);
-                    clearInterval(bankidRefreshId);
-                    break;
-            }
-            if (data.hintCode !== null) {
-                switch (data.hintCode) {
-                    case 'userCancel':
-                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_userCancel;
-                        break;
-                    case 'userSign':
-                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_userSign;
-                        break;
-                    case 'startFailed':
-                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_startFailed;
-                        break;
-                    case 'certificateErr':
-                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.hintcode_certificateErr;
-                        break;
-                    default:
-                        document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.qr_instructions;
-                        break;
+    async function handleStatus() {
+        if (orderRef === null) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${mobile_bankid_integration_rest_api}/status?orderRef=${orderRef}`);
+            const data = await response.json();
+
+            if (data.qr !== null) {
+                jQuery('#bankid-qr-code').attr('src', data.qr);
+
+                if (! jQuery('#bankid-qr-code-loading').hasClass('hidden')) {
+                    jQuery('#bankid-qr-code-loading').addClass('hidden');
                 }
             }
-        },
-        error: function(data) {
-            if (orderRef === null) {
-                clearInterval(bankidRefreshId);
+
+            if (data.status === 'failed' && data.hintCode === 'startFailed') {
+                identify((data) => {
+                    orderRef = data.orderRef;
+                    const open_on_this_device = jQuery('#open_bankid');
+                    open_on_this_device.attr('href', `https://app.bankid.com/?autostarttoken=${data.autoStartToken}&redirect=null`);
+                });
                 return;
             }
-            // Show error message
-            document.getElementById('bankid-status').innerHTML = mobile_bankid_integration_login_localization.something_went_wrong;
-            document.getElementById('bankid-qr-code').src = '';
-            document.getElementById('bankid-qr-code').style.display = 'none';
-            document.getElementById('open_bankid').style.display = 'none';
-            console.log("Something went wrong. Debug info:\n\n" + data);
-            clearInterval(bankidRefreshId);
+
+            handleStatusSwitch(data.status);
+            if (data.hintCode !== null) {
+                handleHintCode(data.hintCode);
+            }
+
+            updateQRCodeTimeLeft(data.time_since_auth);
+        } catch (error) {
+            displayErrorMessage(mobile_bankid_integration_login_localization.something_went_wrong);
+            console.error("Something went wrong. Debug info:\n\n", error);
+        }
+    }
+
+    function handleStatusSwitch(status) {
+        switch (status) {
+            case 'expired':
+                displayErrorMessage(mobile_bankid_integration_login_localization.status_expired);
+                break;
+            case 'complete':
+                completeLogin();
+                break;
+            case 'complete_no_user':
+                displayErrorMessage(mobile_bankid_integration_login_localization.status_complete_no_user);
+                break;
+            case 'failed':
+                displayErrorMessage(mobile_bankid_integration_login_localization.status_failed);
+                break;
+        }
+    }
+
+    function updateQRCodeTimeLeft(timeSinceAuth) {
+        const timeLeft = 30 - timeSinceAuth;
+        const timeLeftPercentage = (timeLeft / 30) * 100;
+        jQuery('#bankid-qr-code-timeleft').css('width', `${timeLeftPercentage}%`);
+    }
+
+    function handleHintCode(hintCode) {
+        const statusElement = jQuery('#bankid-status');
+        const hintMessages = {
+            'userCancel': mobile_bankid_integration_login_localization.hintcode_userCancel,
+            'userSign': mobile_bankid_integration_login_localization.hintcode_userSign,
+            'startFailed': mobile_bankid_integration_login_localization.hintcode_startFailed,
+            'certificateErr': mobile_bankid_integration_login_localization.hintcode_certificateErr,
+            'default': mobile_bankid_integration_login_localization.qr_instructions
+        };
+        statusElement.html(hintMessages[hintCode] || hintMessages['default']);
+    }
+
+    function displayErrorMessage(message) {
+        const statusElement = jQuery('#bankid-status');
+        statusElement.html(message);
+        jQuery('#bankid-qr-code').attr('src', '');
+        jQuery('#bankid-qr-code-container').hide();
+        jQuery('#open_bankid').hide();
+        jQuery('#bankid-login-container').addClass('error');
+        orderRef = null;
+        clearInterval(bankidRefreshId);
+    }
+
+    function completeLogin() {
+        orderRef = null;
+        jQuery('#bankid-status').html(mobile_bankid_integration_login_localization.status_complete);
+        jQuery('#bankid-qr-code').attr('src', '');
+        jQuery('#bankid-qr-code-container').hide();
+        jQuery('#open_bankid').hide();
+        window.location.href = mobile_bankid_integration_redirect_url;
+        clearInterval(bankidRefreshId);
+    }
+
+    function cancelBankIdLogin() {
+        const loginButtonContainer = jQuery("#bankid-login-button").parent().parent();
+        const bankIdLoginContainer = jQuery("#bankid-login-container");
+        bankIdLoginContainer.hide();
+        loginButtonContainer.show();
+
+        // Close accordions
+        jQuery('#bankid-login-container button.accordion-button').removeClass('active');
+        jQuery('#bankid-login-container button.accordion-button').attr('aria-expanded', 'false');
+        jQuery('#bankid-login-container button.accordion-button').next().slideUp();
+
+        // Show loading spinner
+        jQuery('#bankid-qr-code-loading').removeClass('hidden');
+
+        // Unhide qr code container
+        jQuery('#bankid-qr-code-container').show();
+
+        jQuery('#login').removeClass('bankid-login');
+        jQuery('.bankid-login-hidden').removeClass('bankid-login-hidden');
+        clearInterval(bankidRefreshId);
+    }
+
+    async function identify(callback) {
+        try {
+            const response = await fetch(`${mobile_bankid_integration_rest_api}/identify`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            if (data.orderRef === null) {
+                throw new Error('Order reference is null');
+            }
+            callback(data);
+        } catch (error) {
+            console.error("Something went wrong with BankID identify request.", error);
+        }
+    }
+
+    jQuery('#bankid-login-button').on('click', function (event) {
+        event.preventDefault();
+        identify((data) => {
+            initializeLoginPage(data.autoStartToken);
+            orderRef = data.orderRef;
+            bankidRefreshId = setInterval(handleStatus, 1000);
+        });
+    });
+
+    jQuery('#bankid-login-container button.accordion-button').on('click', function (event) {
+        event.preventDefault();
+        jQuery(this).toggleClass('active');
+        jQuery(this).attr('aria-expanded', jQuery(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+        jQuery(this).next().slideToggle();
+    });
+
+    jQuery('#bankid-qr-code-container').on('click', function (event) {
+        jQuery(this).toggleClass('full-screen');
+        jQuery(this).attr('aria-expanded', jQuery(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+        jQuery(this).attr('aria-label', jQuery(this).attr('aria-label') === mobile_bankid_integration_login_localization.qr_click_to_enlarge ? mobile_bankid_integration_login_localization.qr_click_to_shrink : mobile_bankid_integration_login_localization.qr_click_to_enlarge);
+        if (jQuery(this).hasClass('full-screen')) {
+            jQuery('#login').after(this);
+            jQuery('#login').hide();
+            jQuery('#bankid-terms').hide();
+        } else {
+            jQuery('#bankid-status').after(this);
+            jQuery('#login').show();
+            jQuery('#bankid-terms').show();
         }
     });
-}
-
-function showErrorMessage(message) {
-    document.getElementById('bankid-status').innerHTML = message;
-    document.getElementById('bankid-qr-code').src = '';
-    document.getElementById('bankid-qr-code').style.display = 'none';
-    document.getElementById('open_bankid').style.display = 'none';
-    orderRef = null;
-    clearInterval(bankidRefreshId);
-}
+});
