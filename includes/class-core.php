@@ -173,6 +173,8 @@ class Core {
 
 	/**
 	 * Get user ID from personal identity number.
+	 * 
+	 * @since 1.4.1 Added filter 'mobile_bankid_integration_get_user_id_from_personal_number'.
 	 *
 	 * @param string $personal_number Personal identity number (12 digits, no hyphen).
 	 * @return int|false
@@ -186,6 +188,8 @@ class Core {
 			)
 		);
 		$users      = $user_query->get_results();
+		$users      = apply_filters( 'mobile_bankid_integration_get_user_id_from_personal_number', $users, $personal_number );
+
 		if ( count( $users ) > 0 && count( $users ) < 2 ) {
 			return $users[0]->ID;
 		}
