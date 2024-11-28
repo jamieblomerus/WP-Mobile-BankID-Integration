@@ -11,7 +11,7 @@ jQuery(document).ready(function () {
         const bankIdLoginContainer = jQuery('#bankid-login-container');
 
         const statusElement = jQuery('#bankid-status');
-        statusElement.text(mobile_bankid_integration_login_localization.qr_instructions);
+        statusElement.html(mobile_bankid_integration_login_localization.qr_instructions);
 
         const cancelButton = jQuery('#cancel_bankid');
         cancelButton.on('click', cancelBankIdLogin);
@@ -180,6 +180,9 @@ jQuery(document).ready(function () {
     });
 
     jQuery('#bankid-qr-code-container').on('click', function (event) {
+        if (! jQuery(this).attr('enlargeable')) {
+            return;
+        }
         jQuery(this).toggleClass('full-screen');
         jQuery(this).attr('aria-expanded', jQuery(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
         jQuery(this).attr('aria-label', jQuery(this).attr('aria-label') === mobile_bankid_integration_login_localization.qr_click_to_enlarge ? mobile_bankid_integration_login_localization.qr_click_to_shrink : mobile_bankid_integration_login_localization.qr_click_to_enlarge);
