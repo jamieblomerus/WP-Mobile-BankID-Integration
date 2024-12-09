@@ -56,7 +56,7 @@ jQuery(document).ready(function () {
             }
 
             handleStatusSwitch(data.status);
-            if (data.hintCode !== null) {
+            if (data.hintCode) {
                 handleHintCode(data.hintCode);
             }
 
