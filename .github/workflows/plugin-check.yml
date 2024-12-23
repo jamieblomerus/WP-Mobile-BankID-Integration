@@ -20,11 +20,11 @@ jobs:
     - name: Build plugin
       run: |
         ./build.sh dev
-        mkdir tmp-build
-        unzip build-dev.zip -d tmp-build
+        mkdir mobile-bankid-integration
+        unzip build-dev.zip -d mobile-bankid-integration
 
     - name: Run plugin check
       uses: wordpress/plugin-check-action@v1
       with:
-        build-dir: './tmp-build'
+        build-dir: './mobile-bankid-integration'
         exclude-directories: 'vendor'
