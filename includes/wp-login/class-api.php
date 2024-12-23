@@ -168,7 +168,7 @@ class API {
 
 		/**
 		 * Fires after a user has successfully logged in via BankID.
-		 * 
+		 *
 		 * @param WP_User $user WP_User object.
 		 */
 		do_action( 'mobile_bankid_integration_login_success', $user );

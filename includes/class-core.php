@@ -50,7 +50,7 @@ class Core {
 
 			/**
 			 * Fires when the plugin is initialized and the BankID service has been created.
-			 * 
+			 *
 			 * @since 1.0.0
 			 */
 			do_action( 'mobile_bankid_integration_init' );
@@ -173,7 +173,7 @@ class Core {
 
 	/**
 	 * Get user ID from personal identity number.
-	 * 
+	 *
 	 * @since 1.4.1 Added filter 'mobile_bankid_integration_get_user_id_from_personal_number'.
 	 *
 	 * @param string $personal_number Personal identity number (12 digits, no hyphen).

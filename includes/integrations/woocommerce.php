@@ -105,9 +105,12 @@ class Login extends \Mobile_BankID_Integration\WP_Login\Login { // phpcs:ignore
 					$this->terms( 0.9 );
 				}
 			);
-			add_action( 'woocommerce_login_form_end', function () {
-				$this->login_container( 'div' );
-			} );
+			add_action(
+				'woocommerce_login_form_end',
+				function () {
+					$this->login_container( 'div' );
+				}
+			);
 		}
 	}
 }
@@ -185,7 +188,7 @@ class Checkout { // phpcs:ignore
 
 		/**
 		 * Filter the age check.
-		 * 
+		 *
 		 * @param int $age Age.
 		 * @since 1.3
 		 */
