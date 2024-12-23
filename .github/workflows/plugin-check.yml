@@ -12,7 +12,19 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Install Composer
+      run: |
+        curl -sS https://getcomposer.org/installer | php
+        mv composer.phar /usr/local/bin/composer
+    
+    - name: Build plugin
+      run: |
+        ./build.sh dev
+        mkdir tmp-build
+        unzip build-dev.zip -d tmp-build
+
     - name: Run plugin check
       uses: wordpress/plugin-check-action@v1
       with:
+        build-dir: './tmp-build'
         exclude-directories: 'vendor'
