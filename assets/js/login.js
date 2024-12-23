@@ -180,7 +180,7 @@ jQuery(document).ready(function () {
     });
 
     jQuery('#bankid-qr-code-container').on('click', function (event) {
-        if (! jQuery(this).attr('enlargeable')) {
+        if (jQuery(this).attr('enlargeable') === undefined) {
             return;
         }
         jQuery(this).toggleClass('full-screen');
