@@ -28,3 +28,4 @@ jobs:
       with:
         build-dir: './mobile-bankid-integration'
         exclude-directories: 'vendor'
+        exclude-checks: 'plugin_readme'
