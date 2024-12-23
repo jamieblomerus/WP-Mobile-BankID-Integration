@@ -1,4 +1,4 @@
-<?php // phpcs:ignore
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -183,8 +183,8 @@ class Core {
 		// Get user by personal identity number from User Meta.
 		$user_query = new \WP_User_Query(
 			array(
-				'meta_key'   => 'mobile_bankid_integration_personal_number',
-				'meta_value' => $personal_number,
+				'meta_key'   => 'mobile_bankid_integration_personal_number', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value' => $personal_number, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 			)
 		);
 		$users      = $user_query->get_results();

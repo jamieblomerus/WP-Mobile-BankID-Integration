@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration\Settings;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -62,8 +62,8 @@ class UserSettings {
 				// Check if user with this personal identity number already exists.
 				$check = get_users(
 					array(
-						'meta_key'    => 'mobile_bankid_integration_personal_number',
-						'meta_value'  => $personal_number,
+						'meta_key'    => 'mobile_bankid_integration_personal_number', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+						'meta_value'  => $personal_number, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 						'number'      => 1,
 						'count_total' => false,
 					)
@@ -87,11 +87,9 @@ class UserSettings {
 	 * Add error message if personal identity number already exists.
 	 *
 	 * @param object $errors WP_Error object.
-	 * @param bool   $update Whether this is a user update.
-	 * @param object $user User object.
 	 * @return void
 	 */
-	public function personal_number_update_error_already_exists( $errors, $update, $user ) {
+	public function personal_number_update_error_already_exists( $errors ) {
 		$errors->add( 'personal_number', esc_html__( 'User with this personal identity number already exists.', 'mobile-bankid-integration' ) );
 	}
 
@@ -99,11 +97,9 @@ class UserSettings {
 	 * Add error message if personal identity number is invalid.
 	 *
 	 * @param object $errors WP_Error object.
-	 * @param bool   $update Whether this is a user update.
-	 * @param object $user User object.
 	 * @return void
 	 */
-	public function personal_number_update_error_invalid( $errors, $update, $user ) {
+	public function personal_number_update_error_invalid( $errors ) {
 		$errors->add( 'personal_number', esc_html__( 'Personal identity number is not valid.', 'mobile-bankid-integration' ) );
 	}
 }

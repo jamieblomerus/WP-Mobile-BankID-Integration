@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration\WP_Login;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -51,13 +51,15 @@ class Login {
 	 * @since 1.4.1 Added filters.
 	 *
 	 * @param string $dom_element The DOM element to use for the container.
-	 * @param array  $class       Additional classes to add to the container.
+	 * @param array  $classes       Additional classes to add to the container.
 	 * @return void
 	 */
-	public function login_container( $dom_element = 'form', $class = array() ) {
+	public function login_container( $dom_element = 'form', $classes = array() ) {
 		if ( ! in_array( $dom_element, array( 'form', 'div', 'section' ), true ) ) {
 			$dom_element = 'form';
 		}
+
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		/**
 		 * Filter whether the QR code should be enlargeable.
@@ -66,7 +68,7 @@ class Login {
 		 */
 		$qr_enlargeable = (bool) apply_filters( 'mobile_bankid_integration_login_qr_enlargeable', true );
 		?>
-		<<?php echo esc_attr( $dom_element ); ?> id="bankid-login-container" class="<?php echo esc_attr( implode( ' ', $class ) ); ?>" style="display: none;">
+		<<?php echo esc_attr( $dom_element ); ?> id="bankid-login-container" class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" style="display: none;">
 			<h2 id="bankid-login-h2"><?php echo apply_filters( 'mobile_bankid_integration_login_heading', esc_html__( 'Login with BankID', 'mobile-bankid-integration' ) ); ?></h2>
 			<p id="bankid-status"><?php echo apply_filters( 'mobile_bankid_integration_login_qr_instructions', esc_html__( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ) ); ?></p>
 			<div id="bankid-qr-code-container" <?php echo $qr_enlargeable ? 'enlargeable role="button"' : ''; ?> <?php echo $qr_enlargeable ? 'aria-label="' . apply_filters( 'mobile_bankid_integration_login_qr_click_to_enlarge', esc_attr__( 'Enlarge the QR code', 'mobile-bankid-integration' ) ) . '"' : ''; ?>>
@@ -94,6 +96,7 @@ class Login {
 			<a target="_blank" id="open_bankid" href="#" class="button wp-element-button" style="margin-left: 5px;"><?php echo apply_filters( 'mobile_bankid_integration_login_start_app', esc_html__( 'Start the BankID app', 'mobile-bankid-integration' ) ); ?></a>
 		</<?php echo esc_attr( $dom_element ); ?>>
 		<?php
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -179,10 +182,10 @@ class Login {
 				'something_went_wrong'    => apply_filters( 'mobile_bankid_integration_login_something_went_wrong', esc_html__( 'Something went wrong. Please try again.', 'mobile-bankid-integration' ) ),
 
 				// BankID Hint Codes.
-				'hintcode_userCancel'     => apply_filters( 'mobile_bankid_integration_login_hintcode_userCancel', esc_html__( 'Action cancelled.', 'mobile-bankid-integration' ) ),
-				'hintcode_userSign'       => apply_filters( 'mobile_bankid_integration_login_hintcode_userSign', esc_html__( 'Enter your security code in the BankID app and select Identify.', 'mobile-bankid-integration' ) ),
-				'hintcode_startFailed'    => apply_filters( 'mobile_bankid_integration_login_hintcode_startFailed', esc_html__( 'Failed to scan the QR code.', 'mobile-bankid-integration' ) ),
-				'hintcode_certificateErr' => apply_filters( 'mobile_bankid_integration_login_hintcode_certificateErr', esc_html__( 'The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank.', 'mobile-bankid-integration' ) ),
+				'hintcode_userCancel'     => apply_filters( 'mobile_bankid_integration_login_hintcode_usercancel', esc_html__( 'Action cancelled.', 'mobile-bankid-integration' ) ),
+				'hintcode_userSign'       => apply_filters( 'mobile_bankid_integration_login_hintcode_usersign', esc_html__( 'Enter your security code in the BankID app and select Identify.', 'mobile-bankid-integration' ) ),
+				'hintcode_startFailed'    => apply_filters( 'mobile_bankid_integration_login_hintcode_startfailed', esc_html__( 'Failed to scan the QR code.', 'mobile-bankid-integration' ) ),
+				'hintcode_certificateErr' => apply_filters( 'mobile_bankid_integration_login_hintcode_certificateerr', esc_html__( 'The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank.', 'mobile-bankid-integration' ) ),
 			)
 		);
 		wp_add_inline_script( 'mobile-bankid-integration-login', 'var mobile_bankid_integration_rest_api = "' . rest_url( 'mobile-bankid-integration/v1/login' ) . '"; var mobile_bankid_integration_redirect_url = "' . $redirect . '";', 'before' );

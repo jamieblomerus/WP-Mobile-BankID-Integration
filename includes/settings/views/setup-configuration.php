@@ -1,4 +1,10 @@
 <?php
+/**
+ * Setup configuration view.
+ *
+ * @package mobile-bankid-integration
+ */
+
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 ?>
 

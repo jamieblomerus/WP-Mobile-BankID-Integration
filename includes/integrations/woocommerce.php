@@ -1,4 +1,4 @@
-<?php // phpcs:ignore
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration\Integrations\WooCommerce;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.

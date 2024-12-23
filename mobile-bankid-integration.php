@@ -10,7 +10,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: mobile-bankid-integration
 */
 
-defined( 'ABSPATH' ) || exit; // Exit if accessed directly
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 // Define constants.
 define( 'MOBILE_BANKID_INTEGRATION_VERSION', 'Indev' );

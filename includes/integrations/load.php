@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 add_action(
