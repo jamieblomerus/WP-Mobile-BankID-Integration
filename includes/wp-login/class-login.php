@@ -72,7 +72,7 @@ class Login {
 			<h2 id="bankid-login-h2"><?php echo apply_filters( 'mobile_bankid_integration_login_heading', esc_html__( 'Login with BankID', 'mobile-bankid-integration' ) ); ?></h2>
 			<p id="bankid-status"><?php echo apply_filters( 'mobile_bankid_integration_login_qr_instructions', esc_html__( 'Scan the QR code with your Mobile BankID app.', 'mobile-bankid-integration' ) ); ?></p>
 			<div id="bankid-qr-code-container" <?php echo $qr_enlargeable ? 'enlargeable role="button"' : ''; ?> <?php echo $qr_enlargeable ? 'aria-label="' . apply_filters( 'mobile_bankid_integration_login_qr_click_to_enlarge', esc_attr__( 'Enlarge the QR code', 'mobile-bankid-integration' ) ) . '"' : ''; ?>>
-				<img id="bankid-qr-code" src="" alt="<?php echo apply_filters( 'mobile_bankid_integration_login_qr_alt', esc_attr__( 'QR code', 'mobile-bankid-integration' ) ); ?>">
+				<img id="bankid-qr-code" src="" alt="<?php echo apply_filters( 'mobile_bankid_integration_login_qr_alt', esc_attr__( 'QR code', 'mobile-bankid-integration' ) ); ?>"> <?php // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 				<div id="bankid-qr-code-loading" aria-hidden="true">
 					<div class="spinner"></div>
 				</div>
