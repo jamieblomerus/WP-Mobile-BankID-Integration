@@ -1,5 +1,4 @@
-<?php
-
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -334,7 +333,7 @@ class Admin {
 		<div class="mobile-bankid-integration-integrations">
 			<div class="mobile-bankid-integration-integration">
 				<div class="mobile-bankid-integration-integration__logo">
-					<img src="<?php echo esc_url( MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/images/woocommerce.svg' ); ?>" alt="WooCommerce">
+					<img src="<?php echo esc_url( MOBILE_BANKID_INTEGRATION_PLUGIN_URL . 'assets/images/woocommerce.svg' ); ?>" alt="WooCommerce"> <?php // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 				</div>
 				<div class="mobile-bankid-integration-integration__content">
 					<h2 class="mobile-bankid-integration-integration__title">WooCommerce</h2>

@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration\WP_Login;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -168,7 +168,7 @@ class API {
 
 		/**
 		 * Fires after a user has successfully logged in via BankID.
-		 * 
+		 *
 		 * @param WP_User $user WP_User object.
 		 */
 		do_action( 'mobile_bankid_integration_login_success', $user );

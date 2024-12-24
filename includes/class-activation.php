@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -52,7 +52,7 @@ class Activation {
 		// Delete DB table.
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'mobile_bankid_integration_auth_responses';
-		$wpdb->query( "DROP TABLE IF EXISTS `{$table_name}`" );
+		$wpdb->query( "DROP TABLE IF EXISTS `{$table_name}`" ); // phpcs:ignore WordPress.DB
 
 		// Delete session secret.
 		Session::uninstall();

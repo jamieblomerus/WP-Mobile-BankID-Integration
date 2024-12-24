@@ -1,4 +1,4 @@
-<?php // phpcs:ignore
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Mobile_BankID_Integration;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -50,7 +50,7 @@ class Core {
 
 			/**
 			 * Fires when the plugin is initialized and the BankID service has been created.
-			 * 
+			 *
 			 * @since 1.0.0
 			 */
 			do_action( 'mobile_bankid_integration_init' );
@@ -173,7 +173,7 @@ class Core {
 
 	/**
 	 * Get user ID from personal identity number.
-	 * 
+	 *
 	 * @since 1.4.1 Added filter 'mobile_bankid_integration_get_user_id_from_personal_number'.
 	 *
 	 * @param string $personal_number Personal identity number (12 digits, no hyphen).
@@ -183,8 +183,8 @@ class Core {
 		// Get user by personal identity number from User Meta.
 		$user_query = new \WP_User_Query(
 			array(
-				'meta_key'   => 'mobile_bankid_integration_personal_number',
-				'meta_value' => $personal_number,
+				'meta_key'   => 'mobile_bankid_integration_personal_number', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value' => $personal_number, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 			)
 		);
 		$users      = $user_query->get_results();
