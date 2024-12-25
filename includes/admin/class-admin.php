@@ -452,6 +452,7 @@ class Admin {
 		<h3>Contributors</h3>
 		<ul class="credits">
 			<li><a href="https://github.com/danceshorribly" target="_blank"><?php esc_html_e( 'danceshorribly (GitHub)', 'mobile-bankid-integration' ); ?></a></li>
+			<li><a href="https://github.com/FredrikMBP" target="_blank"><?php esc_html_e( 'FredrikMBP (GitHub)', 'mobile-bankid-integration' ); ?></a></li>
 			<li><a href="https://github.com/itsabunny" target="_blank"><?php esc_html_e( 'itsabunny (GitHub)', 'mobile-bankid-integration' ); ?></a></li>
 		</ul>
 		<h3>Special thanks</h3>
