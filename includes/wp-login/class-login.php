@@ -25,6 +25,7 @@ class Login {
 				40
 			);
 		}
+		add_filter( 'wp_kses_allowed_html', array( $this, 'terms_allowed_html' ), 10, 2 );
 	}
 
 	/**
@@ -138,21 +139,38 @@ class Login {
 			<?php
 			echo wp_kses(
 				get_option( 'mobile_bankid_integration_terms', esc_html__( 'By logging in using Mobile BankID you agree to our Terms of Service and Privacy Policy.', 'mobile-bankid-integration' ) ),
-				array(
-					'a'      => array(
-						'href'   => array(),
-						'title'  => array(),
-						'target' => array(),
-					),
-					'br'     => array(),
-					'em'     => array(),
-					'strong' => array(),
-					'i'      => array(),
-				)
+				'mobile_bankid_integration_terms'
 			);
 			?>
 		</p>
 		<?php
+	}
+
+	/**
+	 * Add allowed HTML for terms.
+	 *
+	 * @param array  $allowedtags Allowed tags.
+	 * @param string $context     Context.
+	 * @return array
+	 *
+	 * @since 1.4.1 Added the context 'mobile_bankid_integration_terms'.
+	 */
+	public function terms_allowed_html( $allowedtags, $context ) {
+		if ( 'mobile_bankid_integration_terms' !== $context ) {
+			return $allowedtags;
+		}
+
+		return array(
+			'a'      => array(
+				'href'   => array(),
+				'title'  => array(),
+				'target' => array(),
+			),
+			'br'     => array(),
+			'em'     => array(),
+			'strong' => array(),
+			'i'      => array(),
+		);
 	}
 
 	/**

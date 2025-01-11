@@ -161,7 +161,7 @@ class API {
 		// Get params.
 		$wplogin      = isset( $_POST['wplogin'] ) ? sanitize_text_field( wp_unslash( $_POST['wplogin'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
 		$registration = isset( $_POST['registration'] ) ? sanitize_text_field( wp_unslash( $_POST['registration'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
-		$terms        = isset( $_POST['terms'] ) ? sanitize_text_field( wp_unslash( $_POST['terms'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification
+		$terms        = isset( $_POST['terms'] ) ? wp_kses( wp_unslash( $_POST['terms'] ), 'mobile_bankid_integration_terms' ) : null; // phpcs:ignore WordPress.Security.NonceVerification
 
 		if ( ! in_array( $wplogin, array( 'as_alternative', 'hide' ), true ) ) {
 			return new \WP_Error( 'invalid_wplogin', esc_html__( 'Invalid value for wplogin.', 'mobile-bankid-integration' ), array( 'status' => 400 ) );
