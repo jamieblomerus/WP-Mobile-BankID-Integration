@@ -49,8 +49,9 @@ If you are only testing the service out, you can during the setup choose to run 
 
 = 1.4.1 =
 * Improved developer customizability by adding more actions and filters.
-* Bugfix: Fixed a bug where status text would not receive updates.
+* Bugfix: Resolved bug where status text would not receive updates.
 * Bugfix: Resolved bug where QR enlargement would sometimes not work.
+* Bugfix: Resolved bug where allowed HTML tags were stripped upon saving login terms.
 
 = 1.4 =
 * Recreated the login screen to be more user-friendly, modern and accessible.
