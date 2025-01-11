@@ -1,7 +1,7 @@
 # Unofficial Mobile BankID Integration for WordPress
 
 ![WordPress Plugin Version](https://img.shields.io/badge/WordPress%20Version-5.2%20|%206.7-green)
-![Stable Version](https://img.shields.io/badge/Stable%20Tag-1.4-blue)
+![Stable Version](https://img.shields.io/badge/Stable%20Tag-1.4.1-blue)
 ![Required PHP](https://img.shields.io/badge/PHP-%3E%3D%207.2-red)
 ![License](https://img.shields.io/badge/License-GPLv3-orange)
 
@@ -29,4 +29,4 @@ Absolutely! Contribute your linguistic prowess for this plugin at [Translating W
 
 ### I feel like a feature is missing
 
-Got an idea? We're all ears! Drop a suggestion to our project lead, Jamie, at [jamie.blomerus@protonmail.com](mailto:jamie.blomerus@protonmail.com).
+Got an idea? We're all ears! Drop a suggestion at the [GitHub discussions page](https://github.com/jamieblomerus/WP-Mobile-BankID-Integration/discussions/new?category=ideas).
