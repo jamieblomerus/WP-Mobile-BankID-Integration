@@ -3,7 +3,7 @@ Contributors: jamieblomerus
 Tags: mobile bankid, bankid, authentication
 Requires at least: 5.2
 Tested up to: 6.7
-Stable tag: 1.4
+Stable tag: 1.4.1
 Requires PHP: 7.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -47,6 +47,11 @@ If you are only testing the service out, you can during the setup choose to run 
 
 == Changelog ==
 
+= 1.4.1 =
+* Improved developer customizability by adding more actions and filters.
+* Bugfix: Fixed a bug where status text would not receive updates.
+* Bugfix: Resolved bug where QR enlargement would sometimes not work.
+
 = 1.4 =
 * Recreated the login screen to be more user-friendly, modern and accessible.
 * Fixed a contrast issue within the setup wizard.
@@ -87,6 +92,9 @@ If you are only testing the service out, you can during the setup choose to run 
 * I ensured the plugin is stable for production use.
 
 == Upgrade Notice ==
+
+= 1.4.1 =
+This update improves developer customizability and fixes some bugs.
 
 = 1.4 =
 A major update that changes the login screen and fixes some bugs.
