@@ -53,6 +53,7 @@ If you are only testing the service out, you can during the setup choose to run 
 * Bugfix: Resolved bug where QR enlargement would sometimes not work.
 * Bugfix: Resolved bug where allowed HTML tags were stripped upon saving login terms.
 * Bugfix: Resolved bug where users name sometimes would be all caps, depending on the bank.
+* Bugfix: Plugin would not work in some Windows environments.
 
 = 1.4 =
 * Recreated the login screen to be more user-friendly, modern and accessible.
