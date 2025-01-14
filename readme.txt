@@ -49,10 +49,10 @@ If you are only testing the service out, you can during the setup choose to run 
 
 = 1.4.1 =
 * Improved developer customizability by adding more actions and filters.
-* Bugfix: Resolved bug where status text would not receive updates.
-* Bugfix: Resolved bug where QR enlargement would sometimes not work.
-* Bugfix: Resolved bug where allowed HTML tags were stripped upon saving login terms.
-* Bugfix: Resolved bug where users name sometimes would be all caps, depending on the bank.
+* Bugfix: Status text would not receive updates.
+* Bugfix: QR enlargement would sometimes not work.
+* Bugfix: Allowed HTML tags were stripped upon saving login terms.
+* Bugfix: Users name would sometimes be all caps, depending on the bank.
 * Bugfix: Plugin would not work in some Windows environments.
 
 = 1.4 =
