@@ -81,8 +81,8 @@ class API {
 		$password    = isset( $_POST['password'] ) ? $_POST['password'] : null; // phpcs:ignore
 
 		// Check that submitted certificate is valid and exists.
-		if ( ! isset( $certificate ) || ! preg_match( '/^\/([A-z0-9-_+]+\/)*([A-z0-9]+\.(pem))$/', $certificate ) ) {
-			return new \WP_Error( 'invalid_certificate', esc_html__( 'Certificate is not valid.', 'mobile-bankid-integration' ), array( 'status' => 400 ) );
+		if ( ! isset( $certificate ) || ! preg_match( '/^([A-Za-z]:\\\\|\\/)([A-Za-z0-9-_+]+[\\/\\\\])*[A-Za-z0-9-_+]+\\.(pem)$/', $certificate ) ) {
+			return new \WP_Error( 'invalid_certificate', esc_html__( 'Certificate path is not valid.', 'mobile-bankid-integration' ), array( 'status' => 400 ) );
 		}
 		if ( ! file_exists( $certificate ) ) {
 			return new \WP_Error( 'certificate_does_not_exist', esc_html__( 'Certificate does not exist on specified path.', 'mobile-bankid-integration' ), array( 'status' => 400 ) );
