@@ -145,7 +145,7 @@ class API {
 			// Create user.
 			$user_id = wp_create_user( $this->random_username(), wp_generate_password() );
 			$user    = get_user_by( 'id', $user_id );
-			
+
 			// Capitalize first and last name.
 			$fname = ucwords( strtolower( $fname ) );
 			$lname = ucwords( strtolower( $lname ) );

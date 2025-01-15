@@ -147,19 +147,17 @@ class Checkout { // phpcs:ignore
 		} elseif ( Core::$instance->verifyAuthCookie() ) {
 			if ( $this->cart_age_check() ) {
 				return;
-			} else {
-				if ( $this->cart_age_limit() === $this->store_age_limit() ) {
+			} elseif ( $this->cart_age_limit() === $this->store_age_limit() ) {
 					// Translators: Age.
 					wc_add_notice( sprintf( __( 'You must be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->store_age_limit() ), 'error' );
 					return;
-				} else {
-					// Translators: Age.
-					wc_add_notice( sprintf( __( 'Your cart contains products that require you to be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->cart_age_limit() ), 'error' );
-					return;
-				}
+			} else {
+				// Translators: Age.
+				wc_add_notice( sprintf( __( 'Your cart contains products that require you to be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->cart_age_limit() ), 'error' );
+				return;
 			}
 		}
-		
+
 		?>
 		<div id="bankid-checkout-block">
 			<div class="wc-block-components-notice-banner is-warning" style="display:block;" role="alert">
@@ -188,7 +186,7 @@ class Checkout { // phpcs:ignore
 
 	/**
 	 * Get store-wide age limit.
-	 * 
+	 *
 	 * @return int
 	 */
 	private function store_age_limit(): int {
@@ -207,16 +205,16 @@ class Checkout { // phpcs:ignore
 
 	/**
 	 * Get age limit for cart. When multiple products are in the cart, the highest age limit is used.
-	 * 
+	 *
 	 * Default age limit is the store-wide age limit.
-	 * 
+	 *
 	 * @return int
 	 */
 	private function cart_age_limit(): int {
-		$age = $this->store_age_limit();
+		$age  = $this->store_age_limit();
 		$cart = WC()->cart->get_cart();
 		foreach ( $cart as $item ) {
-			$product_id = $item['product_id'];
+			$product_id  = $item['product_id'];
 			$product_age = get_post_meta( $product_id, 'mobile_bankid_integration_woocommerce_age_check', true );
 			if ( $product_age > $age ) {
 				$age = $product_age;
@@ -236,7 +234,7 @@ class Checkout { // phpcs:ignore
 
 	/**
 	 * Check if user is over the age limit for the cart products and store-wide age limit.
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function cart_age_check(): bool {
@@ -251,7 +249,7 @@ class Checkout { // phpcs:ignore
 	 * @return bool
 	 */
 	public function age_check( ?int $age = null ): bool {
-		
+
 		if ( is_null( $age ) ) {
 			$age = $this->store_age_limit();
 
@@ -297,16 +295,14 @@ class Checkout { // phpcs:ignore
 		if ( Core::$instance->verifyAuthCookie() ) {
 			if ( $this->cart_age_check() ) {
 				return;
-			} else {
-				if ( $this->cart_age_limit() === $this->store_age_limit() ) {
+			} elseif ( $this->cart_age_limit() === $this->store_age_limit() ) {
 					// Translators: Age.
 					$errors->add( 'bankid_error', sprintf( __( 'You must be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->store_age_limit() ) );
 					return;
-				} else {
-					// Translators: Age.
-					$errors->add( 'bankid_error', sprintf( __( 'Your cart contains products that require you to be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->cart_age_limit() ) );
-					return;
-				}
+			} else {
+				// Translators: Age.
+				$errors->add( 'bankid_error', sprintf( __( 'Your cart contains products that require you to be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->cart_age_limit() ) );
+				return;
 			}
 		}
 		$errors->add( 'bankid_error', __( 'You must be authenticated through Mobile BankID to make an order.', 'mobile-bankid-integration' ) );
@@ -317,7 +313,7 @@ class Checkout { // phpcs:ignore
  * This class provides the ability to age restrict individual products in WooCommerce.
  */
 class Product { // phpcs:ignore
-	
+
 	/**
 	 * Class constructor that adds the age restriction to the product page if the plugin is configured to do so.
 	 */
@@ -337,10 +333,10 @@ class Product { // phpcs:ignore
 	public function product_age_check_setting() {
 		woocommerce_wp_text_input(
 			array(
-				'id'          => 'mobile_bankid_integration_woocommerce_age_check',
-				'label'       => __( 'Age restriction', 'mobile-bankid-integration' ),
-				'description' => __( 'Require users to identify themselves with Mobile BankID and be over a certain age to purchase this product.', 'mobile-bankid-integration' ),
-				'type'        => 'number',
+				'id'                => 'mobile_bankid_integration_woocommerce_age_check',
+				'label'             => __( 'Age restriction', 'mobile-bankid-integration' ),
+				'description'       => __( 'Require users to identify themselves with Mobile BankID and be over a certain age to purchase this product.', 'mobile-bankid-integration' ),
+				'type'              => 'number',
 				'custom_attributes' => array(
 					'min'  => 0,
 					'step' => 1,
@@ -357,7 +353,7 @@ class Product { // phpcs:ignore
 	 * @return void
 	 */
 	public function product_age_check_save( $post_id ) {
-		$age = isset( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ? wc_clean( wp_unslash( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ) : 0;
+		$age = isset( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ? wc_clean( wp_unslash( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ) : 0; // phpcs:ignore -- WP handles nonces and wc_clean handles sanitization.
 		update_post_meta( $post_id, 'mobile_bankid_integration_woocommerce_age_check', $age );
 	}
 }
