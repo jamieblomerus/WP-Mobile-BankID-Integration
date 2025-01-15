@@ -71,7 +71,9 @@ class Session {
 		$this->user_id         = $user_id;
 		$this->personal_number = $personal_number;
 		$this->time_created    = $time_created ?? time();
-		$this->save();
+		if ( ! headers_sent() ) {
+			$this->save();
+		}
 	}
 
 	/**
