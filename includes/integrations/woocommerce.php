@@ -9,6 +9,7 @@ use Personnummer\Personnummer;
 new Settings();
 new Login();
 new Checkout();
+new Product();
 
 /**
  * This class handles the WooCommerce integration settings.
@@ -230,5 +231,54 @@ class Checkout { // phpcs:ignore
 			}
 		}
 		$errors->add( 'bankid_error', __( 'You must be authenticated through Mobile BankID to make an order.', 'mobile-bankid-integration' ) );
+	}
+}
+
+/**
+ * This class provides the ability to age restrict individual products in WooCommerce.
+ */
+class Product { // phpcs:ignore
+	
+	/**
+	 * Class constructor that adds the age restriction to the product page if the plugin is configured to do so.
+	 */
+	public function __construct() {
+		if ( ! get_option( 'mobile_bankid_integration_certificate' ) || ! get_option( 'mobile_bankid_integration_password' ) || ! get_option( 'mobile_bankid_integration_env' ) ) {
+			return;
+		}
+		add_action( 'woocommerce_product_options_general_product_data', array( $this, 'product_age_check_setting' ) );
+		add_action( 'woocommerce_process_product_meta', array( $this, 'product_age_check_save' ) );
+	}
+
+	/**
+	 * Add age restriction setting to product page.
+	 *
+	 * @return void
+	 */
+	public function product_age_check_setting() {
+		woocommerce_wp_text_input(
+			array(
+				'id'          => 'mobile_bankid_integration_woocommerce_age_check',
+				'label'       => __( 'Age restriction', 'mobile-bankid-integration' ),
+				'description' => __( 'Require users to identify themselves with Mobile BankID and be over a certain age to purchase this product.', 'mobile-bankid-integration' ),
+				'type'        => 'number',
+				'custom_attributes' => array(
+					'min'  => 0,
+					'step' => 1,
+					'max'  => 130,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Save age restriction setting to product.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	public function product_age_check_save( $post_id ) {
+		$age = isset( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ? wc_clean( wp_unslash( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ) : 0;
+		update_post_meta( $post_id, 'mobile_bankid_integration_woocommerce_age_check', $age );
 	}
 }
