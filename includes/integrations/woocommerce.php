@@ -128,10 +128,6 @@ class Checkout { // phpcs:ignore
 		if ( ! get_option( 'mobile_bankid_integration_certificate' ) || ! get_option( 'mobile_bankid_integration_password' ) || ! get_option( 'mobile_bankid_integration_env' ) ) {
 			return;
 		}
-
-		if ( get_option( 'mobile_bankid_integration_woocommerce_checkout_require_bankid' ) !== 'yes' ) {
-			return;
-		}
 		add_action( 'woocommerce_checkout_before_customer_details', array( $this, 'checkout_block' ), 10 );
 		add_action( 'woocommerce_after_checkout_validation', array( $this, 'validate' ), 10, 2 );
 	}
@@ -142,17 +138,28 @@ class Checkout { // phpcs:ignore
 	 * @return void
 	 */
 	public function checkout_block() {
-		if ( Core::$instance->verifyAuthCookie() && get_option( 'mobile_bankid_integration_woocommerce_age_check', 0 ) <= 0 ) {
+		if ( get_option( 'mobile_bankid_integration_woocommerce_checkout_require_bankid' ) !== 'yes' && $this->cart_age_limit() <= 0 ) {
+			return;
+		}
+
+		if ( Core::$instance->verifyAuthCookie() && $this->cart_age_check() ) {
 			return;
 		} elseif ( Core::$instance->verifyAuthCookie() ) {
-			if ( $this->age_check() ) {
+			if ( $this->cart_age_check() ) {
 				return;
 			} else {
-				// Translators: Age.
-				wc_add_notice( sprintf( __( 'You must be over %s years old to make an order.', 'mobile-bankid-integration' ), get_option( 'mobile_bankid_integration_woocommerce_age_check' ) ), 'error' );
-				return;
+				if ( $this->cart_age_limit() === $this->store_age_limit() ) {
+					// Translators: Age.
+					wc_add_notice( sprintf( __( 'You must be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->store_age_limit() ), 'error' );
+					return;
+				} else {
+					// Translators: Age.
+					wc_add_notice( sprintf( __( 'Your cart contains products that require you to be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->cart_age_limit() ), 'error' );
+					return;
+				}
 			}
 		}
+		
 		?>
 		<div id="bankid-checkout-block">
 			<div class="wc-block-components-notice-banner is-warning" style="display:block;" role="alert">
@@ -180,20 +187,82 @@ class Checkout { // phpcs:ignore
 	}
 
 	/**
-	 * Check if user is over a certain age.
-	 *
-	 * @return bool
+	 * Get store-wide age limit.
+	 * 
+	 * @return int
 	 */
-	public function age_check(): bool {
-		$age = get_option( 'mobile_bankid_integration_woocommerce_age_check', 0 );
+	private function store_age_limit(): int {
+		$age_limit = (int) get_option( 'mobile_bankid_integration_woocommerce_age_check', 0 );
 
 		/**
-		 * Filter the age check.
+		 * Filter the store-wide age limit.
+		 *
+		 * @param int $age_limit Age limit.
+		 * @since 1.5
+		 */
+		$age_limit = apply_filters( 'mobile_bankid_integration_woocommerce_store_age_limit', $age_limit );
+
+		return $age_limit;
+	}
+
+	/**
+	 * Get age limit for cart. When multiple products are in the cart, the highest age limit is used.
+	 * 
+	 * Default age limit is the store-wide age limit.
+	 * 
+	 * @return int
+	 */
+	private function cart_age_limit(): int {
+		$age = $this->store_age_limit();
+		$cart = WC()->cart->get_cart();
+		foreach ( $cart as $item ) {
+			$product_id = $item['product_id'];
+			$product_age = get_post_meta( $product_id, 'mobile_bankid_integration_woocommerce_age_check', true );
+			if ( $product_age > $age ) {
+				$age = $product_age;
+			}
+		}
+
+		/**
+		 * Filter the age limit for the cart.
 		 *
 		 * @param int $age Age.
-		 * @since 1.3
+		 * @since 1.5
 		 */
-		$age = apply_filters( 'mobile_bankid_integration_age_check', $age );
+		$age = apply_filters( 'mobile_bankid_integration_woocommerce_cart_age_limit', $age, $cart );
+
+		return $age;
+	}
+
+	/**
+	 * Check if user is over the age limit for the cart products and store-wide age limit.
+	 * 
+	 * @return bool
+	 */
+	public function cart_age_check(): bool {
+		$age = $this->cart_age_limit();
+		return $this->age_check( $age );
+	}
+
+	/**
+	 * Check if user is over a certain age.
+	 *
+	 * @param int|null $age Age.
+	 * @return bool
+	 */
+	public function age_check( ?int $age = null ): bool {
+		
+		if ( is_null( $age ) ) {
+			$age = $this->store_age_limit();
+
+			/**
+			 * Filter the age check.
+			 *
+			 * @param int $age Age.
+			 * @since 1.3
+			 */
+			$age = apply_filters( 'mobile_bankid_integration_age_check', $age );
+		}
 
 		if ( $age <= 0 ) {
 			return true;
@@ -221,13 +290,23 @@ class Checkout { // phpcs:ignore
 	 * @return void
 	 */
 	public function validate( $data, $errors ) {
+		if ( get_option( 'mobile_bankid_integration_woocommerce_checkout_require_bankid' ) !== 'yes' && $this->cart_age_limit() <= 0 ) {
+			return;
+		}
+
 		if ( Core::$instance->verifyAuthCookie() ) {
-			if ( $this->age_check() ) {
+			if ( $this->cart_age_check() ) {
 				return;
 			} else {
-				// Translators: Age.
-				$errors->add( 'bankid_error', sprintf( __( 'You must be over %s years old to make an order.', 'mobile-bankid-integration' ), get_option( 'mobile_bankid_integration_woocommerce_age_check' ) ) );
-				return;
+				if ( $this->cart_age_limit() === $this->store_age_limit() ) {
+					// Translators: Age.
+					$errors->add( 'bankid_error', sprintf( __( 'You must be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->store_age_limit() ) );
+					return;
+				} else {
+					// Translators: Age.
+					$errors->add( 'bankid_error', sprintf( __( 'Your cart contains products that require you to be over %s years old to make an order.', 'mobile-bankid-integration' ), $this->cart_age_limit() ) );
+					return;
+				}
 			}
 		}
 		$errors->add( 'bankid_error', __( 'You must be authenticated through Mobile BankID to make an order.', 'mobile-bankid-integration' ) );
