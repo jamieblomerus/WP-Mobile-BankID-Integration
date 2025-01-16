@@ -6,10 +6,13 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 use Mobile_BankID_Integration\Core;
 use Personnummer\Personnummer;
 
-add_filter( 'woocommerce_integrations', function ( $integrations ) {
-	$integrations[] = 'Mobile_BankID_Integration\Integrations\WooCommerce\Settings';
-	return $integrations;
-} );
+add_filter(
+	'woocommerce_integrations',
+	function ( $integrations ) {
+		$integrations[] = 'Mobile_BankID_Integration\Integrations\WooCommerce\Settings';
+		return $integrations;
+	}
+);
 new Login();
 new Checkout();
 new Product();
@@ -22,9 +25,9 @@ final class Settings extends \WC_Integration { // phpcs:ignore
 	 * Class constructor that adds the settings to the WooCommerce settings page.
 	 */
 	public function __construct() {
-		$this->id                 = 'mobile-bankid-integration';
+		$this->id = 'mobile-bankid-integration';
 		// Translators: WooCommerce integration title.
-		$this->method_title       = __( 'Mobile BankID', 'mobile-bankid-integration' );
+		$this->method_title = __( 'Mobile BankID', 'mobile-bankid-integration' );
 		// Translators: WooCommerce integration description.
 		$this->method_description = __( 'Let customers login and verify their age using Mobile BankID.', 'mobile-bankid-integration' );
 
@@ -32,10 +35,10 @@ final class Settings extends \WC_Integration { // phpcs:ignore
 		$this->migrate_settings();
 
 		// Load the settings.
-        $this->init_form_fields();
-        $this->init_settings();
+		$this->init_form_fields();
+		$this->init_settings();
 
-		add_action( 'woocommerce_update_options_integration_' .  $this->id, array( $this, 'process_admin_options' ) );
+		add_action( 'woocommerce_update_options_integration_' . $this->id, array( $this, 'process_admin_options' ) );
 	}
 
 	/**
@@ -45,7 +48,7 @@ final class Settings extends \WC_Integration { // phpcs:ignore
 	 */
 	public function init_form_fields() {
 		$this->form_fields = array(
-			'login' => array(
+			'login'                           => array(
 				'title'       => __( 'Login using BankID', 'mobile-bankid-integration' ),
 				'label'       => __( 'Let customers login using Mobile BankID on My Account page.', 'mobile-bankid-integration' ),
 				'type'        => 'checkbox',
@@ -59,14 +62,14 @@ final class Settings extends \WC_Integration { // phpcs:ignore
 				'description' => '',
 				'default'     => 'no',
 			),
-			'checkout_require_bankid' => array(
+			'checkout_require_bankid'         => array(
 				'title'       => __( 'Require users to be authenticated through Mobile BankID at checkout', 'mobile-bankid-integration' ),
 				'label'       => __( 'Require customer to be logged in with BankID at checkout. This helps to follow the law regarding sale of age-restricted products.', 'mobile-bankid-integration' ),
 				'type'        => 'checkbox',
 				'description' => '',
 				'default'     => 'no',
 			),
-			'age_check' => array(
+			'age_check'                       => array(
 				'title'       => __( 'Require users to be over a certain age at checkout (0 to disable)', 'mobile-bankid-integration' ),
 				'label'       => __( 'Require customers to be over a certain age at checkout. This helps to follow the law regarding sale of age-restricted products.<br>This requires that users are forced to sign in with BankID at checkout.', 'mobile-bankid-integration' ),
 				'type'        => 'number',
@@ -82,7 +85,7 @@ final class Settings extends \WC_Integration { // phpcs:ignore
 	 * @return void
 	 */
 	private function migrate_settings() {
-		$options = array(
+		$options  = array(
 			'mobile_bankid_integration_woocommerce_login' => 'login',
 			'mobile_bankid_integration_woocommerce_checkout_require_bankid' => 'checkout_require_bankid',
 			'mobile_bankid_integration_woocommerce_age_check' => 'age_check',
@@ -103,14 +106,19 @@ final class Settings extends \WC_Integration { // phpcs:ignore
 		}
 	}
 
+	/**
+	 * Get the settings.
+	 *
+	 * @return array
+	 */
 	public static function get_settings() {
 		$settings = get_option(
 			'woocommerce_mobile-bankid-integration_settings',
 			array(
-				'login' => 'no',
+				'login'                           => 'no',
 				'my_account_show_personal_number' => 'no',
-				'checkout_require_bankid' => 'no',
-				'age_check' => 0,
+				'checkout_require_bankid'         => 'no',
+				'age_check'                       => 0,
 			)
 		);
 		return $settings;
@@ -127,7 +135,7 @@ class Login extends \Mobile_BankID_Integration\WP_Login\Login { // phpcs:ignore
 	 */
 	public function __construct() {
 		$settings = Settings::get_settings();
-		if ( $settings['login'] === 'yes' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_env' ) ) ) {
+		if ( 'yes' === $settings['login'] && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_env' ) ) ) {
 			add_action(
 				'woocommerce_login_form_end',
 				function () {
@@ -168,7 +176,7 @@ class Checkout { // phpcs:ignore
 	 */
 	public function checkout_block() {
 		$settings = Settings::get_settings();
-		if ( $settings['checkout_require_bankid'] !== 'yes' && $this->cart_age_limit() <= 0 ) {
+		if ( 'yes' !== $settings['checkout_require_bankid'] && $this->cart_age_limit() <= 0 ) {
 			return;
 		}
 
@@ -220,7 +228,7 @@ class Checkout { // phpcs:ignore
 	 * @return int
 	 */
 	private function store_age_limit(): int {
-		$settings = Settings::get_settings();
+		$settings  = Settings::get_settings();
 		$age_limit = (int) $settings['age_check'];
 
 		/**
@@ -320,7 +328,7 @@ class Checkout { // phpcs:ignore
 	 */
 	public function validate( $data, $errors ) {
 		$settings = Settings::get_settings();
-		if ( $settings['checkout_require_bankid'] !== 'yes' && $this->cart_age_limit() <= 0 ) {
+		if ( 'yes' !== $settings['checkout_require_bankid'] && $this->cart_age_limit() <= 0 ) {
 			return;
 		}
 
@@ -424,7 +432,7 @@ class Product { // phpcs:ignore
 			 */
 			$message = apply_filters( 'mobile_bankid_integration_woocommerce_product_age_limit_message', $message, $age, $product );
 
-			echo '<span class="age-restriction">' . $message . '</span>';
+			echo '<span class="age-restriction">' . esc_html( $message ) . '</span>';
 		}
 	}
 }
