@@ -6,86 +6,114 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 use Mobile_BankID_Integration\Core;
 use Personnummer\Personnummer;
 
-new Settings();
+add_filter( 'woocommerce_integrations', function ( $integrations ) {
+	$integrations[] = 'Mobile_BankID_Integration\Integrations\WooCommerce\Settings';
+	return $integrations;
+} );
 new Login();
 new Checkout();
 new Product();
 
 /**
- * This class handles the WooCommerce integration settings.
+ * This class provides the settings for the WooCommerce integration.
  */
-final class Settings {
+final class Settings extends \WC_Integration { // phpcs:ignore
 	/**
 	 * Class constructor that adds the settings to the WooCommerce settings page.
 	 */
 	public function __construct() {
-		add_filter( 'woocommerce_get_sections_advanced', array( $this, 'add_settings_section' ) );
-		add_filter( 'woocommerce_get_settings_advanced', array( $this, 'add_settings' ), 10, 2 );
+		$this->id                 = 'mobile-bankid-integration';
+		// Translators: WooCommerce integration title.
+		$this->method_title       = __( 'Mobile BankID', 'mobile-bankid-integration' );
+		// Translators: WooCommerce integration description.
+		$this->method_description = __( 'Let customers login and verify their age using Mobile BankID.', 'mobile-bankid-integration' );
+
+		// If old settings exist, migrate them.
+		$this->migrate_settings();
+
+		// Load the settings.
+        $this->init_form_fields();
+        $this->init_settings();
+
+		add_action( 'woocommerce_update_options_integration_' .  $this->id, array( $this, 'process_admin_options' ) );
 	}
 
 	/**
-	 * Add settings section to WooCommerce settings page.
+	 * Initialize integration settings form fields.
 	 *
-	 * @param array $sections Array of sections.
-	 * @return array
+	 * @return void
 	 */
-	public function add_settings_section( $sections ) {
-		$sections['mobile_bankid_integration'] = __( 'Mobile BankID Integration', 'mobile-bankid-integration' );
-		return $sections;
+	public function init_form_fields() {
+		$this->form_fields = array(
+			'login' => array(
+				'title'       => __( 'Login using BankID', 'mobile-bankid-integration' ),
+				'label'       => __( 'Let customers login using Mobile BankID on My Account page.', 'mobile-bankid-integration' ),
+				'type'        => 'checkbox',
+				'description' => '',
+				'default'     => 'no',
+			),
+			'my_account_show_personal_number' => array(
+				'title'       => __( 'Show personal number field on My Account page', 'mobile-bankid-integration' ),
+				'label'       => __( 'Show personal number field on My Account page.', 'mobile-bankid-integration' ),
+				'type'        => 'checkbox',
+				'description' => '',
+				'default'     => 'no',
+			),
+			'checkout_require_bankid' => array(
+				'title'       => __( 'Require users to be authenticated through Mobile BankID at checkout', 'mobile-bankid-integration' ),
+				'label'       => __( 'Require customer to be logged in with BankID at checkout. This helps to follow the law regarding sale of age-restricted products.', 'mobile-bankid-integration' ),
+				'type'        => 'checkbox',
+				'description' => '',
+				'default'     => 'no',
+			),
+			'age_check' => array(
+				'title'       => __( 'Require users to be over a certain age at checkout (0 to disable)', 'mobile-bankid-integration' ),
+				'label'       => __( 'Require customers to be over a certain age at checkout. This helps to follow the law regarding sale of age-restricted products.<br>This requires that users are forced to sign in with BankID at checkout.', 'mobile-bankid-integration' ),
+				'type'        => 'number',
+				'description' => '',
+				'default'     => '0',
+			),
+		);
 	}
 
 	/**
-	 * Add settings to WooCommerce settings page.
+	 * Migrate old settings (prior to 1.5) to new settings.
 	 *
-	 * @param array  $settings Array of settings.
-	 * @param string $current_section Current section.
-	 * @return array
+	 * @return void
 	 */
-	public function add_settings( $settings, $current_section ) {
-		if ( 'mobile_bankid_integration' === $current_section ) {
-			$settings_mobile_bankid_integration   = array();
-			$settings_mobile_bankid_integration[] = array(
-				'name' => __( 'Mobile BankID Integration', 'mobile-bankid-integration' ),
-				'type' => 'title',
-				'desc' => '',
-				'id'   => 'mobile_bankid_integration',
-			);
-			/* Login using BankID */
-			$settings_mobile_bankid_integration[] = array(
-				'name'    => __( 'Login using BankID', 'mobile-bankid-integration' ),
-				'desc'    => __( 'Let customers login using Mobile BankID on My Account page.', 'mobile-bankid-integration' ),
-				'id'      => 'mobile_bankid_integration_woocommerce_login',
-				'type'    => 'checkbox',
-				'css'     => 'min-width:300px;',
-				'default' => 'no',
-			);
-			/* Require customer to be logged in with BankID at checkout */
-			$settings_mobile_bankid_integration[] = array(
-				'name'    => __( 'Require users to be authenticated through Mobile BankID at checkout', 'mobile-bankid-integration' ),
-				'desc'    => __( 'Require customer to be logged in with BankID at checkout. This helps to follow the law regarding sale of age-restricted products.', 'mobile-bankid-integration' ),
-				'id'      => 'mobile_bankid_integration_woocommerce_checkout_require_bankid',
-				'type'    => 'checkbox',
-				'css'     => 'min-width:300px;',
-				'default' => 'no',
-			);
-			/* Require customer to be over a certain age at checkout */
-			$settings_mobile_bankid_integration[] = array(
-				'name'    => __( 'Require users to be over a certain age at checkout (0 to disable)', 'mobile-bankid-integration' ),
-				'desc'    => __( 'Require customers to be over a certain age at checkout. This helps to follow the law regarding sale of age-restricted products.<br>This requires that users are forced to sign in with BankID at checkout.', 'mobile-bankid-integration' ),
-				'id'      => 'mobile_bankid_integration_woocommerce_age_check',
-				'type'    => 'number',
-				'css'     => 'min-width:300px;',
-				'default' => '0',
-			);
+	private function migrate_settings() {
+		$options = array(
+			'mobile_bankid_integration_woocommerce_login' => 'login',
+			'mobile_bankid_integration_woocommerce_checkout_require_bankid' => 'checkout_require_bankid',
+			'mobile_bankid_integration_woocommerce_age_check' => 'age_check',
+		);
+		$settings = get_option( 'woocommerce_mobile-bankid-integration_settings', array() );
 
-			$settings_mobile_bankid_integration[] = array(
-				'type' => 'sectionend',
-				'id'   => 'wcslider',
-			);
-			return $settings_mobile_bankid_integration;
-		} else {
-			return $settings;
+		foreach ( $options as $old => $new ) {
+			$option = get_option( $old, null );
+			if ( null !== $option ) {
+				$settings[ $new ] = $option;
+			}
 		}
+
+		update_option( 'woocommerce_mobile-bankid-integration_settings', $settings );
+
+		foreach ( $options as $old => $new ) {
+			delete_option( $old );
+		}
+	}
+
+	public static function get_settings() {
+		$settings = get_option(
+			'woocommerce_mobile-bankid-integration_settings',
+			array(
+				'login' => 'no',
+				'my_account_show_personal_number' => 'no',
+				'checkout_require_bankid' => 'no',
+				'age_check' => 0,
+			)
+		);
+		return $settings;
 	}
 }
 
@@ -98,7 +126,8 @@ class Login extends \Mobile_BankID_Integration\WP_Login\Login { // phpcs:ignore
 	 * Class constructor that adds the login button to the login page if the plugin is configured to do so.
 	 */
 	public function __construct() {
-		if ( get_option( 'mobile_bankid_integration_woocommerce_login' ) === 'yes' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_env' ) ) ) {
+		$settings = Settings::get_settings();
+		if ( $settings['login'] === 'yes' && ( get_option( 'mobile_bankid_integration_certificate' ) && get_option( 'mobile_bankid_integration_password' ) && get_option( 'mobile_bankid_integration_env' ) ) ) {
 			add_action(
 				'woocommerce_login_form_end',
 				function () {
@@ -138,7 +167,8 @@ class Checkout { // phpcs:ignore
 	 * @return void
 	 */
 	public function checkout_block() {
-		if ( get_option( 'mobile_bankid_integration_woocommerce_checkout_require_bankid' ) !== 'yes' && $this->cart_age_limit() <= 0 ) {
+		$settings = Settings::get_settings();
+		if ( $settings['checkout_require_bankid'] !== 'yes' && $this->cart_age_limit() <= 0 ) {
 			return;
 		}
 
@@ -190,7 +220,8 @@ class Checkout { // phpcs:ignore
 	 * @return int
 	 */
 	private function store_age_limit(): int {
-		$age_limit = (int) get_option( 'mobile_bankid_integration_woocommerce_age_check', 0 );
+		$settings = Settings::get_settings();
+		$age_limit = (int) $settings['age_check'];
 
 		/**
 		 * Filter the store-wide age limit.
@@ -288,7 +319,8 @@ class Checkout { // phpcs:ignore
 	 * @return void
 	 */
 	public function validate( $data, $errors ) {
-		if ( get_option( 'mobile_bankid_integration_woocommerce_checkout_require_bankid' ) !== 'yes' && $this->cart_age_limit() <= 0 ) {
+		$settings = Settings::get_settings();
+		if ( $settings['checkout_require_bankid'] !== 'yes' && $this->cart_age_limit() <= 0 ) {
 			return;
 		}
 

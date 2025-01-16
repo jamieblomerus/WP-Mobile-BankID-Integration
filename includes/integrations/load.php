@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 add_action(
-	'init',
+	'plugins_loaded',
 	function () {
 		if ( ! function_exists( 'is_plugin_active' ) ) {
 			return;
