@@ -323,6 +323,7 @@ class Product { // phpcs:ignore
 		}
 		add_action( 'woocommerce_product_options_general_product_data', array( $this, 'product_age_check_setting' ) );
 		add_action( 'woocommerce_process_product_meta', array( $this, 'product_age_check_save' ) );
+		add_action( 'woocommerce_product_meta_end', array( $this, 'product_display_age_limit' ) );
 	}
 
 	/**
@@ -355,5 +356,43 @@ class Product { // phpcs:ignore
 	public function product_age_check_save( $post_id ) {
 		$age = isset( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ? wc_clean( wp_unslash( $_POST['mobile_bankid_integration_woocommerce_age_check'] ) ) : 0; // phpcs:ignore -- WP handles nonces and wc_clean handles sanitization.
 		update_post_meta( $post_id, 'mobile_bankid_integration_woocommerce_age_check', $age );
+	}
+
+	/**
+	 * Display age limit on product page.
+	 *
+	 * @return void
+	 */
+	public function product_display_age_limit() {
+		global $product;
+
+		/**
+		 * Filter to disable age limit display on product page.
+		 *
+		 * @param bool $display_age_limit Whether to display the age limit on the product page.
+		 * @since 1.5
+		 */
+		$display_age_limit = apply_filters( 'mobile_bankid_integration_woocommerce_product_display_age_limit', true );
+		if ( ! $display_age_limit ) {
+			return;
+		}
+
+		$age = get_post_meta( $product->get_id(), 'mobile_bankid_integration_woocommerce_age_check', true );
+		if ( $age > 0 ) {
+			// Translators: Age.
+			$message = sprintf( _nx( 'Age restriction: %s year (verification required via Mobile BankID)', 'Age restriction: %s years (verification required via Mobile BankID)', $age, 'Product page meta section', 'mobile-bankid-integration' ), $age );
+
+			/**
+			 * Filter the age limit message displayed on the product page.
+			 *
+			 * @param string $message Age limit message.
+			 * @param int    $age Age limit.
+			 * @param object $product Product object.
+			 * @since 1.5
+			 */
+			$message = apply_filters( 'mobile_bankid_integration_woocommerce_product_age_limit_message', $message, $age, $product );
+
+			echo '<span class="age-restriction">' . $message . '</span>';
+		}
 	}
 }
