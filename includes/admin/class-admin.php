@@ -326,7 +326,7 @@ class Admin {
 					<h2 class="mobile-bankid-integration-integration__title">WooCommerce</h2>
 					<p class="mobile-bankid-integration-integration__description">WooCommerce is the most popular e-commerce platform for WordPress. With this integration you can check the identity of your customers and perform age checks using Mobile BankID.</p>
 					<?php if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) : ?>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings&tab=advanced&section=mobile_bankid_integration' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Go to settings', 'mobile-bankid-integration' ); ?></a>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings&tab=integration&section=mobile-bankid-integration' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Go to settings', 'mobile-bankid-integration' ); ?></a>
 						<?php
 					elseif ( file_exists( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php' ) ) :
 						// Generate _wpnonce.
